@@ -10,8 +10,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CMPT276HydrogenProject">
         <activity
+            android:name=".ConfigureActivity"
+            android:parentActivityName=".MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".CoinflipActivity"
+            android:parentActivityName=".MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".TimeoutActivity"
+            android:parentActivityName=".MainActivity"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
+            android:launchMode="singleTask"
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
