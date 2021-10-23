@@ -7,10 +7,12 @@
         <entry key="..\:/SFU/200 level courses/CMPT 276/Project/Hydrogen/app/src/main/res/layout/coinflip_activity.xml" value="0.13020833333333334" />
         <entry key="..\:/SFU/200 level courses/CMPT 276/Project/Hydrogen/app/src/main/res/layout/configure_activity.xml" value="0.13020833333333334" />
         <entry key="..\:/SFU/200 level courses/CMPT 276/Project/Hydrogen/app/src/main/res/layout/timeout_activity.xml" value="0.13020833333333334" />
+        <entry key="..\:/Users/Bryan/Desktop/School/Y2-FALL/CMPT276/assignments/Project/app/src/main/res/layout/configure_activity.xml" value="0.22" />
+        <entry key="..\:/Users/Bryan/Desktop/School/Y2-FALL/CMPT276/assignments/Project/app/src/main/res/layout/main_activity.xml" value="0.3333333333333333" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
