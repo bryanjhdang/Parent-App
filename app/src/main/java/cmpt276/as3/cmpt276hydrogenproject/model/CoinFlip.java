@@ -1,11 +1,15 @@
 package cmpt276.as3.cmpt276hydrogenproject.model;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class CoinFlip {
     private boolean isHeads;
     private Child winner;
     private Child childWhoChose;
     private Child otherChild;
     private boolean childChoseHeads;
+    private LocalDateTime flipTime;
 
     private void flipCoin() {
         //generates random number between 0 and 1.
@@ -28,10 +32,12 @@ public class CoinFlip {
         } else {
             winner = otherChild;
         }
+        this.flipTime = LocalDateTime.now();
     }
 
     public CoinFlip() {
         flipCoin();
+        this.flipTime = LocalDateTime.now();
     }
 
     public boolean getResult() {
@@ -44,5 +50,43 @@ public class CoinFlip {
 
     public Child getChildWhoChose() {
         return childWhoChose;
+    }
+
+    @Override
+    public String toString() {
+        String cfString = "";
+        if (childWhoChose != null) {
+            cfString += childWhoChose.getName();
+            if (childChoseHeads) {
+                cfString += " (heads)";
+            } else {
+                cfString += " (tails)";
+            }
+            cfString += " vs. " + otherChild.getName();
+            if (childChoseHeads) {
+                cfString += " (tails)";
+            } else {
+                cfString += " (heads)";
+            }
+            cfString += " - " + winner.getName() + " wins!";
+            cfString += "\nResult: ";
+            if (isHeads) {
+                cfString += "heads";
+            } else {
+                cfString += "tails";
+            }
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            cfString += ", flipped on " + flipTime.format(formatter);
+        } else {
+            cfString += "Result: ";
+            if (isHeads) {
+                cfString += "heads";
+            } else {
+                cfString += "tails";
+            }
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            cfString += ", flipped on " + flipTime.format(formatter);
+        }
+        return cfString;
     }
 }

@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     void toCoinflipBtn() {
         Button btn = findViewById(R.id.coinFlipBtn);
         btn.setOnClickListener(v -> {
-            Intent launchGame = CoinflipActivity.makeIntent(MainActivity.this);
+            Intent launchGame = CoinFlipActivity.makeIntent(MainActivity.this);
             startActivity(launchGame);
         });
     }

@@ -11,7 +11,7 @@ public class CoinFlipManager {
     }
 
     public static CoinFlipManager getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new CoinFlipManager();
         }
         return instance;

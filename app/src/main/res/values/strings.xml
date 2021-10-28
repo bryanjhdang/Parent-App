@@ -3,4 +3,5 @@
     <string name="coinFlipBtnText">Flip coin</string>
     <string name="timeoutBtnText">Timeout</string>
     <string name="configureBtnText">Configure</string>
+    <string name="coinFlipTitle">Flip a Coin</string>
 </resources>
