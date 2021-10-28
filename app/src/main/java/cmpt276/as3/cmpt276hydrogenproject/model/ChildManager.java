@@ -1,5 +1,6 @@
 package cmpt276.as3.cmpt276hydrogenproject.model;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class ChildManager {
@@ -27,6 +28,14 @@ public class ChildManager {
         return CHILDREN_LIST;
     }
 
+    public ArrayList<String> getListOfChildrenNames() {
+        ArrayList<String> childNames = new ArrayList<>();
+        for(Child c : CHILDREN_LIST) {
+            childNames.add(c.getName());
+        }
+        return childNames;
+    }
+
     public void addChild(String name) {
         Child child = new Child(name);
         CHILDREN_LIST.add(child);
@@ -40,4 +49,5 @@ public class ChildManager {
         Child child = CHILDREN_LIST.get(idx);
         child.setName(name);
     }
+
 }
