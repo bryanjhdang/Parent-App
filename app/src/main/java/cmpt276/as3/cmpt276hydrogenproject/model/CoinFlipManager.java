@@ -6,7 +6,7 @@ public class CoinFlipManager {
     private final ArrayList<CoinFlip> COIN_FLIP_LIST = new ArrayList<>();
     private static CoinFlipManager instance;
 
-    //Make constructor private so it cannor be instantiated elsewhere
+    //Make constructor private so it cannot be instantiated elsewhere
     private CoinFlipManager() {
     }
 
@@ -21,12 +21,19 @@ public class CoinFlipManager {
         return COIN_FLIP_LIST;
     }
 
-    public void addCoinFlip(boolean result) {
-        CoinFlip coinFlip = new CoinFlip(result);
+    public void addCoinFlip(CoinFlip coinFlip) {
         COIN_FLIP_LIST.add(coinFlip);
     }
 
-    public void removeCoinFlip(int index) {
+    public CoinFlip getCoinFlipAt(int index) {
+        return COIN_FLIP_LIST.get(index);
+    }
+
+    public void removeCoinFlipAt(int index) {
         COIN_FLIP_LIST.remove(index);
+    }
+
+    public void clearCoinFlipList() {
+        COIN_FLIP_LIST.clear();
     }
 }

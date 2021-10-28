@@ -4,6 +4,8 @@ public class CoinFlip {
     private boolean isHeads;
     private Child winner;
     private Child childWhoChose;
+    private Child otherChild;
+    private boolean childChoseHeads;
 
     private void flipCoin() {
         //generates random number between 0 and 1.
@@ -16,8 +18,16 @@ public class CoinFlip {
         }
     }
 
-    public CoinFlip(boolean flipResult) {
-        this.isHeads = flipResult;
+    public CoinFlip(Child childWhoChose, Child otherChild, boolean childChoseHeads) {
+        this.childWhoChose = childWhoChose;
+        this.otherChild = otherChild;
+        this.childChoseHeads = childChoseHeads;
+        flipCoin();
+        if (childChoseHeads == isHeads) {
+            winner = childWhoChose;
+        } else {
+            winner = otherChild;
+        }
     }
 
     public CoinFlip() {
@@ -28,23 +38,11 @@ public class CoinFlip {
         return isHeads;
     }
 
-    public void setResult(boolean heads) {
-        isHeads = heads;
-    }
-
     public Child getWinner() {
         return winner;
     }
 
-    public void setWinner(Child winner) {
-        this.winner = winner;
-    }
-
     public Child getChildWhoChose() {
         return childWhoChose;
-    }
-
-    public void setChildWhoChose(Child childWhoChose) {
-        this.childWhoChose = childWhoChose;
     }
 }
