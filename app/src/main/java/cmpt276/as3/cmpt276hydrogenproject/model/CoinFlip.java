@@ -45,4 +45,23 @@ public class CoinFlip {
     public Child getChildWhoChose() {
         return childWhoChose;
     }
+
+    @Override
+    public String toString() {
+        String cfString = "";
+        cfString += childWhoChose.getName();
+        if (childChoseHeads) {
+            cfString += " (heads)";
+        } else {
+            cfString += " (tails)";
+        }
+        cfString += " vs. " + otherChild.getName();
+        if (childChoseHeads) {
+            cfString += " (tails) ";
+        } else {
+            cfString += " (heads) ";
+        }
+        cfString += winner.getName() + " wins!";
+        return cfString;
+    }
 }
