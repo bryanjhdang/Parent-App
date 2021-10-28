@@ -34,11 +34,13 @@ public class CoinFlipActivity extends AppCompatActivity {
         CoinFlip cf2 = new CoinFlip(Abel, Betty, false);
         CoinFlip cf3 = new CoinFlip(Betty, Abel, true);
         CoinFlip cf4 = new CoinFlip(Betty, Abel, false);
+        CoinFlip cf5 = new CoinFlip();
 
         coinFlipManager.addCoinFlip(cf1);
         coinFlipManager.addCoinFlip(cf2);
         coinFlipManager.addCoinFlip(cf3);
         coinFlipManager.addCoinFlip(cf4);
+        coinFlipManager.addCoinFlip(cf5);
 
         //TextView dummy = findViewById(R.id.coinFlipTitle);
 
