@@ -34,10 +34,10 @@ public class CoinFlipActivity extends AppCompatActivity {
         //add dummy coin flips
         Child Abel = new Child("Abel");
         Child Betty = new Child("Betty");
-        CoinFlip cf1 = new CoinFlip(Abel, Betty, true);
-        CoinFlip cf2 = new CoinFlip(Abel, Betty, false);
-        CoinFlip cf3 = new CoinFlip(Betty, Abel, true);
-        CoinFlip cf4 = new CoinFlip(Betty, Abel, false);
+        CoinFlip cf1 = new CoinFlip(Abel, true);
+        CoinFlip cf2 = new CoinFlip(Abel, false);
+        CoinFlip cf3 = new CoinFlip(Betty, true);
+        CoinFlip cf4 = new CoinFlip(Betty, false);
         CoinFlip cf5 = new CoinFlip();
 
         coinFlipManager.addCoinFlip(cf1);
