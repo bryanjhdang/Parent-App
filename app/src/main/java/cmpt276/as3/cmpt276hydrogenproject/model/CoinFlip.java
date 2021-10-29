@@ -5,9 +5,8 @@ import java.time.format.DateTimeFormatter;
 
 public class CoinFlip {
     private boolean isHeads;
-    private Child winner;
-    private Child childWhoChose;
-    private Child otherChild;
+    private boolean won;
+    private Child choosingChild;
     private boolean childChoseHeads;
     private LocalDateTime flipTime;
 
@@ -22,15 +21,14 @@ public class CoinFlip {
         }
     }
 
-    public CoinFlip(Child childWhoChose, Child otherChild, boolean childChoseHeads) {
-        this.childWhoChose = childWhoChose;
-        this.otherChild = otherChild;
+    public CoinFlip(Child childWhoChose, boolean childChoseHeads) {
+        this.choosingChild = childWhoChose;
         this.childChoseHeads = childChoseHeads;
         flipCoin();
         if (childChoseHeads == isHeads) {
-            winner = childWhoChose;
+            won = true;
         } else {
-            winner = otherChild;
+            won = false;
         }
         this.flipTime = LocalDateTime.now();
     }
@@ -44,39 +42,37 @@ public class CoinFlip {
         return isHeads;
     }
 
-    public Child getWinner() {
-        return winner;
+    public boolean getWinStatus() {
+        return won;
     }
 
-    public Child getChildWhoChose() {
-        return childWhoChose;
+    public Child getChoosingChild() {
+        return choosingChild;
     }
 
     @Override
     public String toString() {
         String cfString = "";
-        if (childWhoChose != null) {
-            cfString += childWhoChose.getName();
+        if (choosingChild != null) {
+            cfString += choosingChild.getName() + " chose";
             if (childChoseHeads) {
-                cfString += " (heads)";
+                cfString += " heads";
             } else {
-                cfString += " (tails)";
+                cfString += " tails";
             }
-            cfString += " vs. " + otherChild.getName();
-            if (childChoseHeads) {
-                cfString += " (tails)";
-            } else {
-                cfString += " (heads)";
-            }
-            cfString += " - " + winner.getName() + " wins!";
-            cfString += "\nResult: ";
+            cfString += ", result: ";
             if (isHeads) {
-                cfString += "heads";
+                cfString += "heads\n";
             } else {
-                cfString += "tails";
+                cfString += "tails\n";
+            }
+            if (won) {
+                cfString += choosingChild.getName() + " won!";
+            } else {
+                cfString += choosingChild.getName() + " lost!";
             }
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            cfString += ", flipped on " + flipTime.format(formatter);
+            cfString += " flipped on " + flipTime.format(formatter);
         } else {
             cfString += "Result: ";
             if (isHeads) {
@@ -85,7 +81,7 @@ public class CoinFlip {
                 cfString += "tails";
             }
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            cfString += ", flipped on " + flipTime.format(formatter);
+            cfString += " flipped on " + flipTime.format(formatter);
         }
         return cfString;
     }
