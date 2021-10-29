@@ -22,7 +22,7 @@ public class AddCoinFlipActivity extends AppCompatActivity {
     }
 
     public static Intent makeIntent(Context context) {
-        return new Intent(context, CoinflipActivity.class);
+        return new Intent(context, CoinFlipActivity.class);
     }
 
     public void choosingChildSpinner() {
