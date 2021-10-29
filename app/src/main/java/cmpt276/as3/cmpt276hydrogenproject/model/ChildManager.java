@@ -8,12 +8,6 @@ public class ChildManager {
     private static ChildManager instance;
 
     /**
-     * Make constructor private to prevent anyone from instantiating the class.
-     */
-    private ChildManager() {
-    }
-
-    /**
      * Method to retrieve the class without accessing it by the constructor
      * @return the only instance of the class
      */

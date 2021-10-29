@@ -13,16 +13,16 @@ import cmpt276.as3.cmpt276hydrogenproject.model.Child;
 import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
 
 public class AddCoinFlipActivity extends AppCompatActivity {
-    private ChildManager childManager;
+    private ChildManager childManager = new ChildManager();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.coinflip_activity);
-        choosingChildSpinner();
+        setContentView(R.layout.add_coinflip_activity);
+        //choosingChildSpinner();
     }
 
     public static Intent makeIntent(Context context) {
-        return new Intent(context, CoinFlipActivity.class);
+        return new Intent(context, AddCoinFlipActivity.class);
     }
 
     public void choosingChildSpinner() {

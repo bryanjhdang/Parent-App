@@ -1,15 +1,13 @@
 package cmpt276.as3.cmpt276hydrogenproject.model;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 public class CoinFlipManager {
     private final ArrayList<CoinFlip> COIN_FLIP_LIST = new ArrayList<>();
     private static CoinFlipManager instance;
     private Child previousPick;
-
-    //Make constructor private so it cannot be instantiated elsewhere
-    private CoinFlipManager() {
-    }
 
     public static CoinFlipManager getInstance() {
         if (instance == null) {

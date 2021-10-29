@@ -31,6 +31,7 @@ public class CoinFlipActivity extends AppCompatActivity {
 
     void showCoinFlipList() {
 
+        coinFlipManager = new CoinFlipManager();
         //add dummy coin flips
         Child Abel = new Child("Abel");
         Child Betty = new Child("Betty");
@@ -66,6 +67,8 @@ public class CoinFlipActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.addCoinFlip) {
             Toast.makeText(this, "hello", Toast.LENGTH_SHORT).show();
+            Intent addGameIntent = AddCoinFlipActivity.makeIntent(this);
+            startActivity(addGameIntent);
         }
         return super.onOptionsItemSelected(item);
     }
