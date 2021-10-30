@@ -22,6 +22,20 @@ public class ChildManager {
         return CHILDREN_LIST.get(index);
     }
 
+    //suggests a child to pick
+    public Child getChildSuggestion(Child previousPick) {
+        int index = CHILDREN_LIST.indexOf(previousPick);
+        index++;
+        if (index == CHILDREN_LIST.size()) {
+            index = 0;
+        }
+        return CHILDREN_LIST.get(index);
+    }
+
+    public int indexOfChild(Child child) {
+        return CHILDREN_LIST.indexOf(child);
+    }
+
     public ArrayList<Child> getChildrenList() {
         return CHILDREN_LIST;
     }

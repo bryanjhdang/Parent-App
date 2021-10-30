@@ -10,7 +10,7 @@
         android:theme="@style/Theme.CMPT276HydrogenProject">
         <activity
             android:name=".AddCoinFlipActivity"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".CoinFlipActivity"
             android:exported="true" />
         <activity
             android:name=".ConfigureActivity"
@@ -19,6 +19,7 @@
         <activity
             android:name=".CoinFlipActivity"
             android:parentActivityName=".MainActivity"
+            android:launchMode="singleTask"
             android:exported="true" />
         <activity
             android:name=".TimeoutActivity"

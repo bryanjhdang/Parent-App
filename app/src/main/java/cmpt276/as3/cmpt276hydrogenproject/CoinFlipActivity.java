@@ -13,23 +13,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import cmpt276.as3.cmpt276hydrogenproject.model.Child;
+import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
 import cmpt276.as3.cmpt276hydrogenproject.model.CoinFlip;
 import cmpt276.as3.cmpt276hydrogenproject.model.CoinFlipManager;
 
 public class CoinFlipActivity extends AppCompatActivity {
     private CoinFlipManager coinFlipManager = CoinFlipManager.getInstance();
+    private ChildManager childManager = ChildManager.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.coinflip_activity);
-        showCoinFlipList();
-    }
-
-    public static Intent makeIntent(Context context) {
-        return new Intent(context, CoinFlipActivity.class);
-    }
-
-    void showCoinFlipList() {
 
         //add dummy coin flips
         Child Abel = new Child("Abel");
@@ -45,6 +39,28 @@ public class CoinFlipActivity extends AppCompatActivity {
         coinFlipManager.addCoinFlip(cf3);
         coinFlipManager.addCoinFlip(cf4);
         coinFlipManager.addCoinFlip(cf5);
+
+        childManager.addChild("Abel");
+        childManager.addChild("Betty");
+        childManager.addChild("Cain");
+
+        setContentView(R.layout.coinflip_activity);
+        showCoinFlipList();
+    }
+
+    public static Intent makeIntent(Context context) {
+        return new Intent(context, CoinFlipActivity.class);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showCoinFlipList();
+    }
+
+    void showCoinFlipList() {
+
+
 
         //TextView dummy = findViewById(R.id.coinFlipTitle);
 
