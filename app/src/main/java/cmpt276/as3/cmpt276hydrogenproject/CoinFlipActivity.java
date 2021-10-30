@@ -17,7 +17,7 @@ import cmpt276.as3.cmpt276hydrogenproject.model.CoinFlip;
 import cmpt276.as3.cmpt276hydrogenproject.model.CoinFlipManager;
 
 public class CoinFlipActivity extends AppCompatActivity {
-    private CoinFlipManager coinFlipManager;
+    private CoinFlipManager coinFlipManager = CoinFlipManager.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +31,6 @@ public class CoinFlipActivity extends AppCompatActivity {
 
     void showCoinFlipList() {
 
-        coinFlipManager = new CoinFlipManager();
         //add dummy coin flips
         Child Abel = new Child("Abel");
         Child Betty = new Child("Betty");

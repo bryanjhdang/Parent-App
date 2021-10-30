@@ -22,7 +22,9 @@ public class CoinFlipManager {
 
     public void addCoinFlip(CoinFlip coinFlip) {
         COIN_FLIP_LIST.add(coinFlip);
-        previousPick = coinFlip.getChoosingChild();
+        if (coinFlip.getChoosingChild() != null) {
+            previousPick = coinFlip.getChoosingChild();
+        }
     }
 
     public CoinFlip getCoinFlipAt(int index) {

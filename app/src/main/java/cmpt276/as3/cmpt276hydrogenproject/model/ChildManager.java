@@ -18,6 +18,10 @@ public class ChildManager {
         return instance;
     }
 
+    public Child getChildAt(int index) {
+        return CHILDREN_LIST.get(index);
+    }
+
     public ArrayList<Child> getChildrenList() {
         return CHILDREN_LIST;
     }

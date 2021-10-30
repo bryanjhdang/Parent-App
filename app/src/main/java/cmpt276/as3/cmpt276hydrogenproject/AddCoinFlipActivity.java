@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -15,9 +16,14 @@ import java.util.ArrayList;
 
 import cmpt276.as3.cmpt276hydrogenproject.model.Child;
 import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
+import cmpt276.as3.cmpt276hydrogenproject.model.CoinFlip;
+import cmpt276.as3.cmpt276hydrogenproject.model.CoinFlipManager;
 
-public class AddCoinFlipActivity extends AppCompatActivity {
-    private ChildManager childManager;
+public class AddCoinFlipActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+    private ChildManager childManager = ChildManager.getInstance();
+    private CoinFlipManager coinFlipManager = CoinFlipManager.getInstance();
+    private Child flipCoinChild;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,22 +36,45 @@ public class AddCoinFlipActivity extends AppCompatActivity {
     }
 
     public void choosingChildSpinner() {
-        childManager = new ChildManager();
         Spinner choosingChildSpinner = findViewById(R.id.choosingChildSpinner);
-        ArrayList<String> childNames = childManager.getListOfChildrenNames();
-        for(String s : childNames) {
-            Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this,
+        childManager.addChild("Abel");
+        childManager.addChild("Betty");
+        childManager.addChild("Cain");
+
+        Child Cain = new Child("Cain");
+        CoinFlip cf1 = new CoinFlip(Cain, true);
+
+        //coinFlipManager.addCoinFlip(cf1);
+
+        ArrayAdapter adapter = new ArrayAdapter<Child>(this,
                 android.R.layout.simple_spinner_dropdown_item,
-                childNames
-        );
+                childManager.getChildrenList());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         choosingChildSpinner.setAdapter(adapter);
 
-        //choosingChildSpinner.setSelected(childManager.getCoi);
-        //choosingChildSpinner.setOnItemSelectedListener(this);
+        choosingChildSpinner.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        int choice = parent.getSelectedItemPosition();
+        Child choosingChild = childManager.getChildAt(choice);
+        if (coinFlipManager.getPreviousPick() == null) {
+            flipCoinChild = choosingChild;
+        } else if (choosingChild.getName() == coinFlipManager.getPreviousPick().getName()) {
+            Toast.makeText(getApplicationContext(),
+                    "Cannot pick the same child!", Toast.LENGTH_SHORT).show();
+        } else {
+            //set the child
+            flipCoinChild = choosingChild;
+        }
+    }
+
+    //TODO: make the radio buttons do something
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        //do nothing
     }
 }
 
