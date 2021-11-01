@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
@@ -44,16 +45,18 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
         return new Intent(context, AddCoinFlipActivity.class);
     }
 
-    public void flipCoinButton() {
+    private void flipCoinButton() {
         Button btn = findViewById(R.id.flipCoinButton);
         btn.setOnClickListener(v -> {
             try {
                 setChildChoice(rawChoiceInput);
-                coinFlipManager.addCoinFlip(new CoinFlip(flipCoinChild, isHeads));
+                CoinFlip newCoinFlip = new CoinFlip(flipCoinChild, isHeads);
+                coinFlipManager.addCoinFlip(newCoinFlip);
                 String nameOfChoosingChild = flipCoinChild.getName();
                 Toast.makeText(this,
                         nameOfChoosingChild + " chose " + rawChoiceInput,
                         Toast.LENGTH_SHORT).show();
+                retrieveWinnerFromCoinFlip(newCoinFlip);
             } catch (Exception e) {
                 Toast.makeText(this,
                         "Please select Heads or Tails.",
@@ -61,6 +64,24 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
             }
         });
         //TODO: do an animation
+    }
+
+    private void retrieveWinnerFromCoinFlip(CoinFlip coinFlip) {
+        boolean resultIsHeads = coinFlip.getResult();
+        AlertDialog dialog;
+        AlertDialog.Builder builder = new AlertDialog.Builder(AddCoinFlipActivity.this);
+        String stringifiedOutput = "The result of the flip is ";
+        if(resultIsHeads) {
+            stringifiedOutput += "heads!";
+        } else {
+            stringifiedOutput += "tails!";
+        }
+        builder.setTitle(stringifiedOutput);
+        builder.setPositiveButton("OK", ((dialogInterface, i) -> {
+            finish();
+        }));
+        dialog = builder.create();
+        dialog.show();
     }
 
     private void createRadioButtons() {
@@ -94,7 +115,8 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
     private void setNextChoiceSuggestion() {
         TextView nextChildSuggestion = findViewById(R.id.nextChildSuggestion);
         if(childManager.getSizeOfChildList() == 0) {
-            nextChildSuggestion.setText("There are no children in the database!");
+            String noKids = "There are no children in the database!";
+            nextChildSuggestion.setText(noKids);
         } else {
             int indexOfNextChild = childManager.indexOfChild(coinFlipManager.getPreviousPick()) + 1;
             //if the next index is greater than [size-1] (which is the highest index for an arraylist
