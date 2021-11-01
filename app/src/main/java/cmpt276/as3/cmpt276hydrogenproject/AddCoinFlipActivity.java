@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +34,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_coinflip_activity);
+        setNextChoiceSuggestion();
         choosingChildSpinner();
         createRadioButtons();
         flipCoinButton();
@@ -44,7 +46,6 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
 
     public void flipCoinButton() {
         Button btn = findViewById(R.id.flipCoinButton);
-        //TODO: get the CHOICE (heads/tails) from the radio button and put it in the bool.
         btn.setOnClickListener(v -> {
             try {
                 setChildChoice(rawChoiceInput);
@@ -81,10 +82,29 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
     }
 
     private void setChildChoice(String optionChosen) {
+        //extrapolates the raw data from the radio buttons and converts it to a more
+        //manageable boolean value.
         if(optionChosen.equals("Heads")) {
             isHeads = true;
         } else {
             isHeads = false;
+        }
+    }
+
+    private void setNextChoiceSuggestion() {
+        TextView nextChildSuggestion = findViewById(R.id.nextChildSuggestion);
+        if(childManager.getSizeOfChildList() == 0) {
+            nextChildSuggestion.setText("There are no children in the database!");
+        } else {
+            int indexOfNextChild = childManager.indexOfChild(coinFlipManager.getPreviousPick()) + 1;
+            //if the next index is greater than [size-1] (which is the highest index for an arraylist
+            //of size = n) then it returns to beginning of the list to suggest.
+            if (indexOfNextChild > (childManager.getSizeOfChildList()-1)) {
+                indexOfNextChild = 0;
+            }
+            Child nextChild = childManager.getChildAt(indexOfNextChild);
+            String suggestion = "The next suggested child to pick is " + nextChild;
+            nextChildSuggestion.setText(suggestion);
         }
     }
 

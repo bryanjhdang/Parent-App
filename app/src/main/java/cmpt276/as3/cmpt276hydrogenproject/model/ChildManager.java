@@ -40,13 +40,7 @@ public class ChildManager {
         return CHILDREN_LIST;
     }
 
-    public ArrayList<String> getListOfChildrenNames() {
-        ArrayList<String> childNames = new ArrayList<>();
-        for(Child c : CHILDREN_LIST) {
-            childNames.add(c.getName());
-        }
-        return childNames;
-    }
+    public int getSizeOfChildList() { return CHILDREN_LIST.size(); }
 
     public void addChild(String name) {
         Child child = new Child(name);

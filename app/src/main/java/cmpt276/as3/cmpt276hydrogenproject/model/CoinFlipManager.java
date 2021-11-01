@@ -27,6 +27,7 @@ public class CoinFlipManager {
         }
     }
 
+
     public CoinFlip getCoinFlipAt(int index) {
         return COIN_FLIP_LIST.get(index);
     }
