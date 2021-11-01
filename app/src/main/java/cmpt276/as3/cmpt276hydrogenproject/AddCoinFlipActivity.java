@@ -68,7 +68,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
         String[] coinFlipOptions = getResources().getStringArray(R.array.choices);
 
         //populate the empty radio group in the activity
-        for(final String choice : coinFlipOptions) {
+        for (final String choice : coinFlipOptions) {
             RadioButton button = new RadioButton(this);
             button.setText(choice);
             button.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +84,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
     private void setChildChoice(String optionChosen) {
         //extrapolates the raw data from the radio buttons and converts it to a more
         //manageable boolean value.
-        if(optionChosen.equals("Heads")) {
+        if (optionChosen.equals("Heads")) {
             isHeads = true;
         } else {
             isHeads = false;
@@ -125,15 +125,14 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         int choice = parent.getSelectedItemPosition();
         Child choosingChild = childManager.getChildAt(choice);
-        if (coinFlipManager.getPreviousPick() == null) {
-            flipCoinChild = choosingChild;
-        } else if (choosingChild.getName().equals(coinFlipManager.getPreviousPick().getName())) {
+        //if the user wants to have the same child as last time pick, display a helpful message
+        //telling them that this child did pick the last time a coin was flipped.
+        if (choosingChild.getName().equals(coinFlipManager.getPreviousPick().getName())) {
             Toast.makeText(getApplicationContext(),
-                    "Cannot pick the same child!", Toast.LENGTH_SHORT).show();
-        } else {
-            //set the child
-            flipCoinChild = choosingChild;
+                    "Warning: This child also chose last time!", Toast.LENGTH_SHORT).show();
         }
+        //set the child
+        flipCoinChild = choosingChild;
     }
 
     //TODO: make the radio buttons do something
