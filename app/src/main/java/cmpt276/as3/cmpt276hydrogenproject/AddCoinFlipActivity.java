@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -24,12 +26,15 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
     private ChildManager childManager = ChildManager.getInstance();
     private CoinFlipManager coinFlipManager = CoinFlipManager.getInstance();
     private Child flipCoinChild = childManager.getChildSuggestion(coinFlipManager.getPreviousPick());
+    private String rawChoiceInput;
+    private boolean isHeads;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_coinflip_activity);
         choosingChildSpinner();
+        createRadioButtons();
         flipCoinButton();
     }
 
@@ -37,13 +42,50 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
         return new Intent(context, AddCoinFlipActivity.class);
     }
 
-    void flipCoinButton() {
+    public void flipCoinButton() {
         Button btn = findViewById(R.id.flipCoinButton);
         //TODO: get the CHOICE (heads/tails) from the radio button and put it in the bool.
         btn.setOnClickListener(v -> {
-            coinFlipManager.addCoinFlip(new CoinFlip(flipCoinChild, true));
+            try {
+                setChildChoice(rawChoiceInput);
+                coinFlipManager.addCoinFlip(new CoinFlip(flipCoinChild, isHeads));
+                String nameOfChoosingChild = flipCoinChild.getName();
+                Toast.makeText(this,
+                        nameOfChoosingChild + " chose " + rawChoiceInput,
+                        Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                Toast.makeText(this,
+                        "Please select Heads or Tails.",
+                        Toast.LENGTH_SHORT).show();
+            }
         });
         //TODO: do an animation
+    }
+
+    private void createRadioButtons() {
+        RadioGroup coinSideChoices = findViewById(R.id.headsOrTails);
+        String[] coinFlipOptions = getResources().getStringArray(R.array.choices);
+
+        //populate the empty radio group in the activity
+        for(final String choice : coinFlipOptions) {
+            RadioButton button = new RadioButton(this);
+            button.setText(choice);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    rawChoiceInput = choice;
+                }
+            });
+            coinSideChoices.addView(button);
+        }
+    }
+
+    private void setChildChoice(String optionChosen) {
+        if(optionChosen.equals("Heads")) {
+            isHeads = true;
+        } else {
+            isHeads = false;
+        }
     }
 
     public void choosingChildSpinner() {
@@ -65,7 +107,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
         Child choosingChild = childManager.getChildAt(choice);
         if (coinFlipManager.getPreviousPick() == null) {
             flipCoinChild = choosingChild;
-        } else if (choosingChild.getName() == coinFlipManager.getPreviousPick().getName()) {
+        } else if (choosingChild.getName().equals(coinFlipManager.getPreviousPick().getName())) {
             Toast.makeText(getApplicationContext(),
                     "Cannot pick the same child!", Toast.LENGTH_SHORT).show();
         } else {
