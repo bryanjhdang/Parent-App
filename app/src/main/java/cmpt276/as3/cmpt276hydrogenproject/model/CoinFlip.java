@@ -55,17 +55,21 @@ public class CoinFlip {
         String cfString = "";
         if (choosingChild != null) {
             cfString += choosingChild.getName() + " chose";
+
             if (childChoseHeads) {
                 cfString += " heads";
             } else {
                 cfString += " tails";
             }
+
             cfString += ", result: ";
+
             if (isHeads) {
                 cfString += "heads\n";
             } else {
                 cfString += "tails\n";
             }
+
             if (won) {
                 cfString += choosingChild.getName() + " won!";
             } else {
@@ -75,11 +79,13 @@ public class CoinFlip {
             cfString += " flipped on " + flipTime.format(formatter);
         } else {
             cfString += "Result: ";
+
             if (isHeads) {
                 cfString += "heads";
             } else {
                 cfString += "tails";
             }
+
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             cfString += " flipped on " + flipTime.format(formatter);
         }
