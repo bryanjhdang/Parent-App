@@ -81,7 +81,6 @@ public class CoinFlipActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.addCoinFlip) {
-            Toast.makeText(this, "hello", Toast.LENGTH_SHORT).show();
             Intent addGameIntent = AddCoinFlipActivity.makeIntent(this);
             startActivity(addGameIntent);
         }
