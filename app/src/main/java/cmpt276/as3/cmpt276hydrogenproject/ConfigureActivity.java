@@ -96,8 +96,8 @@ public class ConfigureActivity extends AppCompatActivity {
     private void updateListView() {
         // Create list of items
         List<String> childStrList = new ArrayList<>();
-        for (int i = 0; i < childManager.getChildListSize(); i++) {
-            String childName = childManager.getChild(i).getName();
+        for (int i = 0; i < childManager.getSizeOfChildList(); i++) {
+            String childName = childManager.getChildAt(i).getName();
             childStrList.add(childName);
         }
 

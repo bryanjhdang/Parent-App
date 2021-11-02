@@ -3,4 +3,12 @@
     <string name="coinFlipBtnText">Flip coin</string>
     <string name="timeoutBtnText">Timeout</string>
     <string name="configureBtnText">Configure</string>
+    <string name="coinFlipTitle">Flip a Coin</string>
+    <string name="heads">Heads</string>
+    <string name="tails">Tails</string>
+    <string name="flip">Flip!</string>
+    <string-array name="choices">
+        <item>Heads</item>
+        <item>Tails</item>
+    </string-array>
 </resources>

@@ -1,16 +1,11 @@
 package cmpt276.as3.cmpt276hydrogenproject.model;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class ChildManager {
-    private final ArrayList<Child> CHILD_LIST = new ArrayList<>();
+    private final ArrayList<Child> CHILDREN_LIST = new ArrayList<>();
     private static ChildManager instance;
-
-    /**
-     * Make constructor private to prevent anyone from instantiating the class.
-     */
-    private ChildManager() {
-    }
 
     /**
      * Method to retrieve the class without accessing it by the constructor
@@ -23,25 +18,42 @@ public class ChildManager {
         return instance;
     }
 
-    public int getChildListSize() {
-        return CHILD_LIST.size();
+    public Child getChildAt(int index) {
+        return CHILDREN_LIST.get(index);
     }
 
-    public Child getChild(int idx) {
-        return CHILD_LIST.get(idx);
+    //suggests a child to pick
+    public Child getChildSuggestion(Child previousPick) {
+        int index = CHILDREN_LIST.indexOf(previousPick);
+        index++;
+        if (index == CHILDREN_LIST.size()) {
+            index = 0;
+        }
+        return CHILDREN_LIST.get(index);
     }
+
+    public int indexOfChild(Child child) {
+        return CHILDREN_LIST.indexOf(child);
+    }
+
+    public ArrayList<Child> getChildrenList() {
+        return CHILDREN_LIST;
+    }
+
+    public int getSizeOfChildList() { return CHILDREN_LIST.size(); }
 
     public void addChild(String name) {
         Child child = new Child(name);
-        CHILD_LIST.add(child);
+        CHILDREN_LIST.add(child);
     }
 
     public void removeChild(int idx) {
-        CHILD_LIST.remove(idx);
+        CHILDREN_LIST.remove(idx);
     }
 
     public void editChildName(int idx, String name) {
-        Child child = CHILD_LIST.get(idx);
+        Child child = CHILDREN_LIST.get(idx);
         child.setName(name);
     }
+
 }
