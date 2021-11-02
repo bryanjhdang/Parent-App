@@ -3,7 +3,7 @@ package cmpt276.as3.cmpt276hydrogenproject.model;
 import java.util.ArrayList;
 
 public class ChildManager {
-    private final ArrayList<Child> CHILDREN_LIST = new ArrayList<>();
+    private final ArrayList<Child> CHILD_LIST = new ArrayList<>();
     private static ChildManager instance;
 
     /**
@@ -23,21 +23,25 @@ public class ChildManager {
         return instance;
     }
 
-    public ArrayList<Child> getChildrenList() {
-        return CHILDREN_LIST;
+    public int getChildListSize() {
+        return CHILD_LIST.size();
+    }
+
+    public Child getChild(int idx) {
+        return CHILD_LIST.get(idx);
     }
 
     public void addChild(String name) {
         Child child = new Child(name);
-        CHILDREN_LIST.add(child);
+        CHILD_LIST.add(child);
     }
 
     public void removeChild(int idx) {
-        CHILDREN_LIST.remove(idx);
+        CHILD_LIST.remove(idx);
     }
 
     public void editChildName(int idx, String name) {
-        Child child = CHILDREN_LIST.get(idx);
+        Child child = CHILD_LIST.get(idx);
         child.setName(name);
     }
 }
