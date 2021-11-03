@@ -2,6 +2,7 @@ package cmpt276.as3.cmpt276hydrogenproject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
@@ -180,6 +181,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
         for (final String choice : coinFlipOptions) {
             RadioButton button = new RadioButton(this);
             button.setText(choice);
+            button.setTextColor(Color.WHITE);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -204,6 +206,8 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         int choice = parent.getSelectedItemPosition();
         Child choosingChild = childManager.getChildAt(choice);
+
+        ((TextView) parent.getSelectedView()).setTextColor(Color.WHITE);
         //if the user wants to have the same child as last time pick, display a helpful message
         //telling them that this child did pick the last time a coin was flipped.
         if (choosingChild.getName().equals(coinFlipManager.getPreviousPick().getName())) {
