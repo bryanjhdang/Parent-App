@@ -2,6 +2,7 @@ package cmpt276.as3.cmpt276hydrogenproject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,6 +24,9 @@ import cmpt276.as3.cmpt276hydrogenproject.model.CoinFlip;
 import cmpt276.as3.cmpt276hydrogenproject.model.CoinFlipManager;
 
 public class AddCoinFlipActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+    private final int ANIMATION_DURATION = 1000;
+    private final float ROTATION_VALUE = 1800;
+
     private ChildManager childManager = ChildManager.getInstance();
     private CoinFlipManager coinFlipManager = CoinFlipManager.getInstance();
     private Child flipCoinChild = childManager.getChildSuggestion(coinFlipManager.getPreviousPick());
@@ -55,35 +59,44 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
                         nameOfChoosingChild + " chose " + rawChoiceInput,
                         Toast.LENGTH_SHORT).show();
                 getResultOfCoinFlip(newCoinFlip);
-                retrieveWinnerFromCoinFlip(newCoinFlip);
+                //retrieveWinnerFromCoinFlip(newCoinFlip);
             } catch (Exception e) {
                 Toast.makeText(this,
                         "Please select Heads or Tails.",
                         Toast.LENGTH_SHORT).show();
             }
         });
-        //TODO: do an animation
     }
 
-    //code inspiration (via using the ViewPropertyAnimator class) from
-    //https://riptutorial.com/android/example/15667/viewpropertyanimator
+    /**
+     * code inspiration (via using the ViewPropertyAnimator class) from
+     * https://www.youtube.com/watch?v=umLDj-qxDKI (code in Kotlin)
+     * implementation of the Runnable was inspired by methods used by ViewPropertyAnimator class
+     * https://developer.android.com/reference/android/view/ViewPropertyAnimator#withEndAction(java.lang.Runnable)
+     */
     private void getResultOfCoinFlip(CoinFlip coinFlip) {
         boolean resultIsHeads = coinFlip.getResult();
         if(resultIsHeads) {
-            animateFlip(R.drawable.heads);
+            animateFlip(R.drawable.heads, coinFlip);
         } else {
-            animateFlip(R.drawable.tails);
+            animateFlip(R.drawable.tails, coinFlip);
         }
     }
 
-    private void animateFlip(int id) {
+    private void animateFlip(int id, CoinFlip coinFlip) {
         ImageView coinFlipView = findViewById(R.id.coin);
+        Runnable endAction = new Runnable() {
+            @Override
+            public void run() {
+                coinFlipView.setImageResource(id);
+                //dialog box pops up after animation is over to clearly indicate winner
+                retrieveWinnerFromCoinFlip(coinFlip);
+            }
+        };
         coinFlipView.animate()
-                .setDuration(1000)
-                .rotationXBy(1000f)
-                .withEndAction(() -> {
-                    coinFlipView.setImageResource(id);
-                });
+                .setDuration(ANIMATION_DURATION)
+                .rotationXBy(ROTATION_VALUE)
+                .withEndAction(endAction);
     }
     
     private void retrieveWinnerFromCoinFlip(CoinFlip coinFlip) {
