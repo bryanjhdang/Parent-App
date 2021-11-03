@@ -138,7 +138,6 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
         if(soundEffectPlayer == null) {
             soundEffectPlayer = MediaPlayer.create(this, R.raw.flip_sound);
         }
-        //soundEffectPlayer.setVolume(0, 0.5f);
         soundEffectPlayer.start();
     }
 
@@ -217,8 +216,6 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
         //set the child
         flipCoinChild = choosingChild;
     }
-
-    //TODO: make the radio buttons do something
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
