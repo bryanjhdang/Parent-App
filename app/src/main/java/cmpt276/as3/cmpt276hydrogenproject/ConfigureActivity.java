@@ -4,9 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -37,6 +40,7 @@ public class ConfigureActivity extends AppCompatActivity {
         loadChildren();
         updateListView();
         setAddChildButton();
+        registerClickCallback();
     }
 
     @Override
@@ -141,5 +145,56 @@ public class ConfigureActivity extends AppCompatActivity {
             Type listType = new TypeToken<ArrayList<Child>>(){}.getType();
             childManager.setAllChildren(myGson.fromJson(jsonString, listType));
         }
+    }
+
+    /**
+     * Check if any name on the list was clicked and prompt the configure child pop-up.
+     */
+    private void registerClickCallback() {
+        ListView list = findViewById(R.id.childListView);
+        list.setOnItemClickListener((adapterView, view, index, id) -> {
+            promptEditDeleteChild(index);
+        });
+    }
+
+    /**
+     * Gives the user the option to change the selected child name or delete the child.
+     */
+    private void promptEditDeleteChild(int childIndex) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(ConfigureActivity.this);
+        builder.setTitle("Edit child name:");
+
+        // Prompt the user for input
+        EditText input = new EditText(ConfigureActivity.this);
+        builder.setView(input);
+
+        // Edit child name on the list
+        builder.setPositiveButton("Confirm", (dialogInterface, i) -> {
+            String name = input.getText().toString();
+
+            if (isValidName(name)) {
+                childManager.editChildName(childIndex, name);
+                String msg = "Name changed.";
+                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
+                        .show();
+                updateListView();
+            } else {
+                String msg = "Name is invalid!";
+                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
+
+        // Remove child from list when clicking on "Delete Child" prompt
+        builder.setNegativeButton("Delete Child", (dialogInterface, i) -> {
+            String msg = childManager.getChildAt(childIndex).getName() + " has been removed.";
+            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
+                    .show();
+            childManager.removeChild(childIndex);
+            updateListView();
+        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }
