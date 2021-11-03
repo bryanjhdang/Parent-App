@@ -7,6 +7,7 @@
     <string name="heads">Heads</string>
     <string name="tails">Tails</string>
     <string name="flip">Flip!</string>
+    <string name="emptyMessage">There are no past coin flips!\nTap the + in the top right to add one!</string>
     <string-array name="choices">
         <item>Heads</item>
         <item>Tails</item>

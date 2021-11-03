@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -47,6 +48,9 @@ public class CoinFlipActivity extends AppCompatActivity {
                 R.layout.coinflip_list,
                 coinFlipManager.getCoinFlipList());
         coinFlipView.setAdapter(arrayAdapter);
+
+        TextView emptyMessage = findViewById(R.id.emptyFlipListMessage);
+        coinFlipView.setEmptyView(emptyMessage);
     }
 
     @Override
