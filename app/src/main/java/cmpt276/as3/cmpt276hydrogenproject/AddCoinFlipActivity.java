@@ -18,6 +18,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.Objects;
+
 import cmpt276.as3.cmpt276hydrogenproject.model.Child;
 import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
 import cmpt276.as3.cmpt276hydrogenproject.model.CoinFlip;
@@ -29,7 +31,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
 
     private ChildManager childManager = ChildManager.getInstance();
     private CoinFlipManager coinFlipManager = CoinFlipManager.getInstance();
-    private Child flipCoinChild = childManager.getChildSuggestion(coinFlipManager.getPreviousPick());
+    private Child flipCoinChild;
     private MediaPlayer soundEffectPlayer;
     private String rawChoiceInput;
     private boolean isHeads;
@@ -38,14 +40,27 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_coinflip_activity);
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Flip a new Coin!");
+        emptyChildListCoinFlip();
+        flipCoinButton();
         setNextChoiceSuggestion();
         choosingChildSpinner();
         createRadioButtons();
-        flipCoinButton();
     }
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, AddCoinFlipActivity.class);
+    }
+
+    private void emptyChildListCoinFlip() {
+        if(childManager.getSizeOfChildList() == 0) {
+            CoinFlip childlessCoinFlip = new CoinFlip();
+            coinFlipManager.addCoinFlip(childlessCoinFlip);
+            playCoinFlipSound();
+            getResultOfCoinFlip(childlessCoinFlip);
+        } else {
+            flipCoinChild = childManager.getChildSuggestion(coinFlipManager.getPreviousPick());
+        }
     }
 
     private void flipCoinButton() {
@@ -61,8 +76,6 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
                         Toast.LENGTH_SHORT).show();
                 playCoinFlipSound();
                 getResultOfCoinFlip(newCoinFlip);
-
-                //retrieveWinnerFromCoinFlip(newCoinFlip);
             } catch (Exception e) {
                 Toast.makeText(this,
                         "Please select Heads or Tails.",
@@ -128,6 +141,37 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
         soundEffectPlayer.start();
     }
 
+    private void setNextChoiceSuggestion() {
+        TextView nextChildSuggestion = findViewById(R.id.nextChildSuggestion);
+        if(childManager.getSizeOfChildList() == 0) {
+            String noKids = "There are no children in the database!";
+            nextChildSuggestion.setText(noKids);
+        } else {
+            int indexOfNextChild = childManager.indexOfChild(coinFlipManager.getPreviousPick()) + 1;
+            //if the next index is greater than [size-1] (which is the highest index for an arraylist
+            //of size = n) then it returns to beginning of the list to suggest.
+            if (indexOfNextChild > (childManager.getSizeOfChildList()-1)) {
+                indexOfNextChild = 0;
+            }
+            Child nextChild = childManager.getChildAt(indexOfNextChild);
+            String suggestion = "The next suggested child to pick is: " + nextChild;
+            nextChildSuggestion.setText(suggestion);
+        }
+    }
+
+    public void choosingChildSpinner() {
+        Spinner choosingChildSpinner = findViewById(R.id.choosingChildSpinner);
+
+        ArrayAdapter adapter = new ArrayAdapter<Child>(this,
+                android.R.layout.simple_spinner_dropdown_item,
+                childManager.getChildrenList());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        choosingChildSpinner.setAdapter(adapter);
+
+        choosingChildSpinner.setSelection(childManager.indexOfChild(flipCoinChild));
+        choosingChildSpinner.setOnItemSelectedListener(this);
+    }
+
     private void createRadioButtons() {
         RadioGroup coinSideChoices = findViewById(R.id.headsOrTails);
         String[] coinFlipOptions = getResources().getStringArray(R.array.choices);
@@ -154,37 +198,6 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
         } else {
             isHeads = false;
         }
-    }
-
-    private void setNextChoiceSuggestion() {
-        TextView nextChildSuggestion = findViewById(R.id.nextChildSuggestion);
-        if(childManager.getSizeOfChildList() == 0) {
-            String noKids = "There are no children in the database!";
-            nextChildSuggestion.setText(noKids);
-        } else {
-            int indexOfNextChild = childManager.indexOfChild(coinFlipManager.getPreviousPick()) + 1;
-            //if the next index is greater than [size-1] (which is the highest index for an arraylist
-            //of size = n) then it returns to beginning of the list to suggest.
-            if (indexOfNextChild > (childManager.getSizeOfChildList()-1)) {
-                indexOfNextChild = 0;
-            }
-            Child nextChild = childManager.getChildAt(indexOfNextChild);
-            String suggestion = "The next suggested child to pick is " + nextChild;
-            nextChildSuggestion.setText(suggestion);
-        }
-    }
-
-    public void choosingChildSpinner() {
-        Spinner choosingChildSpinner = findViewById(R.id.choosingChildSpinner);
-
-        ArrayAdapter adapter = new ArrayAdapter<Child>(this,
-                android.R.layout.simple_spinner_dropdown_item,
-                childManager.getChildrenList());
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        choosingChildSpinner.setAdapter(adapter);
-
-        choosingChildSpinner.setSelection(childManager.indexOfChild(flipCoinChild));
-        choosingChildSpinner.setOnItemSelectedListener(this);
     }
 
     @Override
