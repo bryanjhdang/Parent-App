@@ -12,6 +12,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.Objects;
+
 import cmpt276.as3.cmpt276hydrogenproject.model.Child;
 import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
 import cmpt276.as3.cmpt276hydrogenproject.model.CoinFlip;
@@ -44,6 +46,7 @@ public class CoinFlipActivity extends AppCompatActivity {
         childManager.addChild("Betty");
         childManager.addChild("Cain");
 
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Coin Flip List");
         setContentView(R.layout.coinflip_activity);
         showCoinFlipList();
     }
@@ -59,11 +62,6 @@ public class CoinFlipActivity extends AppCompatActivity {
     }
 
     void showCoinFlipList() {
-
-
-
-        //TextView dummy = findViewById(R.id.coinFlipTitle);
-
         ListView coinFlipView = findViewById(R.id.coinFlipList);
         ArrayAdapter<CoinFlip> arrayAdapter = new ArrayAdapter<>(
                 this,
