@@ -3,11 +3,11 @@ package cmpt276.as3.cmpt276hydrogenproject;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -16,8 +16,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.util.ArrayList;
 
 import cmpt276.as3.cmpt276hydrogenproject.model.Child;
 import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
@@ -56,7 +54,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
                 Toast.makeText(this,
                         nameOfChoosingChild + " chose " + rawChoiceInput,
                         Toast.LENGTH_SHORT).show();
-                retrieveWinnerFromCoinFlip(newCoinFlip);
+                getResultOfCoinFlip(newCoinFlip);
             } catch (Exception e) {
                 Toast.makeText(this,
                         "Please select Heads or Tails.",
@@ -65,6 +63,28 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
         });
         //TODO: do an animation
     }
+
+    //code inspiration (via using the ViewPropertyAnimator class) from
+    //https://riptutorial.com/android/example/15667/viewpropertyanimator
+    private void getResultOfCoinFlip(CoinFlip coinFlip) {
+        boolean resultIsHeads = coinFlip.getResult();
+        if(resultIsHeads) {
+            animateFlip(R.drawable.heads);
+        } else {
+            animateFlip(R.drawable.tails);
+        }
+    }
+
+    private void animateFlip(int id) {
+        ImageView exampleView = findViewById(R.id.coin);
+        exampleView.animate()
+                .setDuration(1000)
+                .rotationXBy(1000f)
+                .withEndAction(() -> {
+                    exampleView.setImageResource(id);
+                });
+    }
+
 
     private void retrieveWinnerFromCoinFlip(CoinFlip coinFlip) {
         boolean resultIsHeads = coinFlip.getResult();
