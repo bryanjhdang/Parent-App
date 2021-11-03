@@ -11,24 +11,29 @@
         <activity
             android:name=".AddCoinFlipActivity"
             android:parentActivityName=".CoinFlipActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ConfigureActivity"
             android:parentActivityName=".MainActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".CoinFlipActivity"
             android:parentActivityName=".MainActivity"
             android:launchMode="singleTask"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".TimeoutActivity"
             android:parentActivityName=".MainActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
