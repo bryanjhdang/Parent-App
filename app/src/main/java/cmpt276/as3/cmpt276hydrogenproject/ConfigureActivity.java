@@ -2,6 +2,7 @@ package cmpt276.as3.cmpt276hydrogenproject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,7 +16,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,15 +29,24 @@ import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
 
 public class ConfigureActivity extends AppCompatActivity {
     private ChildManager childManager = ChildManager.getInstance();
+    SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.configure_activity);
+        sp = getSharedPreferences("Hydrogen", Context.MODE_PRIVATE);
 
+        loadChildren();
         updateListView();
         setAddChildButton();
         registerClickCallback();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateListView();
     }
 
     public static Intent makeIntent(Context context) {
@@ -112,6 +126,25 @@ public class ConfigureActivity extends AppCompatActivity {
         ListView list = findViewById(R.id.childListView);
         list.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+
+        saveChildren();
+    }
+
+    void saveChildren() {
+        SharedPreferences.Editor editor = sp.edit();
+        Gson myGson = new GsonBuilder().create();
+        String jsonString = myGson.toJson(childManager.getChildrenList());
+        editor.putString("childList", jsonString);
+        editor.commit();
+    }
+
+    void loadChildren() {
+        Gson myGson = new GsonBuilder().create();
+        String jsonString = sp.getString("childList", "");
+        if (!jsonString.equals("")) {
+            Type listType = new TypeToken<ArrayList<Child>>(){}.getType();
+            childManager.setAllChildren(myGson.fromJson(jsonString, listType));
+        }
     }
 
     /**

@@ -4,7 +4,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class ChildManager {
-    private final ArrayList<Child> CHILDREN_LIST = new ArrayList<>();
+    private ArrayList<Child> CHILDREN_LIST = new ArrayList<>();
     private static ChildManager instance;
 
     /**
@@ -38,6 +38,10 @@ public class ChildManager {
 
     public ArrayList<Child> getChildrenList() {
         return CHILDREN_LIST;
+    }
+
+    public void setAllChildren(ArrayList<Child> childList) {
+        this.CHILDREN_LIST = childList;
     }
 
     public int getSizeOfChildList() { return CHILDREN_LIST.size(); }
