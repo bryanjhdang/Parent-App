@@ -30,6 +30,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
     private ChildManager childManager = ChildManager.getInstance();
     private CoinFlipManager coinFlipManager = CoinFlipManager.getInstance();
     private Child flipCoinChild = childManager.getChildSuggestion(coinFlipManager.getPreviousPick());
+    private MediaPlayer soundEffectPlayer;
     private String rawChoiceInput;
     private boolean isHeads;
 
@@ -58,7 +59,9 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
                 Toast.makeText(this,
                         nameOfChoosingChild + " chose " + rawChoiceInput,
                         Toast.LENGTH_SHORT).show();
+                playCoinFlipSound();
                 getResultOfCoinFlip(newCoinFlip);
+
                 //retrieveWinnerFromCoinFlip(newCoinFlip);
             } catch (Exception e) {
                 Toast.makeText(this,
@@ -115,6 +118,14 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
         }));
         dialog = builder.create();
         dialog.show();
+    }
+
+    private void playCoinFlipSound() {
+        if(soundEffectPlayer == null) {
+            soundEffectPlayer = MediaPlayer.create(this, R.raw.flip_sound);
+        }
+        //soundEffectPlayer.setVolume(0, 0.5f);
+        soundEffectPlayer.start();
     }
 
     private void createRadioButtons() {
