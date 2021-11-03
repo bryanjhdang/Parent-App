@@ -55,6 +55,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
                         nameOfChoosingChild + " chose " + rawChoiceInput,
                         Toast.LENGTH_SHORT).show();
                 getResultOfCoinFlip(newCoinFlip);
+                retrieveWinnerFromCoinFlip(newCoinFlip);
             } catch (Exception e) {
                 Toast.makeText(this,
                         "Please select Heads or Tails.",
@@ -76,16 +77,15 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
     }
 
     private void animateFlip(int id) {
-        ImageView exampleView = findViewById(R.id.coin);
-        exampleView.animate()
+        ImageView coinFlipView = findViewById(R.id.coin);
+        coinFlipView.animate()
                 .setDuration(1000)
                 .rotationXBy(1000f)
                 .withEndAction(() -> {
-                    exampleView.setImageResource(id);
+                    coinFlipView.setImageResource(id);
                 });
     }
-
-
+    
     private void retrieveWinnerFromCoinFlip(CoinFlip coinFlip) {
         boolean resultIsHeads = coinFlip.getResult();
         AlertDialog dialog;
