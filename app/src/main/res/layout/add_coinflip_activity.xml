@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/flip_coin_background">
 
     <RadioGroup
         android:id="@+id/headsOrTails"
@@ -14,18 +15,20 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.472" />
+        app:layout_constraintVertical_bias="0.368" />
 
     <Spinner
         android:id="@+id/choosingChildSpinner"
         android:layout_width="201dp"
         android:layout_height="48dp"
         android:minHeight="48dp"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nextChildSuggestion"
-        app:layout_constraintVertical_bias="0.139"
+        app:layout_constraintVertical_bias="0.081"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
@@ -38,16 +41,35 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/headsOrTails"
-        app:layout_constraintVertical_bias="0.412" />
+        app:layout_constraintVertical_bias="0.815" />
 
     <TextView
         android:id="@+id/nextChildSuggestion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:textIsSelectable="false"
         android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.11" />
+
+    <ImageView
+        android:id="@+id/coin"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="43dp"
+        android:layout_marginBottom="44dp"
+        android:contentDescription="coin"
+        android:src="@drawable/heads"
+        app:layout_constraintBottom_toTopOf="@+id/flipCoinButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headsOrTails" />
 </androidx.constraintlayout.widget.ConstraintLayout>

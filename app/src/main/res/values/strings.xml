@@ -7,6 +7,7 @@
     <string name="heads">Heads</string>
     <string name="tails">Tails</string>
     <string name="flip">Flip!</string>
+    <string name="emptyMessage">There are no past coin flips!\nTap the + in the top right to add one!</string>
     <string name="btnTextStart">Start</string>
     <string name="btnTextPause">Pause</string>
     <string name="reset">Reset</string>
