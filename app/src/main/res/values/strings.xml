@@ -7,6 +7,13 @@
     <string name="heads">Heads</string>
     <string name="tails">Tails</string>
     <string name="flip">Flip!</string>
+    <string name="btnTextStart">Start</string>
+    <string name="btnTextPause">Pause</string>
+    <string name="reset">Reset</string>
+    <string name="initialZeroValueTimer">00:00</string>
+    <string name="timerTextResume">Resume</string>
+    <string name="inputMinutesDisplay">Enter minutes</string>
+    <string name="set">Set</string>
     <string-array name="choices">
         <item>Heads</item>
         <item>Tails</item>
