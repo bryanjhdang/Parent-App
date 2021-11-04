@@ -192,7 +192,9 @@ public class TimeoutActivity extends AppCompatActivity {
         inputInMilli *= CONVERT_MILLIS_TO_SECONDS;
         int finalInputInMilli = inputInMilli;
         presetTimeBtn.setOnClickListener(v -> {
-            pauseTimer();
+            if (backgroundTimerCountDown != null) {
+                pauseTimer();
+            }
             setTime(finalInputInMilli);
         });
     }
