@@ -70,4 +70,50 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/minuteTextInput"
         app:layout_constraintTop_toTopOf="@+id/minuteTextInput" />
+
+    <Button
+        android:id="@+id/oneMinBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1:00"
+        app:layout_constraintBottom_toTopOf="@+id/threeMinBtn"
+        app:layout_constraintEnd_toStartOf="@+id/tenMinBtn"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/twoMinBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2:00"
+        app:layout_constraintBottom_toTopOf="@+id/fiveMinBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tenMinBtn" />
+
+    <Button
+        android:id="@+id/threeMinBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3:00"
+        app:layout_constraintBottom_toTopOf="@+id/tenMinBtn"
+        app:layout_constraintEnd_toStartOf="@+id/tenMinBtn"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/fiveMinBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5:00"
+        app:layout_constraintBottom_toTopOf="@+id/tenMinBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tenMinBtn" />
+
+    <Button
+        android:id="@+id/tenMinBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:text="10:00"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
