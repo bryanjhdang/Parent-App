@@ -22,6 +22,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class TimeoutActivity extends AppCompatActivity {
 
+    final int CONVERT_MILLIS_TO_SECONDS = 60000;
+
     private Button startTimerBtn;
     private Button setTimeBtn;
     private Button resetTimerBtn;
@@ -46,6 +48,8 @@ public class TimeoutActivity extends AppCompatActivity {
         startTimerBtn = findViewById(R.id.btnStartTimer);
         resetTimerBtn = findViewById(R.id.btnResetTimer);
 
+        setAllPresetTimers();
+
         startTimerBtn.setOnClickListener(v -> {
             if (timerWorkingState) {
                 pauseTimer();
@@ -62,7 +66,7 @@ public class TimeoutActivity extends AppCompatActivity {
                 return;
             }
             // Parse string input into long
-            long inputInMilli = Long.parseLong(input) * 60000;
+            long inputInMilli = Long.parseLong(input) * CONVERT_MILLIS_TO_SECONDS;
             if (inputInMilli == 0) {
                 Toast.makeText(TimeoutActivity.this, "Invalid: Enter 1 minute or greater", Toast.LENGTH_SHORT).show();
                 //TODO: remove this!! THIS IS FOR DEBUGGING AND PUT THE RETURN BACK
@@ -161,6 +165,36 @@ public class TimeoutActivity extends AppCompatActivity {
                     startTimerBtn.setVisibility(View.VISIBLE);
                 }
         }
+    }
+
+    /**
+     * Set pre-set timer buttons for the user to easily access in increments of:
+     * 1, 2, 3, 5 and 10 minutes.
+     */
+    private void setAllPresetTimers() {
+        Button oneMinBtn = findViewById(R.id.oneMinBtn);
+        Button twoMinBtn = findViewById(R.id.twoMinBtn);
+        Button threeMinBtn = findViewById(R.id.threeMinBtn);
+        Button fiveMinBtn = findViewById(R.id.fiveMinBtn);
+        Button tenMinBtn = findViewById(R.id.tenMinBtn);
+
+        setPresetTimer(oneMinBtn, 1);
+        setPresetTimer(twoMinBtn, 2);
+        setPresetTimer(threeMinBtn, 3);
+        setPresetTimer(fiveMinBtn, 5);
+        setPresetTimer(tenMinBtn, 10);
+    }
+
+    /**
+     * Assigns a time to be set when the button parameter is pressed.
+     */
+    private void setPresetTimer(Button presetTimeBtn, int inputInMilli) {
+        inputInMilli *= CONVERT_MILLIS_TO_SECONDS;
+        int finalInputInMilli = inputInMilli;
+        presetTimeBtn.setOnClickListener(v -> {
+            pauseTimer();
+            setTime(finalInputInMilli);
+        });
     }
 
     private void closeKeyboard() {
