@@ -2,7 +2,9 @@ package cmpt276.as3.cmpt276hydrogenproject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -13,6 +15,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import cmpt276.as3.cmpt276hydrogenproject.model.Child;
@@ -22,12 +32,14 @@ import cmpt276.as3.cmpt276hydrogenproject.model.CoinFlipManager;
 
 public class CoinFlipActivity extends AppCompatActivity {
     private CoinFlipManager coinFlipManager = CoinFlipManager.getInstance();
+    SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Objects.requireNonNull(getSupportActionBar()).setTitle("Coin Flip List");
         setContentView(R.layout.coinflip_activity);
+        sp = getSharedPreferences("Hydrogen", Context.MODE_PRIVATE);
         showCoinFlipList();
     }
 
@@ -51,6 +63,7 @@ public class CoinFlipActivity extends AppCompatActivity {
 
         TextView emptyMessage = findViewById(R.id.emptyFlipListMessage);
         coinFlipView.setEmptyView(emptyMessage);
+        saveCoinFlips();
     }
 
     @Override
@@ -66,5 +79,25 @@ public class CoinFlipActivity extends AppCompatActivity {
             startActivity(addGameIntent);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    void saveCoinFlips() {
+        SharedPreferences.Editor editor = sp.edit();
+        Gson myGson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class,
+                new TypeAdapter<LocalDateTime>() {
+                    @Override
+                    public void write(JsonWriter jsonWriter,
+                                      LocalDateTime localDateTime) throws IOException {
+                        jsonWriter.value(localDateTime.toString());
+                    }
+                    @Override
+                    public LocalDateTime read(JsonReader jsonReader) throws IOException {
+                        return LocalDateTime.parse(jsonReader.nextString());
+                    }
+                }).create();
+        String jsonString = myGson.toJson(coinFlipManager.getCoinFlipList());
+        Log.d("SAVE FLIPS", jsonString);
+        editor.putString("coinFlipList", jsonString);
+        editor.commit();
     }
 }

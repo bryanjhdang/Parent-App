@@ -5,7 +5,7 @@ import android.util.Log;
 import java.util.ArrayList;
 
 public class CoinFlipManager {
-    private final ArrayList<CoinFlip> COIN_FLIP_LIST = new ArrayList<>();
+    private ArrayList<CoinFlip> COIN_FLIP_LIST = new ArrayList<>();
     private static CoinFlipManager instance;
     private Child previousPick;
 
@@ -18,6 +18,10 @@ public class CoinFlipManager {
 
     public ArrayList<CoinFlip> getCoinFlipList() {
         return COIN_FLIP_LIST;
+    }
+
+    public void setCoinFlipList(ArrayList<CoinFlip> coinFlipList) {
+        this.COIN_FLIP_LIST = coinFlipList;
     }
 
     public void addCoinFlip(CoinFlip coinFlip) {
