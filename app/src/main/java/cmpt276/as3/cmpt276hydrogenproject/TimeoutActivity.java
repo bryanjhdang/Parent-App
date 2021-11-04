@@ -2,8 +2,12 @@ package cmpt276.as3.cmpt276hydrogenproject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -24,6 +28,7 @@ public class TimeoutActivity extends AppCompatActivity {
     private TextView displayTimerField;
     private EditText editTextInput;
     private CountDownTimer backgroundTimerCountDown;
+    private MediaPlayer soundEffectPlayer;
 
     private long startTimeInMilli;
     private long endOfTime;
@@ -60,7 +65,9 @@ public class TimeoutActivity extends AppCompatActivity {
             long inputInMilli = Long.parseLong(input) * 60000;
             if (inputInMilli == 0) {
                 Toast.makeText(TimeoutActivity.this, "Invalid: Enter 1 minute or greater", Toast.LENGTH_SHORT).show();
-                return;
+                //TODO: remove this!! THIS IS FOR DEBUGGING AND PUT THE RETURN BACK
+                inputInMilli = 1000;
+                //return;
             }
             editTextInput.setText("");
             setTime(inputInMilli);
@@ -93,6 +100,9 @@ public class TimeoutActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 timerWorkingState = false;
+
+                countdownFinished();
+
                 updateLayoutVisibility();
             }}.start();
 
@@ -201,5 +211,18 @@ public class TimeoutActivity extends AppCompatActivity {
                 startTimer();
             }
         }
+    }
+
+    private void countdownSound() {
+        if(soundEffectPlayer == null) {
+            soundEffectPlayer = MediaPlayer.create(this, R.raw.mgs_alert_sound);
+        }
+        soundEffectPlayer.start();
+    }
+
+    private void countdownFinished() {
+        countdownSound();
+        Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+        vibrator.vibrate(VibrationEffect.createOneShot(1000, VibrationEffect.DEFAULT_AMPLITUDE));
     }
 }
