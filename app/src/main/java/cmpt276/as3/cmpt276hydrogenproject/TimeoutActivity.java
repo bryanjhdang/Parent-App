@@ -1,7 +1,9 @@
 package cmpt276.as3.cmpt276hydrogenproject;
 
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -56,6 +58,15 @@ public class TimeoutActivity extends AppCompatActivity {
                 pauseTimer();
             } else {
                 startTimer();
+                //code was followed from demo from https://www.youtube.com/watch?v=nl-dheVpt8o
+                Intent intent = new Intent(TimeoutActivity.this, NotificationBroadcast.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(TimeoutActivity.this, 0, intent, 0);
+                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+                long timeWhenButtonClicked = System.currentTimeMillis();
+                alarmManager.set(AlarmManager.RTC_WAKEUP,
+                        timeWhenButtonClicked + leftTimeInMilli,
+                        pendingIntent);
             }
         });
 
@@ -71,7 +82,7 @@ public class TimeoutActivity extends AppCompatActivity {
             if (inputInMilli == 0) {
                 Toast.makeText(TimeoutActivity.this, "Invalid: Enter 1 minute or greater", Toast.LENGTH_SHORT).show();
                 //TODO: remove this!! THIS IS FOR DEBUGGING AND PUT THE RETURN BACK
-                inputInMilli = 1000;
+                inputInMilli = 5000;
                 //return;
             }
             editTextInput.setText("");
@@ -105,7 +116,6 @@ public class TimeoutActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 timerWorkingState = false;
-
                 countdownFinished();
 
                 updateLayoutVisibility();
@@ -235,10 +245,12 @@ public class TimeoutActivity extends AppCompatActivity {
             channel.setDescription(description);
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
+            //NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            //notificationManager.createNotificationChannel(channel);
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
-
+/*
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.icon)
                 .setContentTitle("TITLE")
@@ -249,12 +261,22 @@ public class TimeoutActivity extends AppCompatActivity {
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(notificationId, builder.build());
-    }
 
+ */
+
+    }
+    /*
     private void countdownFinished() {
         countdownSound();
         Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         vibrator.vibrate(VibrationEffect.createOneShot(1000, VibrationEffect.DEFAULT_AMPLITUDE));
         makeNotification();
+    }
+     */
+
+    private void countdownFinished() {
+        countdownSound();
+        Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+        vibrator.vibrate(VibrationEffect.createOneShot(1000, VibrationEffect.DEFAULT_AMPLITUDE));
     }
 }
