@@ -42,10 +42,13 @@ public class TimeoutActivity extends AppCompatActivity {
     private boolean timerWorkingState;
     private long leftTimeInMilli;
 
+    AlarmManager alarmManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timeout_activity);
+        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
         displayTimerField = findViewById(R.id.textDisplayTimer);
         editTextInput = findViewById(R.id.minuteTextInput);
@@ -54,14 +57,14 @@ public class TimeoutActivity extends AppCompatActivity {
         resetTimerBtn = findViewById(R.id.btnResetTimer);
 
         startTimerBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(TimeoutActivity.this, NotificationBroadcast.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(TimeoutActivity.this, 0, intent, 0);
             if (timerWorkingState) {
                 pauseTimer();
+                alarmManager.cancel(pendingIntent);
             } else {
                 startTimer();
                 //code was followed from demo from https://www.youtube.com/watch?v=nl-dheVpt8o
-                Intent intent = new Intent(TimeoutActivity.this, NotificationBroadcast.class);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(TimeoutActivity.this, 0, intent, 0);
-                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
                 long timeWhenButtonClicked = System.currentTimeMillis();
                 alarmManager.set(AlarmManager.RTC_WAKEUP,
@@ -116,7 +119,7 @@ public class TimeoutActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 timerWorkingState = false;
-                countdownFinished();
+                //countdownFinished();
 
                 updateLayoutVisibility();
             }}.start();
