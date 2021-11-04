@@ -2,6 +2,7 @@ package cmpt276.as3.cmpt276hydrogenproject;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -239,11 +240,16 @@ public class TimeoutActivity extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
         }
 
+        Intent thisIntent = TimeoutActivity.makeIntent(TimeoutActivity.this);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, thisIntent, 0);
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.icon)
                 .setContentTitle("TITLE")
                 .setContentText("TEXT BODY")
-                .setPriority(NotificationCompat.PRIORITY_MAX);
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
 
         int notificationId = 1;
 
