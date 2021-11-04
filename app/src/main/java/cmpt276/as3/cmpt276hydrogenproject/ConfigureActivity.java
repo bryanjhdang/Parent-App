@@ -37,7 +37,6 @@ public class ConfigureActivity extends AppCompatActivity {
         setContentView(R.layout.configure_activity);
         sp = getSharedPreferences("Hydrogen", Context.MODE_PRIVATE);
 
-        loadChildren();
         updateListView();
         setAddChildButton();
         registerClickCallback();
@@ -136,15 +135,6 @@ public class ConfigureActivity extends AppCompatActivity {
         String jsonString = myGson.toJson(childManager.getChildrenList());
         editor.putString("childList", jsonString);
         editor.commit();
-    }
-
-    void loadChildren() {
-        Gson myGson = new GsonBuilder().create();
-        String jsonString = sp.getString("childList", "");
-        if (!jsonString.equals("")) {
-            Type listType = new TypeToken<ArrayList<Child>>(){}.getType();
-            childManager.setAllChildren(myGson.fromJson(jsonString, listType));
-        }
     }
 
     /**
