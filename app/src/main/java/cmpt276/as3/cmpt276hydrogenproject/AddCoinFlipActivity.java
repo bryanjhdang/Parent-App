@@ -83,6 +83,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
                         nameOfChoosingChild + " chose " + rawChoiceInput,
                         Toast.LENGTH_SHORT).show();
                 playCoinFlipSound();
+                hideInterface();
                 getResultOfCoinFlip(newCoinFlip);
             } catch (Exception e) {
                 Toast.makeText(this,
@@ -90,6 +91,15 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
                         Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void hideInterface() {
+        Button btn = findViewById(R.id.flipCoinButton);
+        btn.setEnabled(false);
+        RadioGroup coinSideChoices = findViewById(R.id.headsOrTails);
+        coinSideChoices.setVisibility(View.INVISIBLE);
+        Spinner choosingChildSpinner = findViewById(R.id.choosingChildSpinner);
+        choosingChildSpinner.setEnabled(false);
     }
 
     /**
