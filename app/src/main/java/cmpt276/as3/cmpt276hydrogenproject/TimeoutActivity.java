@@ -50,8 +50,6 @@ public class TimeoutActivity extends AppCompatActivity {
         startTimerBtn = findViewById(R.id.btnStartTimer);
         resetTimerBtn = findViewById(R.id.btnResetTimer);
 
-        setAllPresetTimers();
-
         startTimerBtn.setOnClickListener(v -> {
             if (timerWorkingState) {
                 pauseTimer();
@@ -80,6 +78,8 @@ public class TimeoutActivity extends AppCompatActivity {
         });
 
         resetTimerBtn.setOnClickListener(v -> resetTimer());
+
+        setAllPresetTimers();
     }
 
     public static Intent makeIntent(Context context) {
@@ -150,28 +150,32 @@ public class TimeoutActivity extends AppCompatActivity {
         displayTimerField.setText(timeLeftFormat);
     }
 
+    /**
+     * Method that edits the visibility / invisibility of the activity buttons
+     * depending on the current state
+     */
     private void updateLayoutVisibility() {
-        if (timerWorkingState) {
+        if (timerWorkingState) {                            // Timer is currently running
             editTextInput.setVisibility(View.INVISIBLE);
             setTimeBtn.setVisibility(View.INVISIBLE);
             resetTimerBtn.setVisibility(View.INVISIBLE);
             startTimerBtn.setText(R.string.btnTextPause);
-        } else {
+        } else {                                            // Timer is not running
             editTextInput.setVisibility(View.VISIBLE);
             setTimeBtn.setVisibility(View.VISIBLE);
             startTimerBtn.setText(R.string.timerTextResume);
 
-                if (leftTimeInMilli < startTimeInMilli) {
-                    resetTimerBtn.setVisibility(View.VISIBLE);
-                } else {
-                    resetTimerBtn.setVisibility(View.INVISIBLE);
-                }
+            if (leftTimeInMilli < startTimeInMilli) {
+                resetTimerBtn.setVisibility(View.VISIBLE);
+            } else {
+                resetTimerBtn.setVisibility(View.INVISIBLE);
+            }
 
-                if (leftTimeInMilli < 1000) {
-                    startTimerBtn.setVisibility(View.INVISIBLE);
-                } else {
-                    startTimerBtn.setVisibility(View.VISIBLE);
-                }
+            if (leftTimeInMilli < 1000) {
+                startTimerBtn.setVisibility(View.INVISIBLE);
+            } else {
+                startTimerBtn.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -200,7 +204,9 @@ public class TimeoutActivity extends AppCompatActivity {
         inputInMilli *= CONVERT_MILLIS_TO_SECONDS;
         int finalInputInMilli = inputInMilli;
         presetTimeBtn.setOnClickListener(v -> {
-            pauseTimer();
+            if (backgroundTimerCountDown != null) {
+                pauseTimer();
+            }
             setTime(finalInputInMilli);
         });
     }
@@ -224,8 +230,7 @@ public class TimeoutActivity extends AppCompatActivity {
         editor.putBoolean("timerRunning", timerWorkingState);
         editor.putLong("endTime", endOfTime);
         editor.apply();
-        if (backgroundTimerCountDown != null)
-        {
+        if (backgroundTimerCountDown != null) {
             backgroundTimerCountDown.cancel();
         }
     }
