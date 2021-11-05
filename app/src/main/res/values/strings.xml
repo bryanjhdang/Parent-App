@@ -16,6 +16,8 @@
     <string name="inputMinutesDisplay">Enter minutes</string>
     <string name="set">Set</string>
     <string name="my_parent_app">My Parent App</string>
+    <string name="no_children">No children currently registered.\nTap the + button to add!</string>
+    <string name="has_children">Click child to configure!</string>
     <string-array name="choices">
         <item>Heads</item>
         <item>Tails</item>

@@ -39,6 +39,7 @@ public class ConfigureActivity extends AppCompatActivity {
         setActionBar();
         sp = getSharedPreferences("Hydrogen", Context.MODE_PRIVATE);
 
+        updateConfigText();
         updateListView();
         setAddChildButton();
         registerClickCallback();
@@ -52,6 +53,17 @@ public class ConfigureActivity extends AppCompatActivity {
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, ConfigureActivity.class);
+    }
+
+    private void updateConfigText() {
+        int childListSize = childManager.getSizeOfChildList();
+        TextView configText = findViewById(R.id.configText);
+
+        if (childListSize == 0) {
+            configText.setText(R.string.no_children);
+        } else {
+            configText.setText(R.string.has_children);
+        }
     }
 
     private void setActionBar() {
@@ -83,6 +95,7 @@ public class ConfigureActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
                             .show();
                     updateListView();
+                    updateConfigText();
                 } else {
                     String msg = "Name is invalid!";
                     Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
@@ -190,6 +203,7 @@ public class ConfigureActivity extends AppCompatActivity {
                     .show();
             childManager.removeChild(childIndex);
             updateListView();
+            updateConfigText();
         });
 
         AlertDialog alert = builder.create();
