@@ -230,7 +230,7 @@ public class TimeoutActivity extends AppCompatActivity {
         editor.putBoolean("timerRunning", timerWorkingState);
         editor.putLong("endTime", endOfTime);
         editor.apply();
-        if (backgroundTimerCountDown != null) {
+        if (backgroundTimerCountDown != null && !timerWorkingState) {
             backgroundTimerCountDown.cancel();
         }
     }
