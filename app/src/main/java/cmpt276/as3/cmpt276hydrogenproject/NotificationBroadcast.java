@@ -36,7 +36,7 @@ public class NotificationBroadcast extends BroadcastReceiver {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         notificationManager.notify(notificationId, builder.build());
 
-        countdownSound(context);
+        //countdownSound(context);
     }
     private void countdownSound(Context context) {
         if(soundEffectPlayer == null) {

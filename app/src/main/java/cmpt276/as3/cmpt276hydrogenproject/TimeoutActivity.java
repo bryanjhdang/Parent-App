@@ -121,7 +121,7 @@ public class TimeoutActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 timerWorkingState = false;
-                //countdownFinished();
+                countdownFinished();
                 updateLayoutVisibility();
             }}.start();
 
