@@ -3,6 +3,7 @@ package cmpt276.as3.cmpt276hydrogenproject;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
@@ -41,7 +42,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_coinflip_activity);
-        Objects.requireNonNull(getSupportActionBar()).setTitle("Flip a new Coin!");
+        setActionBar();
         emptyChildListCoinFlip();
         flipCoinButton();
         setNextChoiceSuggestion();
@@ -51,6 +52,12 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, AddCoinFlipActivity.class);
+    }
+
+    private void setActionBar() {
+        getSupportActionBar().setTitle("Coin Flip");
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
+                .getColor(R.color.darker_navy_blue)));
     }
 
     private void emptyChildListCoinFlip() {

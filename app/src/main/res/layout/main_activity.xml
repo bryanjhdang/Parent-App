@@ -4,41 +4,79 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/mainactivity"
+    android:background="@color/twitter_navy_blue"
     tools:context=".MainActivity">
 
     <Button
+        android:id="@+id/configureBtn"
+        android:layout_width="275dp"
+        android:layout_height="75dp"
+        android:layout_marginBottom="30dp"
+        android:layout_weight="1"
+        android:backgroundTint="@color/twitter_blue"
+        android:text="@string/configureBtnText"
+        android:textColor="@color/white"
+        app:icon="@drawable/ic_baseline_person_24"
+        app:iconTint="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/timeoutBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.519"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
         android:id="@+id/coinFlipBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="275dp"
+        android:layout_height="75dp"
+        android:layout_marginBottom="80dp"
+        android:layout_weight="1"
+        android:backgroundTint="@color/twitter_blue"
         android:text="@string/coinFlipBtnText"
+        android:textColor="@color/white"
+        app:icon="@drawable/ic_baseline_monetization_on_24"
+        app:iconTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.148"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/configureBtn"
-        app:layout_constraintVertical_bias="0.841" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/timeoutBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="275dp"
+        android:layout_height="75dp"
+        android:layout_marginBottom="30dp"
+        android:layout_weight="1"
+        android:height="10dp"
+        android:backgroundTint="@color/twitter_blue"
         android:text="@string/timeoutBtnText"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="@color/white"
+        app:icon="@drawable/ic_baseline_timer_24"
+        app:iconTint="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/coinFlipBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.854"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/configureBtn"
-        app:layout_constraintVertical_bias="0.841" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/configureBtn"
+    <TextView
+        android:id="@+id/menuTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/configureBtnText"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="80dp"
+        android:text="@string/my_parent_app"
+        android:textColor="@color/white"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.191" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/menuImg"
+        android:layout_width="395dp"
+        android:layout_height="235dp"
+        app:layout_constraintBottom_toTopOf="@+id/configureBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/menuTitle"
+        app:srcCompat="@drawable/family_menu_icon" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
