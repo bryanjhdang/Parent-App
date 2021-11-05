@@ -55,7 +55,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
     }
 
     private void setActionBar() {
-        getSupportActionBar().setTitle("Flip a Coin");
+        getSupportActionBar().setTitle("Coin Flip");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
                 .getColor(R.color.darker_navy_blue)));
     }

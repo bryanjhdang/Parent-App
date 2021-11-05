@@ -4,6 +4,6 @@
     android:layout_height="match_parent"
     android:textColor="#FFFFFF"
     android:textColorHint="#FFFFFF"
-    android:textSize="18sp">
+    android:textSize="16sp">
 
 </TextView>

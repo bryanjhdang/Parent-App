@@ -55,7 +55,7 @@ public class CoinFlipActivity extends AppCompatActivity {
     }
 
     private void setActionBar() {
-        getSupportActionBar().setTitle("Coin Flip History");
+        getSupportActionBar().setTitle("Coin Flip");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
                 .getColor(R.color.darker_navy_blue)));
     }

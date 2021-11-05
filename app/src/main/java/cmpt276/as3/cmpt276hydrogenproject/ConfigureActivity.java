@@ -176,6 +176,7 @@ public class ConfigureActivity extends AppCompatActivity {
         builder.setTitle("Edit child name:");
 
         // Prompt the user for input
+
         EditText input = new EditText(ConfigureActivity.this);
         builder.setView(input);
 
