@@ -1,11 +1,15 @@
 package cmpt276.as3.cmpt276hydrogenproject;
 
+import static android.content.Context.NOTIFICATION_SERVICE;
 import static android.content.Context.VIBRATOR_SERVICE;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -27,14 +31,19 @@ public class NotificationBroadcast extends BroadcastReceiver {
                 .setSmallIcon(R.drawable.icon)
                 .setContentTitle("TITLE")
                 .setContentText("TEXT BODY")
-                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setDefaults(NotificationCompat.DEFAULT_ALL)
+                .setPriority(NotificationManager.IMPORTANCE_MAX)
                 .setContentIntent(pendingIntent)
+                .setVibrate(new long[] {1000, 1000, 1000, 1000, 1000})
+                .setLights(Color.GREEN, 3000, 3000)
                 .setAutoCancel(true);
 
-        int notificationId = 1;
+        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "name", NotificationManager.IMPORTANCE_HIGH);
+        channel.setDescription("description");
 
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.notify(notificationId, builder.build());
+        NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
+        notificationManager.notify(1, builder.build());
 
         //countdownSound(context);
     }
@@ -43,7 +52,7 @@ public class NotificationBroadcast extends BroadcastReceiver {
             soundEffectPlayer = MediaPlayer.create(context, R.raw.mgs_alert_sound);
         }
         soundEffectPlayer.start();
-        Vibrator vibrator = (Vibrator) context.getSystemService(VIBRATOR_SERVICE);
-        vibrator.vibrate(VibrationEffect.createOneShot(1000, VibrationEffect.DEFAULT_AMPLITUDE));
+//        Vibrator vibrator = (Vibrator) context.getSystemService(VIBRATOR_SERVICE);
+//        vibrator.vibrate(VibrationEffect.createOneShot(1000, VibrationEffect.DEFAULT_AMPLITUDE));
     }
 }
