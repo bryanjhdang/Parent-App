@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/twitter_navy_blue">
 
     <Button
         android:id="@+id/btnStartTimer"
@@ -49,17 +50,16 @@
         app:layout_constraintVertical_bias="0.786" />
 
 
-
     <Button
         android:id="@+id/btnResetTimer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:text="@string/reset"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnStartTimer"
-        android:visibility="invisible"
         tools:visibility="visible" />
 
     <Button
