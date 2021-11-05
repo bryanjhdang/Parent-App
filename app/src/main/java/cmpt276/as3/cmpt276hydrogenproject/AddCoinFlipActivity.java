@@ -217,7 +217,8 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
         //if the user wants to have the same child as last time pick, display a helpful message
         //telling them that this child did pick the last time a coin was flipped.
         if(coinFlipManager.getPreviousPick() != null) {
-            if (choosingChild.getName().equals(coinFlipManager.getPreviousPick().getName())) {
+            if (choosingChild.getName().equals(coinFlipManager.getPreviousPick().getName())
+                && childManager.getSizeOfChildList() != 1) {
                 Toast.makeText(getApplicationContext(),
                         "Warning: This child also chose last time!", Toast.LENGTH_SHORT).show();
             }
