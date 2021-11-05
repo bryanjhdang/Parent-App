@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="twitter_blue">#1DA1F2</color>
     <color name="twitter_navy_blue">#243447</color>
+    <color name="darker_navy_blue">#19212b</color>
 </resources>

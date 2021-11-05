@@ -3,6 +3,7 @@ package cmpt276.as3.cmpt276hydrogenproject;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -35,6 +36,7 @@ public class ConfigureActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.configure_activity);
+        setActionBar();
         sp = getSharedPreferences("Hydrogen", Context.MODE_PRIVATE);
 
         updateListView();
@@ -50,6 +52,12 @@ public class ConfigureActivity extends AppCompatActivity {
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, ConfigureActivity.class);
+    }
+
+    private void setActionBar() {
+        getSupportActionBar().setTitle("Configure My Children");
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
+                .getColor(R.color.darker_navy_blue)));
     }
 
     /**
