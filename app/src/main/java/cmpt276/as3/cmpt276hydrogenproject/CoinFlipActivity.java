@@ -3,6 +3,7 @@ package cmpt276.as3.cmpt276hydrogenproject;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -37,8 +38,8 @@ public class CoinFlipActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Objects.requireNonNull(getSupportActionBar()).setTitle("Coin Flip List");
         setContentView(R.layout.coinflip_activity);
+        setActionBar();
         sp = getSharedPreferences("Hydrogen", Context.MODE_PRIVATE);
         showCoinFlipList();
     }
@@ -51,6 +52,12 @@ public class CoinFlipActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         showCoinFlipList();
+    }
+
+    private void setActionBar() {
+        getSupportActionBar().setTitle("Coin Flip");
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
+                .getColor(R.color.darker_navy_blue)));
     }
 
     void showCoinFlipList() {

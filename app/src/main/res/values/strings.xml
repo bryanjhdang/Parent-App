@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">CMPT276 Hydrogen Project</string>
-    <string name="coinFlipBtnText">Flip coin</string>
-    <string name="timeoutBtnText">Timeout</string>
-    <string name="configureBtnText">Configure</string>
+    <string name="coinFlipBtnText">Flip a coin</string>
+    <string name="timeoutBtnText">Timeout timer</string>
+    <string name="configureBtnText">Configure my children</string>
     <string name="coinFlipTitle">Flip a Coin</string>
     <string name="heads">Heads</string>
     <string name="tails">Tails</string>

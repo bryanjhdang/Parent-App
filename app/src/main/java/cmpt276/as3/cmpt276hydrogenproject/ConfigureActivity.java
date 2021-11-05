@@ -3,6 +3,7 @@ package cmpt276.as3.cmpt276hydrogenproject;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -35,8 +36,10 @@ public class ConfigureActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.configure_activity);
+        setActionBar();
         sp = getSharedPreferences("Hydrogen", Context.MODE_PRIVATE);
 
+        updateConfigText();
         updateListView();
         setAddChildButton();
         registerClickCallback();
@@ -50,6 +53,23 @@ public class ConfigureActivity extends AppCompatActivity {
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, ConfigureActivity.class);
+    }
+
+    private void updateConfigText() {
+        int childListSize = childManager.getSizeOfChildList();
+        TextView configText = findViewById(R.id.configText);
+
+        if (childListSize == 0) {
+            configText.setText(R.string.no_children);
+        } else {
+            configText.setText(R.string.has_children);
+        }
+    }
+
+    private void setActionBar() {
+        getSupportActionBar().setTitle("Configure My Children");
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
+                .getColor(R.color.darker_navy_blue)));
     }
 
     /**
@@ -75,6 +95,7 @@ public class ConfigureActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
                             .show();
                     updateListView();
+                    updateConfigText();
                 } else {
                     String msg = "Name is invalid!";
                     Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
@@ -155,6 +176,7 @@ public class ConfigureActivity extends AppCompatActivity {
         builder.setTitle("Edit child name:");
 
         // Prompt the user for input
+
         EditText input = new EditText(ConfigureActivity.this);
         builder.setView(input);
 
@@ -182,6 +204,7 @@ public class ConfigureActivity extends AppCompatActivity {
                     .show();
             childManager.removeChild(childIndex);
             updateListView();
+            updateConfigText();
         });
 
         AlertDialog alert = builder.create();

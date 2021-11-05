@@ -2,6 +2,7 @@ package cmpt276.as3.cmpt276hydrogenproject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -41,6 +42,7 @@ public class TimeoutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timeout_activity);
+        setActionBar();
 
         displayTimerField = findViewById(R.id.textDisplayTimer);
         editTextInput = findViewById(R.id.minuteTextInput);
@@ -82,6 +84,12 @@ public class TimeoutActivity extends AppCompatActivity {
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, TimeoutActivity.class);
+    }
+
+    private void setActionBar() {
+        getSupportActionBar().setTitle("Timeout Timer");
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
+                .getColor(R.color.darker_navy_blue)));
     }
 
     private void setTime(long milliseconds) {
