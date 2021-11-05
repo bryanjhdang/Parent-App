@@ -1,6 +1,7 @@
 package cmpt276.as3.cmpt276hydrogenproject;
 
 import android.app.AlarmManager;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -36,6 +37,7 @@ public class TimeoutActivity extends AppCompatActivity {
     private EditText editTextInput;
     private CountDownTimer backgroundTimerCountDown;
     private MediaPlayer soundEffectPlayer;
+
 
     private long startTimeInMilli;
     private long endOfTime;
@@ -120,7 +122,6 @@ public class TimeoutActivity extends AppCompatActivity {
             public void onFinish() {
                 timerWorkingState = false;
                 //countdownFinished();
-
                 updateLayoutVisibility();
             }}.start();
 
@@ -200,10 +201,10 @@ public class TimeoutActivity extends AppCompatActivity {
         editor.putBoolean("timerRunning", timerWorkingState);
         editor.putLong("endTime", endOfTime);
         editor.apply();
-        if (backgroundTimerCountDown != null)
-        {
-            backgroundTimerCountDown.cancel();
-        }
+//        if (backgroundTimerCountDown != null)
+//        {
+//            backgroundTimerCountDown.cancel();
+//        }
     }
     @Override
     protected void onStart() {
@@ -253,7 +254,7 @@ public class TimeoutActivity extends AppCompatActivity {
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
-/*
+        /*
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.icon)
                 .setContentTitle("TITLE")
@@ -264,9 +265,7 @@ public class TimeoutActivity extends AppCompatActivity {
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(notificationId, builder.build());
-
- */
-
+         */
     }
     /*
     private void countdownFinished() {
