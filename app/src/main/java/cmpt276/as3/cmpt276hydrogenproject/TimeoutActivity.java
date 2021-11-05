@@ -1,5 +1,7 @@
 package cmpt276.as3.cmpt276hydrogenproject;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -38,11 +40,13 @@ public class TimeoutActivity extends AppCompatActivity {
     private boolean timerWorkingState;
     private long leftTimeInMilli;
 
+    AlarmManager alarmManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timeout_activity);
-        setActionBar();
+        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
         displayTimerField = findViewById(R.id.textDisplayTimer);
         editTextInput = findViewById(R.id.minuteTextInput);
@@ -51,10 +55,19 @@ public class TimeoutActivity extends AppCompatActivity {
         resetTimerBtn = findViewById(R.id.btnResetTimer);
 
         startTimerBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(TimeoutActivity.this, NotificationBroadcast.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(TimeoutActivity.this, 0, intent, 0);
             if (timerWorkingState) {
                 pauseTimer();
+                alarmManager.cancel(pendingIntent);
             } else {
                 startTimer();
+                //code was followed from demo from https://www.youtube.com/watch?v=nl-dheVpt8o
+
+                long timeWhenButtonClicked = System.currentTimeMillis();
+                alarmManager.set(AlarmManager.RTC_WAKEUP,
+                        timeWhenButtonClicked + leftTimeInMilli,
+                        pendingIntent);
             }
         });
 
@@ -66,11 +79,11 @@ public class TimeoutActivity extends AppCompatActivity {
                 return;
             }
             // Parse string input into long
-            long inputInMilli = Long.parseLong(input) * CONVERT_MILLIS_TO_SECONDS;
+            long inputInMilli = Long.parseLong(input) * 60000;
             if (inputInMilli == 0) {
                 Toast.makeText(TimeoutActivity.this, "Invalid: Enter 1 minute or greater", Toast.LENGTH_SHORT).show();
                 //TODO: remove this!! THIS IS FOR DEBUGGING AND PUT THE RETURN BACK
-                inputInMilli = 1000;
+                inputInMilli = 5000;
                 //return;
             }
             editTextInput.setText("");
@@ -81,6 +94,7 @@ public class TimeoutActivity extends AppCompatActivity {
 
         setAllPresetTimers();
     }
+
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, TimeoutActivity.class);
