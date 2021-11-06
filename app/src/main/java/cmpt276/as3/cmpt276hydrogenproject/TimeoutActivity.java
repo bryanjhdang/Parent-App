@@ -47,6 +47,7 @@ public class TimeoutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timeout_activity);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        setActionBar();
 
         displayTimerField = findViewById(R.id.textDisplayTimer);
         editTextInput = findViewById(R.id.minuteTextInput);
@@ -126,9 +127,6 @@ public class TimeoutActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 timerWorkingState = false;
-
-                countdownFinished();
-
                 updateLayoutVisibility();
             }}.start();
 
@@ -272,18 +270,5 @@ public class TimeoutActivity extends AppCompatActivity {
                 startTimer();
             }
         }
-    }
-
-    private void countdownSound() {
-        if(soundEffectPlayer == null) {
-            soundEffectPlayer = MediaPlayer.create(this, R.raw.mgs_alert_sound);
-        }
-        soundEffectPlayer.start();
-    }
-
-    private void countdownFinished() {
-        countdownSound();
-        Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-        vibrator.vibrate(VibrationEffect.createOneShot(1000, VibrationEffect.DEFAULT_AMPLITUDE));
     }
 }
