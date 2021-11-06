@@ -35,24 +35,22 @@ public class NotificationBroadcast extends BroadcastReceiver {
                 .setPriority(NotificationManager.IMPORTANCE_MAX)
                 .setContentIntent(pendingIntent)
                 .setVibrate(new long[] {1000, 1000, 1000, 1000, 1000})
-                .setLights(Color.GREEN, 3000, 3000)
                 .setAutoCancel(true);
 
         NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "name", NotificationManager.IMPORTANCE_HIGH);
         channel.setDescription("description");
+        channel.setVibrationPattern(new long[] {1000, 1000, 1000, 1000, 1000});
 
         NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
         notificationManager.createNotificationChannel(channel);
         notificationManager.notify(1, builder.build());
 
-        //countdownSound(context);
+        countdownSound(context);
     }
     private void countdownSound(Context context) {
         if(soundEffectPlayer == null) {
             soundEffectPlayer = MediaPlayer.create(context, R.raw.mgs_alert_sound);
         }
         soundEffectPlayer.start();
-//        Vibrator vibrator = (Vibrator) context.getSystemService(VIBRATOR_SERVICE);
-//        vibrator.vibrate(VibrationEffect.createOneShot(1000, VibrationEffect.DEFAULT_AMPLITUDE));
     }
 }
