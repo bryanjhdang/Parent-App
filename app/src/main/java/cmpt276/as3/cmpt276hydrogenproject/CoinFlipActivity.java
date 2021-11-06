@@ -9,13 +9,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
@@ -40,6 +43,7 @@ public class CoinFlipActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.coinflip_activity);
         setActionBar();
+        setDeleteButton();
         sp = getSharedPreferences("Hydrogen", Context.MODE_PRIVATE);
         showCoinFlipList();
     }
@@ -60,6 +64,31 @@ public class CoinFlipActivity extends AppCompatActivity {
                 .getColor(R.color.darker_navy_blue)));
     }
 
+    private void setDeleteButton() {
+        FloatingActionButton deleteBtn = findViewById(R.id.coinflipDeleteBtn);
+        deleteBtn.setOnClickListener(view -> {
+
+            if (coinFlipManager.getCoinFlipListSize() == 0) {
+                String msg = "No history to delete!";
+                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
+                        .show();
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(CoinFlipActivity.this);
+                builder.setTitle("Delete history? It cannot be restored!");
+
+                builder.setPositiveButton("OK", (dialogInterface, i) -> {
+                    coinFlipManager.clearCoinFlipList();
+                    showCoinFlipList();
+                });
+
+                builder.setNegativeButton("Cancel", null);
+
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
+    }
+
     void showCoinFlipList() {
         ListView coinFlipView = findViewById(R.id.coinFlipList);
         ArrayAdapter<CoinFlip> arrayAdapter = new ArrayAdapter<>(
@@ -71,6 +100,7 @@ public class CoinFlipActivity extends AppCompatActivity {
         TextView emptyMessage = findViewById(R.id.emptyFlipListMessage);
         coinFlipView.setEmptyView(emptyMessage);
         saveCoinFlips();
+        arrayAdapter.notifyDataSetChanged();
     }
 
     @Override

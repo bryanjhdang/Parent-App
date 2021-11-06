@@ -31,6 +31,9 @@ public class CoinFlipManager {
         }
     }
 
+    public int getCoinFlipListSize() {
+        return COIN_FLIP_LIST.size();
+    }
 
     public CoinFlip getCoinFlipAt(int index) {
         return COIN_FLIP_LIST.get(index);
