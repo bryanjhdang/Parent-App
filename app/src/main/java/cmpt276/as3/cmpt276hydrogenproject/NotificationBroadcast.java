@@ -36,7 +36,8 @@ public class NotificationBroadcast extends BroadcastReceiver {
                 .setContentText("TEXT BODY")
                 .setPriority(NotificationManager.IMPORTANCE_MAX)
                 .setContentIntent(pendingIntent)
-                .setVibrate(new long[] {0, 1000, 1000, 1000, 1000})
+                .setVibrate(new long[] {0, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000
+                ,1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000})
                 .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
                 .setAutoCancel(true);
 
@@ -47,8 +48,9 @@ public class NotificationBroadcast extends BroadcastReceiver {
                 .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                 .setUsage(AudioAttributes.USAGE_ALARM)
                 .build();
-        channel.setSound(Settings.System.DEFAULT_ALARM_ALERT_URI, audioAttributes);
-        channel.setVibrationPattern(new long[] {0, 1000, 1000, 1000, 1000});
+        channel.setSound(Settings.System.DEFAULT_RINGTONE_URI, audioAttributes);
+        channel.setVibrationPattern(new long[] {0, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000
+        ,1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000});
 
         NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
         notificationManager.createNotificationChannel(channel);
