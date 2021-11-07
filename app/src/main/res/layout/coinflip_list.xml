@@ -7,18 +7,19 @@
 
     <ImageView
         android:id="@+id/rectangularCoinFlipBG"
-        android:layout_width="393dp"
-        android:layout_height="80dp"
+        android:layout_width="360dp"
+        android:layout_height="73dp"
         android:layout_marginStart="8dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.395"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/rectangle" />
 
     <TextView
         android:id="@+id/coinFlipTxt"
-        android:layout_width="306dp"
-        android:layout_height="56dp"
+        android:layout_width="284dp"
+        android:layout_height="58dp"
         android:layout_marginStart="16dp"
         android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"

@@ -78,16 +78,17 @@ public class CoinFlip {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             cfString += "Flipped on " + flipTime.format(formatter);
         } else {
+            cfString += "No child selected\n";
             cfString += "Result: ";
 
             if (isHeads) {
-                cfString += "heads";
+                cfString += "Heads\n";
             } else {
-                cfString += "tails";
+                cfString += "Tails\n";
             }
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            cfString += " flipped on " + flipTime.format(formatter);
+            cfString += "Flipped on " + flipTime.format(formatter);
         }
         return cfString;
     }
