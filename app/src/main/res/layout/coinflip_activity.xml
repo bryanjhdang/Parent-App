@@ -8,16 +8,15 @@
 
     <ListView
         android:id="@+id/coinFlipList"
-        android:layout_width="365dp"
-        android:layout_height="580dp"
-        android:layout_marginTop="24dp"
-        android:divider="@color/transparent"
-        android:dividerHeight="10.0sp"
-        app:layout_constraintBottom_toTopOf="@+id/coinflipDeleteBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginTop="90dp"
+        android:divider="@null"
+        android:dividerHeight="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/coinFlipDeleteBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/coinflipTxt"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="parent">
 
     </ListView>
 
@@ -36,7 +35,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/coinflipTxt"
+        android:id="@+id/coinFlipTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -49,7 +48,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/coinflipDeleteBtn"
+        android:id="@+id/coinFlipDeleteBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="25dp"

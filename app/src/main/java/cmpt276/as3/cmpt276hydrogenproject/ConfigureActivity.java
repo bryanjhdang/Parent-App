@@ -164,7 +164,7 @@ public class ConfigureActivity extends AppCompatActivity {
             }
 
             // Get name from child list and set TextView to that name
-            Child child = childManager.getChildrenList().get(position);
+            Child child = childManager.getChildAt(position);
             String name = child.getName();
             TextView childName = view.findViewById(R.id.childNameTxt);
             childName.setText(name);

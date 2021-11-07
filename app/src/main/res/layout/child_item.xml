@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/rectangularChildListBG"
         android:layout_width="336dp"
         android:layout_height="73dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,9 +31,9 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginStart="24dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-        app:layout_constraintStart_toStartOf="@+id/imageView3"
-        app:layout_constraintTop_toTopOf="@+id/imageView3"
+        app:layout_constraintBottom_toBottomOf="@+id/rectangularChildListBG"
+        app:layout_constraintStart_toStartOf="@+id/rectangularChildListBG"
+        app:layout_constraintTop_toTopOf="@+id/rectangularChildListBG"
         app:srcCompat="@drawable/ic_baseline_person_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
