@@ -21,7 +21,6 @@ public class NotificationBroadcast extends BroadcastReceiver {
     private MediaPlayer soundEffectPlayer;
     @Override
     //code was inspired by https://www.youtube.com/watch?v=nl-dheVpt8o
-    //up until line 31
     public void onReceive(Context context, Intent intent) {
         Intent thisIntent = TimeoutActivity.makeIntent(context);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, thisIntent, 0);

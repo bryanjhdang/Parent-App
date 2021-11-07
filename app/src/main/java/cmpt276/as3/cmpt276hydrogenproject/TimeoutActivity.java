@@ -38,6 +38,7 @@ public class TimeoutActivity extends AppCompatActivity {
     private long startTimeInMilli;
     private long endOfTime;
     private boolean timerWorkingState;
+    private boolean isFirstTime;
     private long leftTimeInMilli;
 
     AlarmManager alarmManager;
@@ -54,6 +55,7 @@ public class TimeoutActivity extends AppCompatActivity {
         setTimeBtn = findViewById(R.id.btnSetTimer);
         startTimerBtn = findViewById(R.id.btnStartTimer);
         resetTimerBtn = findViewById(R.id.btnResetTimer);
+        //isFirstTime = false;
 
         startTimerBtn.setOnClickListener(v -> {
             Intent intent = new Intent(TimeoutActivity.this, NotificationBroadcast.class);
@@ -64,7 +66,6 @@ public class TimeoutActivity extends AppCompatActivity {
             } else {
                 startTimer();
                 //code was followed from demo from https://www.youtube.com/watch?v=nl-dheVpt8o
-
                 long timeWhenButtonClicked = System.currentTimeMillis();
                 alarmManager.set(AlarmManager.RTC_WAKEUP,
                         timeWhenButtonClicked + leftTimeInMilli,
@@ -181,12 +182,22 @@ public class TimeoutActivity extends AppCompatActivity {
                 resetTimerBtn.setVisibility(View.VISIBLE);
             } else {
                 resetTimerBtn.setVisibility(View.INVISIBLE);
-            }
+        }
 
             if (leftTimeInMilli < 1000) {
                 startTimerBtn.setVisibility(View.INVISIBLE);
             } else {
                 startTimerBtn.setVisibility(View.VISIBLE);
+            }
+        }
+
+        if (!isFirstTime) {
+            isFirstTime = true;
+            startTimerBtn.setText(R.string.btnTextStart);
+            resetTimerBtn.setVisibility(View.INVISIBLE);
+        } else {
+            if (!timerWorkingState) {
+                startTimerBtn.setText(R.string.timerTextResume);
             }
         }
     }
@@ -242,10 +253,12 @@ public class TimeoutActivity extends AppCompatActivity {
         editor.putBoolean("timerRunning", timerWorkingState);
         editor.putLong("endTime", endOfTime);
         editor.apply();
-        if (backgroundTimerCountDown != null && !timerWorkingState) {
+        if (backgroundTimerCountDown != null) {
             backgroundTimerCountDown.cancel();
+            isFirstTime = true;
         }
     }
+
     @Override
     protected void onStart() {
         super.onStart();
