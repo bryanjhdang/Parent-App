@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -140,7 +141,7 @@ public class ConfigureActivity extends AppCompatActivity {
         }
 
         // Build Adapter
-        ArrayAdapter<Child> adapter = new ArrayAdapter(this, R.layout.child_item, childStrList);
+        ArrayAdapter<Child> adapter = new ChildrenListAdapter();
 
         // Configure the list view.
         ListView list = findViewById(R.id.childListView);
@@ -149,6 +150,29 @@ public class ConfigureActivity extends AppCompatActivity {
 
         saveChildren();
     }
+
+    private class ChildrenListAdapter extends ArrayAdapter<Child> {
+        public ChildrenListAdapter() {
+            super(ConfigureActivity.this, R.layout.child_item, childManager.getChildrenList());
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View view = convertView;
+            if (view == null) {
+                view = getLayoutInflater().inflate(R.layout.child_item, parent, false);
+            }
+
+            // Get name from child list and set TextView to that name
+            Child child = childManager.getChildAt(position);
+            String name = child.getName();
+            TextView childName = view.findViewById(R.id.childNameTxt);
+            childName.setText(name);
+
+            return view;
+        }
+    }
+
 
     void saveChildren() {
         SharedPreferences.Editor editor = sp.edit();

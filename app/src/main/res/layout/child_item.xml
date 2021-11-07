@@ -1,8 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:textColor="#FFFFFF"
-    android:textColorHint="#FFFFFF"
-    android:textSize="16sp">
-</TextView>
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/rectangularChildListBG"
+        android:layout_width="336dp"
+        android:layout_height="73dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/rectangle" />
+
+    <TextView
+        android:id="@+id/childNameTxt"
+        android:layout_width="238dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="24dp"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/childIconImg"
+        app:layout_constraintStart_toEndOf="@+id/childIconImg"
+        app:layout_constraintTop_toTopOf="@+id/childIconImg"></TextView>
+
+    <ImageView
+        android:id="@+id/childIconImg"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/rectangularChildListBG"
+        app:layout_constraintStart_toStartOf="@+id/rectangularChildListBG"
+        app:layout_constraintTop_toTopOf="@+id/rectangularChildListBG"
+        app:srcCompat="@drawable/ic_baseline_person_24" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

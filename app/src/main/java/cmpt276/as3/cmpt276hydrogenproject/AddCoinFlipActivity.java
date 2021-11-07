@@ -183,8 +183,8 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
                 android.R.layout.simple_spinner_dropdown_item,
                 childManager.getChildrenList());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        choosingChildSpinner.setAdapter(adapter);
 
+        choosingChildSpinner.setAdapter(adapter);
         choosingChildSpinner.setSelection(childManager.indexOfChild(flipCoinChild));
         choosingChildSpinner.setOnItemSelectedListener(this);
     }

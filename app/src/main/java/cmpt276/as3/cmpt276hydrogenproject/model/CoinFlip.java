@@ -57,37 +57,38 @@ public class CoinFlip {
             cfString += choosingChild.getName() + " chose";
 
             if (childChoseHeads) {
-                cfString += " heads";
+                cfString += " heads\n";
             } else {
-                cfString += " tails";
+                cfString += " tails\n";
             }
 
-            cfString += ", result: ";
-
-            if (isHeads) {
-                cfString += "heads\n";
-            } else {
-                cfString += "tails\n";
-            }
-
-            if (won) {
-                cfString += choosingChild.getName() + " won!";
-            } else {
-                cfString += choosingChild.getName() + " lost!";
-            }
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            cfString += " flipped on " + flipTime.format(formatter);
-        } else {
             cfString += "Result: ";
 
             if (isHeads) {
-                cfString += "heads";
+                cfString += "Heads / ";
             } else {
-                cfString += "tails";
+                cfString += "Tails / ";
+            }
+
+            if (won) {
+                cfString += "Win\n";
+            } else {
+                cfString += "Lose\n";
+            }
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            cfString += "Flipped on " + flipTime.format(formatter);
+        } else {
+            cfString += "No child selected\n";
+            cfString += "Result: ";
+
+            if (isHeads) {
+                cfString += "Heads\n";
+            } else {
+                cfString += "Tails\n";
             }
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            cfString += " flipped on " + flipTime.format(formatter);
+            cfString += "Flipped on " + flipTime.format(formatter);
         }
         return cfString;
     }
