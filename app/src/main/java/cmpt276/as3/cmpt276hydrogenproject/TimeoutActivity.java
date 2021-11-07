@@ -5,12 +5,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -33,7 +29,6 @@ public class TimeoutActivity extends AppCompatActivity {
     private TextView displayTimerField;
     private EditText editTextInput;
     private CountDownTimer backgroundTimerCountDown;
-    private MediaPlayer soundEffectPlayer;
 
     private long startTimeInMilli;
     private long endOfTime;
@@ -77,7 +72,7 @@ public class TimeoutActivity extends AppCompatActivity {
             String input = editTextInput.getText().toString();
             // Check for no value in the field
             if (input.length() == 0) {
-                Toast.makeText(TimeoutActivity.this, "Field is empty !", Toast.LENGTH_SHORT).show();
+                Toast.makeText(TimeoutActivity.this, "Field is empty!", Toast.LENGTH_SHORT).show();
                 return;
             }
             // Parse string input into long
@@ -136,6 +131,9 @@ public class TimeoutActivity extends AppCompatActivity {
     }
 
     private void resetTimer() {
+        if(backgroundTimerCountDown != null) {
+            pauseTimer();
+        }
         leftTimeInMilli = startTimeInMilli;
         updateDisplayTimer();
         updateLayoutVisibility();
@@ -171,7 +169,7 @@ public class TimeoutActivity extends AppCompatActivity {
         if (timerWorkingState) {                            // Timer is currently running
             editTextInput.setVisibility(View.INVISIBLE);
             setTimeBtn.setVisibility(View.INVISIBLE);
-            resetTimerBtn.setVisibility(View.INVISIBLE);
+            resetTimerBtn.setVisibility(View.VISIBLE);
             startTimerBtn.setText(R.string.btnTextPause);
         } else {                                            // Timer is not running
             editTextInput.setVisibility(View.VISIBLE);
@@ -180,9 +178,10 @@ public class TimeoutActivity extends AppCompatActivity {
 
             if (leftTimeInMilli < startTimeInMilli) {
                 resetTimerBtn.setVisibility(View.VISIBLE);
-            } else {
+            }
+            else {
                 resetTimerBtn.setVisibility(View.INVISIBLE);
-        }
+            }
 
             if (leftTimeInMilli < 1000) {
                 startTimerBtn.setVisibility(View.INVISIBLE);
