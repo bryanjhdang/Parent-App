@@ -66,7 +66,6 @@ public class TimeoutActivity extends AppCompatActivity {
             } else {
                 startTimer();
                 //code was followed from demo from https://www.youtube.com/watch?v=nl-dheVpt8o
-
                 long timeWhenButtonClicked = System.currentTimeMillis();
                 alarmManager.set(AlarmManager.RTC_WAKEUP,
                         timeWhenButtonClicked + leftTimeInMilli,
@@ -199,7 +198,6 @@ public class TimeoutActivity extends AppCompatActivity {
         } else {
             if (!timerWorkingState) {
                 startTimerBtn.setText(R.string.timerTextResume);
-                resetTimerBtn.setVisibility(View.VISIBLE);
             }
         }
     }
