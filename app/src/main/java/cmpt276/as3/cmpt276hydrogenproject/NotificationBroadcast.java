@@ -21,28 +21,29 @@ public class NotificationBroadcast extends BroadcastReceiver {
     private MediaPlayer soundEffectPlayer;
     @Override
     //code was inspired by https://www.youtube.com/watch?v=nl-dheVpt8o
+    //up until line 31
     public void onReceive(Context context, Intent intent) {
         Intent thisIntent = TimeoutActivity.makeIntent(context);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, thisIntent, 0);
 
-        String CHANNEL_ID = "channel";
+        String CHANNEL_ID = "CHANNEL";
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.icon)
                 .setContentTitle("TITLE")
                 .setContentText("TEXT BODY")
-                .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setPriority(NotificationManager.IMPORTANCE_MAX)
                 .setContentIntent(pendingIntent)
-                .setVibrate(new long[] {1000, 1000, 1000, 1000, 1000})
+                .setVibrate(new long[] {0, 1000, 1000, 1000, 1000})
                 .setAutoCancel(true);
 
         NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "name", NotificationManager.IMPORTANCE_HIGH);
         channel.setDescription("description");
-        channel.setVibrationPattern(new long[] {1000, 1000, 1000, 1000, 1000});
+        channel.enableVibration(true);
+        channel.setVibrationPattern(new long[] {0, 1000, 1000, 1000, 1000});
 
         NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
         notificationManager.createNotificationChannel(channel);
-        notificationManager.notify(1, builder.build());
+        notificationManager.notify(0, builder.build());
 
         countdownSound(context);
     }
