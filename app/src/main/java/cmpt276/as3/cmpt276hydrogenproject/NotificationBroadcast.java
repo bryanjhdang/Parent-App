@@ -10,9 +10,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.AudioAttributes;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.provider.Settings;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -34,23 +37,21 @@ public class NotificationBroadcast extends BroadcastReceiver {
                 .setPriority(NotificationManager.IMPORTANCE_MAX)
                 .setContentIntent(pendingIntent)
                 .setVibrate(new long[] {0, 1000, 1000, 1000, 1000})
+                .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
                 .setAutoCancel(true);
 
         NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "name", NotificationManager.IMPORTANCE_HIGH);
         channel.setDescription("description");
         channel.enableVibration(true);
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .setUsage(AudioAttributes.USAGE_ALARM)
+                .build();
+        channel.setSound(Settings.System.DEFAULT_ALARM_ALERT_URI, audioAttributes);
         channel.setVibrationPattern(new long[] {0, 1000, 1000, 1000, 1000});
 
         NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
         notificationManager.createNotificationChannel(channel);
         notificationManager.notify(0, builder.build());
-
-        countdownSound(context);
-    }
-    private void countdownSound(Context context) {
-        if(soundEffectPlayer == null) {
-            soundEffectPlayer = MediaPlayer.create(context, R.raw.mgs_alert_sound);
-        }
-        soundEffectPlayer.start();
     }
 }
