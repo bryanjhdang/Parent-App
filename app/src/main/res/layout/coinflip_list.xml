@@ -7,9 +7,9 @@
 
     <ImageView
         android:id="@+id/rectangularCoinFlipBG"
-        android:layout_width="336dp"
-        android:layout_height="73dp"
-        android:layout_marginStart="24dp"
+        android:layout_width="393dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -17,12 +17,12 @@
 
     <TextView
         android:id="@+id/coinFlipTxt"
-        android:layout_width="259dp"
-        android:layout_height="47dp"
+        android:layout_width="306dp"
+        android:layout_height="56dp"
         android:layout_marginStart="16dp"
         android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/resultIconImg"
         app:layout_constraintStart_toEndOf="@+id/resultIconImg"
         app:layout_constraintTop_toTopOf="@+id/resultIconImg"></TextView>

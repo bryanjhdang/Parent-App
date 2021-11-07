@@ -57,26 +57,26 @@ public class CoinFlip {
             cfString += choosingChild.getName() + " chose";
 
             if (childChoseHeads) {
-                cfString += " heads";
+                cfString += " heads\n";
             } else {
-                cfString += " tails";
+                cfString += " tails\n";
             }
 
-            cfString += ", result: ";
+            cfString += "Result: ";
 
             if (isHeads) {
-                cfString += "heads\n";
+                cfString += "Heads / ";
             } else {
-                cfString += "tails\n";
+                cfString += "Tails / ";
             }
 
             if (won) {
-                cfString += choosingChild.getName() + " won!";
+                cfString += "Win\n";
             } else {
-                cfString += choosingChild.getName() + " lost!";
+                cfString += "Lose\n";
             }
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            cfString += " flipped on " + flipTime.format(formatter);
+            cfString += "Flipped on " + flipTime.format(formatter);
         } else {
             cfString += "Result: ";
 
