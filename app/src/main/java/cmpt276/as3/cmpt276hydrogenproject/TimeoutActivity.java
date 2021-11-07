@@ -55,6 +55,7 @@ public class TimeoutActivity extends AppCompatActivity {
         setTimeBtn = findViewById(R.id.btnSetTimer);
         startTimerBtn = findViewById(R.id.btnStartTimer);
         resetTimerBtn = findViewById(R.id.btnResetTimer);
+        //isFirstTime = false;
 
         startTimerBtn.setOnClickListener(v -> {
             Intent intent = new Intent(TimeoutActivity.this, NotificationBroadcast.class);
@@ -173,13 +174,6 @@ public class TimeoutActivity extends AppCompatActivity {
             setTimeBtn.setVisibility(View.INVISIBLE);
             resetTimerBtn.setVisibility(View.INVISIBLE);
             startTimerBtn.setText(R.string.btnTextPause);
-        } else if (!isFirstTime && backgroundTimerCountDown == null) {
-            isFirstTime = true;
-            startTimerBtn.setText(R.string.btnTextStart);
-            if (!timerWorkingState) {
-                startTimerBtn.setText(R.string.timerTextResume);
-                resetTimerBtn.setVisibility(View.VISIBLE);
-            }
         } else {                                            // Timer is not running
             editTextInput.setVisibility(View.VISIBLE);
             setTimeBtn.setVisibility(View.VISIBLE);
@@ -189,12 +183,23 @@ public class TimeoutActivity extends AppCompatActivity {
                 resetTimerBtn.setVisibility(View.VISIBLE);
             } else {
                 resetTimerBtn.setVisibility(View.INVISIBLE);
-            }
+        }
 
             if (leftTimeInMilli < 1000) {
                 startTimerBtn.setVisibility(View.INVISIBLE);
             } else {
                 startTimerBtn.setVisibility(View.VISIBLE);
+            }
+        }
+
+        if (!isFirstTime) {
+            isFirstTime = true;
+            startTimerBtn.setText(R.string.btnTextStart);
+            resetTimerBtn.setVisibility(View.INVISIBLE);
+        } else {
+            if (!timerWorkingState) {
+                startTimerBtn.setText(R.string.timerTextResume);
+                resetTimerBtn.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -252,8 +257,10 @@ public class TimeoutActivity extends AppCompatActivity {
         editor.apply();
         if (backgroundTimerCountDown != null) {
             backgroundTimerCountDown.cancel();
+            isFirstTime = true;
         }
     }
+
     @Override
     protected void onStart() {
         super.onStart();
