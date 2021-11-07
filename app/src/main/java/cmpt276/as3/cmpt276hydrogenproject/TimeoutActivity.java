@@ -38,6 +38,7 @@ public class TimeoutActivity extends AppCompatActivity {
     private long startTimeInMilli;
     private long endOfTime;
     private boolean timerWorkingState;
+    private boolean isFirstTime;
     private long leftTimeInMilli;
 
     AlarmManager alarmManager;
@@ -172,6 +173,13 @@ public class TimeoutActivity extends AppCompatActivity {
             setTimeBtn.setVisibility(View.INVISIBLE);
             resetTimerBtn.setVisibility(View.INVISIBLE);
             startTimerBtn.setText(R.string.btnTextPause);
+        } else if (!isFirstTime && backgroundTimerCountDown == null) {
+            isFirstTime = true;
+            startTimerBtn.setText(R.string.btnTextStart);
+            if (!timerWorkingState) {
+                startTimerBtn.setText(R.string.timerTextResume);
+                resetTimerBtn.setVisibility(View.VISIBLE);
+            }
         } else {                                            // Timer is not running
             editTextInput.setVisibility(View.VISIBLE);
             setTimeBtn.setVisibility(View.VISIBLE);
@@ -242,7 +250,7 @@ public class TimeoutActivity extends AppCompatActivity {
         editor.putBoolean("timerRunning", timerWorkingState);
         editor.putLong("endTime", endOfTime);
         editor.apply();
-        if (backgroundTimerCountDown != null && !timerWorkingState) {
+        if (backgroundTimerCountDown != null) {
             backgroundTimerCountDown.cancel();
         }
     }
