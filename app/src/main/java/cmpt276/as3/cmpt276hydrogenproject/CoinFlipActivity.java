@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,10 +29,7 @@ import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
-import cmpt276.as3.cmpt276hydrogenproject.model.Child;
-import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
 import cmpt276.as3.cmpt276hydrogenproject.model.CoinFlip;
 import cmpt276.as3.cmpt276hydrogenproject.model.CoinFlipManager;
 
@@ -65,7 +64,7 @@ public class CoinFlipActivity extends AppCompatActivity {
     }
 
     private void setDeleteButton() {
-        FloatingActionButton deleteBtn = findViewById(R.id.coinflipDeleteBtn);
+        FloatingActionButton deleteBtn = findViewById(R.id.coinFlipDeleteBtn);
         deleteBtn.setOnClickListener(view -> {
 
             if (coinFlipManager.getCoinFlipListSize() == 0) {
@@ -91,16 +90,51 @@ public class CoinFlipActivity extends AppCompatActivity {
 
     void showCoinFlipList() {
         ListView coinFlipView = findViewById(R.id.coinFlipList);
-        ArrayAdapter<CoinFlip> arrayAdapter = new ArrayAdapter<>(
-                this,
-                R.layout.coinflip_list,
-                coinFlipManager.getCoinFlipList());
+        ArrayAdapter<CoinFlip> arrayAdapter = new CoinFlipListAdapter();
         coinFlipView.setAdapter(arrayAdapter);
 
         TextView emptyMessage = findViewById(R.id.emptyFlipListMessage);
         coinFlipView.setEmptyView(emptyMessage);
         saveCoinFlips();
         arrayAdapter.notifyDataSetChanged();
+    }
+
+    private class CoinFlipListAdapter extends ArrayAdapter<CoinFlip> {
+        public CoinFlipListAdapter() {
+            super(CoinFlipActivity.this, R.layout.coinflip_list, coinFlipManager.getCoinFlipList());
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View view = convertView;
+            if (view == null) {
+                view = getLayoutInflater().inflate(R.layout.coinflip_list, parent, false);
+            }
+
+
+            CoinFlip coinFlip = coinFlipManager.getCoinFlipAt(position);
+
+            // Get name from child list and set TextView to that name
+            String result = coinFlip.toString();
+            TextView coinFlipTxt = view.findViewById(R.id.coinFlipTxt);
+            coinFlipTxt.setText(result);
+
+            // Set green (win), red (lost), or white (no child) icon next to corresponding result
+            ImageView resultIconImg = view.findViewById(R.id.resultIconImg);
+            int id;
+            if (coinFlip.getWinStatus()) {
+                id = R.drawable.ic_baseline_circle_24_green;
+            } else {
+                id = R.drawable.ic_baseline_circle_24_red;
+            }
+            if (coinFlip.getChoosingChild() == null) {
+                id = R.drawable.ic_baseline_circle_24_white;
+            }
+
+            resultIconImg.setImageResource(id);
+
+            return view;
+        }
     }
 
     @Override

@@ -1,10 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:textColor="#FFFFFF"
-    android:textColorHint="#FFFFFF"
-    android:textSize="16sp">
+    android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/rectangularCoinFlipBG"
+        android:layout_width="360dp"
+        android:layout_height="73dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.395"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/rectangle" />
 
-</TextView>
+    <TextView
+        android:id="@+id/coinFlipTxt"
+        android:layout_width="284dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="16dp"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/resultIconImg"
+        app:layout_constraintStart_toEndOf="@+id/resultIconImg"
+        app:layout_constraintTop_toTopOf="@+id/resultIconImg"></TextView>
+
+    <ImageView
+        android:id="@+id/resultIconImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/rectangularCoinFlipBG"
+        app:layout_constraintStart_toStartOf="@+id/rectangularCoinFlipBG"
+        app:layout_constraintTop_toTopOf="@+id/rectangularCoinFlipBG"
+        app:srcCompat="@drawable/ic_baseline_circle_24_white" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
