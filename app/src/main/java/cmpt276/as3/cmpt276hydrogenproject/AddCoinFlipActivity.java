@@ -38,6 +38,8 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
     private String rawChoiceInput;
     private boolean isHeads;
 
+    private AlertDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -135,7 +137,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
     
     private void retrieveWinnerFromCoinFlip(CoinFlip coinFlip) {
         boolean resultIsHeads = coinFlip.getResult();
-        AlertDialog dialog;
+
         AlertDialog.Builder builder = new AlertDialog.Builder(AddCoinFlipActivity.this);
         String stringifiedOutput = "The result of the flip is ";
         if(resultIsHeads) {
@@ -235,6 +237,14 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
         }
         //set the child
         flipCoinChild = choosingChild;
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (dialog != null) {
+            dialog.dismiss();
+        }
+        super.onDestroy();
     }
 
     @Override
