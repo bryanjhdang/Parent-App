@@ -70,8 +70,8 @@
 
     <ImageView
         android:id="@+id/menuImg"
-        android:layout_width="395dp"
-        android:layout_height="235dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/configureBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"

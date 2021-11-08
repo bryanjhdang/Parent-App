@@ -7,11 +7,22 @@
     android:background="@color/twitter_navy_blue">
 
 
+    <ImageView
+        android:id="@+id/nightSkyBackground"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/btnResetTimer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/night_background" />
+
     <TextView
         android:id="@+id/textDisplayTimer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="108dp"
+        android:layout_marginTop="80dp"
         android:text="@string/initialZeroValueTimer"
         android:textColor="@color/white"
         android:textSize="64sp"
@@ -23,7 +34,7 @@
         android:id="@+id/btnStartTimer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:backgroundTint="@color/twitter_blue"
         android:text="@string/btnTextStart"
         android:textColor="@color/white"
@@ -122,12 +133,13 @@
         android:id="@+id/fiveMinBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="64dp"
         android:backgroundTint="@color/twitter_blue"
         android:text="5:00"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/minuteTextInput"
         app:layout_constraintEnd_toStartOf="@+id/twoMinBtn"
-        app:layout_constraintStart_toEndOf="@+id/oneMinBtn" />
+        app:layout_constraintStart_toEndOf="@+id/oneMinBtn"
+        app:layout_constraintTop_toBottomOf="@+id/nightSkyBackground"
+        app:layout_constraintVertical_bias="0.69" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
