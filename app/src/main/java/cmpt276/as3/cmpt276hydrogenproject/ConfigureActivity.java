@@ -7,7 +7,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -20,17 +19,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import cmpt276.as3.cmpt276hydrogenproject.model.Child;
 import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
 
 public class ConfigureActivity extends AppCompatActivity {
-    private ChildManager childManager = ChildManager.getInstance();
+    private final ChildManager childManager = ChildManager.getInstance();
     SharedPreferences sp;
 
     @Override
@@ -68,7 +66,7 @@ public class ConfigureActivity extends AppCompatActivity {
     }
 
     private void setActionBar() {
-        getSupportActionBar().setTitle("Configure My Children");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Configure My Children");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
                 .getColor(R.color.darker_navy_blue)));
     }
@@ -179,7 +177,7 @@ public class ConfigureActivity extends AppCompatActivity {
         Gson myGson = new GsonBuilder().create();
         String jsonString = myGson.toJson(childManager.getChildrenList());
         editor.putString("childList", jsonString);
-        editor.commit();
+        editor.apply();
     }
 
     /**

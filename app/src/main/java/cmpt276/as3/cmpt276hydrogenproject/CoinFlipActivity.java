@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,12 +28,13 @@ import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import cmpt276.as3.cmpt276hydrogenproject.model.CoinFlip;
 import cmpt276.as3.cmpt276hydrogenproject.model.CoinFlipManager;
 
 public class CoinFlipActivity extends AppCompatActivity {
-    private CoinFlipManager coinFlipManager = CoinFlipManager.getInstance();
+    private final CoinFlipManager coinFlipManager = CoinFlipManager.getInstance();
     SharedPreferences sp;
 
     @Override
@@ -58,7 +58,7 @@ public class CoinFlipActivity extends AppCompatActivity {
     }
 
     private void setActionBar() {
-        getSupportActionBar().setTitle("Coin Flip");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Coin Flip");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
                 .getColor(R.color.darker_navy_blue)));
     }
@@ -110,7 +110,6 @@ public class CoinFlipActivity extends AppCompatActivity {
             if (view == null) {
                 view = getLayoutInflater().inflate(R.layout.coinflip_list, parent, false);
             }
-
 
             CoinFlip coinFlip = coinFlipManager.getCoinFlipAt(position);
 
@@ -167,8 +166,7 @@ public class CoinFlipActivity extends AppCompatActivity {
                     }
                 }).create();
         String jsonString = myGson.toJson(coinFlipManager.getCoinFlipList());
-        Log.d("SAVE FLIPS", jsonString);
         editor.putString("coinFlipList", jsonString);
-        editor.commit();
+        editor.apply();
     }
 }
