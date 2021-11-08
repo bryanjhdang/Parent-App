@@ -1,0 +1,16 @@
+RESOURCES
+------------
+
+Images
+    - Coin (heads & tails)
+        https://en.wikipedia.org/wiki/Quarter_(Canadian_coin)
+
+    - Main menu icon
+        https://www.seattletimes.com/explore/careers/the-pandemic-has-parents-working-harder-than-ever-and-now-kids-might-actually-see-it/
+
+    - Timer activity night background
+        https://www.spriteland.com/sprites/downloads/night-background_PNG
+
+Sounds
+    - Coin flip sound
+        https://soundscrate.com/sound-effects/soundscrate-coin-flip-01
