@@ -1,5 +1,6 @@
 package cmpt276.as3.cmpt276hydrogenproject;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -16,12 +17,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Locale;
+import java.util.Objects;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class TimeoutActivity extends AppCompatActivity {
 
-    final int CONVERT_MILLIS_TO_SECONDS = 60000;
+    private final int CONVERT_MILLIS_TO_SECONDS = 60000;
+    private final int COUNTDOWN_INTERVAL = 1000;
+    private final int SECONDS_PER_HOUR = 3600;
+    private final int SECONDS_PER_MINUTE = 60;
+
+    private final int DEFAULT_SETTING_1 = 1;
+    private final int DEFAULT_SETTING_2 = 2;
+    private final int DEFAULT_SETTING_3 = 3;
+    private final int DEFAULT_SETTING_4 = 5;
+    private final int DEFAULT_SETTING_5 = 10;
+
+    private final int INITIAL_DEFAULT = 600000;
 
     private Button startTimerBtn;
     private Button setTimeBtn;
@@ -50,11 +63,10 @@ public class TimeoutActivity extends AppCompatActivity {
         setTimeBtn = findViewById(R.id.btnSetTimer);
         startTimerBtn = findViewById(R.id.btnStartTimer);
         resetTimerBtn = findViewById(R.id.btnResetTimer);
-        //isFirstTime = false;
 
         startTimerBtn.setOnClickListener(v -> {
             Intent intent = new Intent(TimeoutActivity.this, NotificationBroadcast.class);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(TimeoutActivity.this, 0, intent, 0);
+            @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(TimeoutActivity.this, 0, intent, 0);
             if (timerWorkingState) {
                 pauseTimer();
                 alarmManager.cancel(pendingIntent);
@@ -76,12 +88,10 @@ public class TimeoutActivity extends AppCompatActivity {
                 return;
             }
             // Parse string input into long
-            long inputInMilli = Long.parseLong(input) * 60000;
+            long inputInMilli = Long.parseLong(input) * CONVERT_MILLIS_TO_SECONDS;
             if (inputInMilli == 0) {
                 Toast.makeText(TimeoutActivity.this, "Invalid: Enter 1 minute or greater", Toast.LENGTH_SHORT).show();
-                //TODO: remove this!! THIS IS FOR DEBUGGING AND PUT THE RETURN BACK
-                inputInMilli = 5000;
-                //return;
+                return;
             }
             editTextInput.setText("");
             setTime(inputInMilli);
@@ -92,13 +102,12 @@ public class TimeoutActivity extends AppCompatActivity {
         setAllPresetTimers();
     }
 
-
     public static Intent makeIntent(Context context) {
         return new Intent(context, TimeoutActivity.class);
     }
 
     private void setActionBar() {
-        getSupportActionBar().setTitle("Timeout Timer");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Timeout Timer");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
                 .getColor(R.color.darker_navy_blue)));
     }
@@ -113,7 +122,7 @@ public class TimeoutActivity extends AppCompatActivity {
     private void startTimer() {
         endOfTime = System.currentTimeMillis() + leftTimeInMilli;
 
-        backgroundTimerCountDown = new CountDownTimer(leftTimeInMilli, 1000) {
+        backgroundTimerCountDown = new CountDownTimer(leftTimeInMilli, COUNTDOWN_INTERVAL) {
             @Override
             public void onTick(long millisUntilFinished) {
                 leftTimeInMilli = millisUntilFinished;
@@ -147,9 +156,9 @@ public class TimeoutActivity extends AppCompatActivity {
     }
 
     private void updateDisplayTimer() {
-        int hours = (int) (leftTimeInMilli / 1000) / 3600;
-        int minutes = (int) ((leftTimeInMilli / 1000) % 3600) / 60;
-        int seconds = (int) (leftTimeInMilli / 1000) % 60;
+        int hours = (int) (leftTimeInMilli / COUNTDOWN_INTERVAL) / SECONDS_PER_HOUR;
+        int minutes = (int) ((leftTimeInMilli / COUNTDOWN_INTERVAL) % SECONDS_PER_HOUR) / SECONDS_PER_MINUTE;
+        int seconds = (int) (leftTimeInMilli / COUNTDOWN_INTERVAL) % SECONDS_PER_MINUTE;
 
         String timeLeftFormat;
         if (!(hours < 1)) {
@@ -183,7 +192,7 @@ public class TimeoutActivity extends AppCompatActivity {
                 resetTimerBtn.setVisibility(View.INVISIBLE);
             }
 
-            if (leftTimeInMilli < 1000) {
+            if (leftTimeInMilli < COUNTDOWN_INTERVAL) {
                 startTimerBtn.setVisibility(View.INVISIBLE);
             } else {
                 startTimerBtn.setVisibility(View.VISIBLE);
@@ -212,11 +221,11 @@ public class TimeoutActivity extends AppCompatActivity {
         Button fiveMinBtn = findViewById(R.id.fiveMinBtn);
         Button tenMinBtn = findViewById(R.id.tenMinBtn);
 
-        setPresetTimer(oneMinBtn, 1);
-        setPresetTimer(twoMinBtn, 2);
-        setPresetTimer(threeMinBtn, 3);
-        setPresetTimer(fiveMinBtn, 5);
-        setPresetTimer(tenMinBtn, 10);
+        setPresetTimer(oneMinBtn, DEFAULT_SETTING_1);
+        setPresetTimer(twoMinBtn, DEFAULT_SETTING_2);
+        setPresetTimer(threeMinBtn, DEFAULT_SETTING_3);
+        setPresetTimer(fiveMinBtn, DEFAULT_SETTING_4);
+        setPresetTimer(tenMinBtn, DEFAULT_SETTING_5);
     }
 
     /**
@@ -263,7 +272,7 @@ public class TimeoutActivity extends AppCompatActivity {
         super.onStart();
         SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
 
-        startTimeInMilli = prefs.getLong("startTimeInMillis", 600000);
+        startTimeInMilli = prefs.getLong("startTimeInMillis", INITIAL_DEFAULT);
         timerWorkingState = prefs.getBoolean("timerRunning", false);
         leftTimeInMilli = prefs.getLong("millisLeft", startTimeInMilli);
         updateLayoutVisibility();
