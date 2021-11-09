@@ -90,9 +90,8 @@ public class TimeoutActivity extends AppCompatActivity {
             // Parse string input into long
             long inputInMilli = Long.parseLong(input) * CONVERT_MILLIS_TO_SECONDS;
             if (inputInMilli == 0) {
-                inputInMilli = 5000;
                 Toast.makeText(TimeoutActivity.this, "Invalid: Enter 1 minute or greater", Toast.LENGTH_SHORT).show();
-                //return;
+                return;
             }
             editTextInput.setText("");
             setTime(inputInMilli);
