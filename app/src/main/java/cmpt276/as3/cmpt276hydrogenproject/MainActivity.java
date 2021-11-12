@@ -47,22 +47,23 @@ public class MainActivity extends AppCompatActivity {
         toConfigureBtn();
         toCoinflipBtn();
         toTimeoutBtn();
+        toTaskManagerBtn();
         toHelpBtn();
     }
 
     void toConfigureBtn() {
         Button btn = findViewById(R.id.configureBtn);
         btn.setOnClickListener(v -> {
-            Intent launchGame = ConfigureActivity.makeIntent(MainActivity.this);
-            startActivity(launchGame);
+            Intent launchActivity = ConfigureActivity.makeIntent(MainActivity.this);
+            startActivity(launchActivity);
         });
     }
 
     void toCoinflipBtn() {
         Button btn = findViewById(R.id.coinFlipBtn);
         btn.setOnClickListener(v -> {
-            Intent launchGame = CoinFlipActivity.makeIntent(MainActivity.this);
-            startActivity(launchGame);
+            Intent launchActivity = CoinFlipActivity.makeIntent(MainActivity.this);
+            startActivity(launchActivity);
         });
     }
 
@@ -82,6 +83,14 @@ public class MainActivity extends AppCompatActivity {
                 Intent helpIntent = HelpActivity.makeIntent(MainActivity.this);
                 startActivity(helpIntent);
             }
+        });
+    }
+
+    void toTaskManagerBtn() {
+        Button btn = findViewById(R.id.taskManagerBtn);
+        btn.setOnClickListener(v -> {
+            Intent launchActivity = TaskManagerActivity.makeIntent(MainActivity.this);
+            startActivity(launchActivity);
         });
     }
 
