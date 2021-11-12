@@ -5,11 +5,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
@@ -37,8 +39,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        //Objects.requireNonNull(getSupportActionBar()).hide();
-        Objects.requireNonNull(getSupportActionBar()).setTitle("Main Menu");
+        Objects.requireNonNull(getSupportActionBar()).hide();
         sp = getSharedPreferences("Hydrogen", MODE_PRIVATE);
 
         loadChildren();
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         toConfigureBtn();
         toCoinflipBtn();
         toTimeoutBtn();
+        toHelpBtn();
     }
 
     void toConfigureBtn() {
@@ -69,6 +71,17 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(v -> {
             Intent launchGame = TimeoutActivity.makeIntent(MainActivity.this);
             startActivity(launchGame);
+        });
+    }
+
+    void toHelpBtn() {
+        FloatingActionButton fab = findViewById(R.id.helpMenuButton);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent helpIntent = HelpActivity.makeIntent(MainActivity.this);
+                startActivity(helpIntent);
+            }
         });
     }
 
@@ -99,20 +112,5 @@ public class MainActivity extends AppCompatActivity {
             Type listType = new TypeToken<ArrayList<CoinFlip>>(){}.getType();
             coinFlipManager.setCoinFlipList(myGson.fromJson(jsonString, listType));
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.helpMenu) {
-            Intent helpMenuIntent = HelpActivity.makeIntent(this);
-            startActivity(helpMenuIntent);
-        }
-        return super.onOptionsItemSelected(item);
     }
 }
