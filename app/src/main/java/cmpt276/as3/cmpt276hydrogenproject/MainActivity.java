@@ -3,8 +3,11 @@ package cmpt276.as3.cmpt276hydrogenproject;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
@@ -34,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        Objects.requireNonNull(getSupportActionBar()).hide();
+        //Objects.requireNonNull(getSupportActionBar()).hide();
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Main Menu");
         sp = getSharedPreferences("Hydrogen", MODE_PRIVATE);
 
         loadChildren();
@@ -95,5 +99,20 @@ public class MainActivity extends AppCompatActivity {
             Type listType = new TypeToken<ArrayList<CoinFlip>>(){}.getType();
             coinFlipManager.setCoinFlipList(myGson.fromJson(jsonString, listType));
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.helpMenu) {
+            Intent helpMenuIntent = HelpActivity.makeIntent(this);
+            startActivity(helpMenuIntent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

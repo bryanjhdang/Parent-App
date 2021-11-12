@@ -3,6 +3,7 @@
     package="cmpt276.as3.cmpt276hydrogenproject">
 
     <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -10,27 +11,30 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CMPT276HydrogenProject">
         <activity
+            android:name=".HelpActivity"
+            android:exported="false" />
+        <activity
             android:name=".AddCoinFlipActivity"
+            android:exported="true"
             android:parentActivityName=".CoinFlipActivity"
-            android:screenOrientation="portrait"
-            android:exported="true" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ConfigureActivity"
+            android:exported="true"
             android:parentActivityName=".MainActivity"
-            android:screenOrientation="portrait"
-            android:exported="true" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".CoinFlipActivity"
-            android:parentActivityName=".MainActivity"
+            android:exported="true"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:exported="true" />
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".TimeoutActivity"
-            android:parentActivityName=".MainActivity"
+            android:exported="true"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:exported="true" />
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -42,7 +46,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".NotificationBroadcast"/>
+
+        <receiver android:name=".NotificationBroadcast" />
     </application>
 
 </manifest>
