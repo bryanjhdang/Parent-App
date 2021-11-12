@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CMPT276HydrogenProject">
         <activity
-            android:name=".TaskManagerActivity"
+            android:name=".HelpActivity"
             android:exported="false" />
         <activity
             android:name=".AddCoinFlipActivity"
@@ -31,6 +31,12 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".TimeoutActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TaskManagerActivity"
             android:exported="true"
             android:launchMode="singleTask"
             android:parentActivityName=".MainActivity"
