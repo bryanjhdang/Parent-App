@@ -7,4 +7,33 @@
     android:background="@color/twitter_navy_blue"
     tools:context=".TaskManagerActivity">
 
+    <ListView
+        android:id="@+id/taskListView"
+        android:layout_width="408dp"
+        android:layout_height="621dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/taskManagerTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/taskManagerLabel"
+        app:layout_constraintBottom_toTopOf="@+id/taskListView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/taskListEmptyText"
+        android:layout_width="144dp"
+        android:layout_height="110dp"
+        android:text="There are no tasks! Press + to add tasks."
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/taskListView"
+        app:layout_constraintStart_toStartOf="@+id/taskListView"
+        app:layout_constraintTop_toTopOf="@+id/taskListView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

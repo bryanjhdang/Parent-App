@@ -24,4 +24,8 @@ public class TaskManager {
     public void addTask(Task newTask) {
         TASK_LIST.add(newTask);
     }
+
+    public Task getTaskAt(int index) {
+        return TASK_LIST.get(index);
+    }
 }
