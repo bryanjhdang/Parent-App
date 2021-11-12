@@ -11,7 +11,6 @@
         android:id="@+id/configureBtn"
         android:layout_width="275dp"
         android:layout_height="75dp"
-        android:layout_marginBottom="30dp"
         android:layout_weight="1"
         android:backgroundTint="@color/twitter_blue"
         android:text="@string/configureBtnText"
@@ -20,29 +19,28 @@
         app:iconTint="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/timeoutBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.519"
+        app:layout_constraintHorizontal_bias="0.522"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/coinFlipBtn"
         android:layout_width="275dp"
         android:layout_height="75dp"
-        android:layout_marginBottom="80dp"
         android:layout_weight="1"
         android:backgroundTint="@color/twitter_blue"
         android:text="@string/coinFlipBtnText"
         android:textColor="@color/white"
         app:icon="@drawable/ic_baseline_monetization_on_24"
         app:iconTint="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/taskManagerBtn"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.522"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/timeoutBtn"
         android:layout_width="275dp"
         android:layout_height="75dp"
-        android:layout_marginBottom="30dp"
         android:layout_weight="1"
         android:height="10dp"
         android:backgroundTint="@color/twitter_blue"
@@ -52,13 +50,31 @@
         app:iconTint="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/coinFlipBtn"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.522"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/taskManagerBtn"
+        android:layout_width="275dp"
+        android:layout_height="75dp"
+        android:layout_marginBottom="24dp"
+        android:layout_weight="1"
+        android:height="10dp"
+        android:backgroundTint="@color/twitter_blue"
+        android:text="@string/tasksBtnText"
+        android:textColor="@color/white"
+        app:icon="@drawable/ic_baseline_assignment_24"
+        app:iconTint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.522"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/menuTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="32dp"
         android:text="@string/my_parent_app"
         android:textColor="@color/white"
         android:textSize="34sp"
@@ -70,13 +86,14 @@
 
     <ImageView
         android:id="@+id/menuImg"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="370dp"
+        android:layout_height="233dp"
         app:layout_constraintBottom_toTopOf="@+id/configureBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/menuTitle"
+        app:layout_constraintVertical_bias="0.618"
         app:srcCompat="@drawable/family_menu_icon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
