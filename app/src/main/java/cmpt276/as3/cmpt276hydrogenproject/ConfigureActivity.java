@@ -1,13 +1,17 @@
 package cmpt276.as3.cmpt276hydrogenproject;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,6 +24,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -43,6 +48,7 @@ public class ConfigureActivity extends AppCompatActivity {
         setAddChildButton();
         registerClickCallback();
     }
+
 
     @Override
     protected void onResume() {
@@ -85,6 +91,7 @@ public class ConfigureActivity extends AppCompatActivity {
             EditText input = new EditText(ConfigureActivity.this);
             builder.setView(input);
 
+
             builder.setPositiveButton("OK", (dialogInterface, i) -> {
                 String name = input.getText().toString();
 
@@ -102,11 +109,27 @@ public class ConfigureActivity extends AppCompatActivity {
                 }
             });
 
+            builder.setNeutralButton("Add Image", (dialogInterface, i) -> {
+                setAddImageButton();
+            });
+
             builder.setNegativeButton("Cancel", null);
 
             AlertDialog alert = builder.create();
             alert.show();
         });
+    }
+
+    //code inspired by https://www.youtube.com/watch?v=wBuWqqBWziU&list=PL73qvSDlAVVh5MO1Bfujfb_SDPABjJ2BY&t=0s
+    private void setAddImageButton() {
+        Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK);
+        File imageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        String imageDirectoryPath = imageDirectory.getPath();
+
+        Uri data = Uri.parse(imageDirectoryPath);
+        pickPhotoIntent.setDataAndType(data, "image/*");
+
+        startActivityForResult(pickPhotoIntent, 20);
     }
 
     /**

@@ -1,9 +1,12 @@
 package cmpt276.as3.cmpt276hydrogenproject.model;
 
+import android.media.Image;
+
 import androidx.annotation.NonNull;
 
 public class Child {
     String name;
+    Image profilePicture;
 
     public Child(String name) {
         this.name = name;
