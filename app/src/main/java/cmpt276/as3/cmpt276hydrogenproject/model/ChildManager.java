@@ -24,7 +24,7 @@ public class ChildManager {
     }
 
     //suggests a child to pick
-    public Child getChildSuggestion(Child previousPick) {
+    public Child getNextChild(Child previousPick) {
         int index = CHILDREN_LIST.indexOf(previousPick);
         index++;
         if (index == CHILDREN_LIST.size()) {
