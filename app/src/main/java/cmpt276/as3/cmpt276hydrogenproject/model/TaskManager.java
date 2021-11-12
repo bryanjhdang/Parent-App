@@ -25,6 +25,11 @@ public class TaskManager {
         TASK_LIST.add(newTask);
     }
 
+    public void addTask(String taskName, Child child) {
+        Task newTask = new Task(taskName, child);
+        TASK_LIST.add(newTask);
+    }
+
     public Task getTaskAt(int index) {
         return TASK_LIST.get(index);
     }

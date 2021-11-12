@@ -2,6 +2,7 @@ package cmpt276.as3.cmpt276hydrogenproject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -11,8 +12,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.w3c.dom.Text;
 
@@ -33,14 +38,57 @@ public class TaskManagerActivity extends AppCompatActivity {
         setContentView(R.layout.task_manager_activity);
         setActionBar();
 
-        dummy();
+        //dummy();
 
         showTaskList();
+        addTaskButton();
     }
 
     private void dummy() {
         Task one = new Task("DUMMY", childManager.getFirstChild());
         taskManager.addTask(one);
+    }
+
+    private void addTaskButton() {
+        FloatingActionButton addTaskBtn = findViewById(R.id.addTaskBtn);
+        addTaskBtn.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(TaskManagerActivity.this);
+            builder.setTitle("Please describe this task:");
+
+            EditText input = new EditText(TaskManagerActivity.this);
+            builder.setView(input);
+
+            builder.setPositiveButton("OK", (dialogInterface, i) -> {
+                String taskName = input.getText().toString();
+
+                if (isValidTaskName(taskName)) {
+                    taskManager.addTask(taskName, childManager.getFirstChild());
+                    Toast.makeText(getApplicationContext(), "Added task!", Toast.LENGTH_SHORT)
+                            .show();
+                    showTaskList();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Invalid task name!",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+            builder.setNegativeButton("Cancel", null);
+
+            AlertDialog alert = builder.create();
+            alert.show();
+        });
+    }
+
+    private boolean isValidTaskName(String name) {
+        if (name.length() == 0) {
+            return false;
+        }
+
+        for (int i = 0; i < name.length(); i++) {
+            if (name.charAt(i) != ' ') {
+                return true;
+            }
+        }
+        return false;
     }
 
     void showTaskList() {
