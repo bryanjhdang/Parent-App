@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,10 +15,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,6 +29,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -33,7 +40,13 @@ import cmpt276.as3.cmpt276hydrogenproject.model.Child;
 import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
 
 public class ConfigureActivity extends AppCompatActivity {
+
+    private final int IMAGE_GALLERY_REQUEST = 20;
+
     private final ChildManager childManager = ChildManager.getInstance();
+
+    private ImageView imageView;
+
     SharedPreferences sp;
 
     @Override
@@ -41,6 +54,8 @@ public class ConfigureActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.configure_activity);
         setActionBar();
+
+        imageView = findViewById(R.id.testImageView);
         sp = getSharedPreferences("Hydrogen", Context.MODE_PRIVATE);
 
         updateConfigText();
@@ -48,7 +63,6 @@ public class ConfigureActivity extends AppCompatActivity {
         setAddChildButton();
         registerClickCallback();
     }
-
 
     @Override
     protected void onResume() {
@@ -129,7 +143,33 @@ public class ConfigureActivity extends AppCompatActivity {
         Uri data = Uri.parse(imageDirectoryPath);
         pickPhotoIntent.setDataAndType(data, "image/*");
 
-        startActivityForResult(pickPhotoIntent, 20);
+        startActivityForResult(pickPhotoIntent, IMAGE_GALLERY_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == RESULT_OK) {
+            //successful processing
+            if (requestCode == IMAGE_GALLERY_REQUEST) {
+                Uri imageFromGallery = data.getData();
+
+                InputStream inputStream;
+
+                try {
+                    inputStream = getContentResolver().openInputStream(imageFromGallery);
+
+                    Bitmap image = BitmapFactory.decodeStream(inputStream);
+
+                    imageView.setImageBitmap(image);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(this,
+                            "Unable to open image",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     /**

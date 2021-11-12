@@ -3,6 +3,7 @@
     package="cmpt276.as3.cmpt276hydrogenproject">
 
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:icon="@mipmap/ic_launcher"
