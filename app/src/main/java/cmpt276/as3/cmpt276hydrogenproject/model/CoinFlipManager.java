@@ -1,7 +1,5 @@
 package cmpt276.as3.cmpt276hydrogenproject.model;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 
 public class CoinFlipManager {
@@ -37,10 +35,6 @@ public class CoinFlipManager {
 
     public CoinFlip getCoinFlipAt(int index) {
         return COIN_FLIP_LIST.get(index);
-    }
-
-    public void removeCoinFlipAt(int index) {
-        COIN_FLIP_LIST.remove(index);
     }
 
     public Child getPreviousPick() {

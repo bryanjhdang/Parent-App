@@ -1,36 +1,52 @@
 package cmpt276.as3.cmpt276hydrogenproject;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import cmpt276.as3.cmpt276hydrogenproject.model.Child;
 import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
 
 public class ConfigureActivity extends AppCompatActivity {
-    private ChildManager childManager = ChildManager.getInstance();
+
+    private final int IMAGE_GALLERY_REQUEST = 20;
+
+    private final ChildManager childManager = ChildManager.getInstance();
+
+    private ImageView imageView;
+
     SharedPreferences sp;
 
     @Override
@@ -38,6 +54,8 @@ public class ConfigureActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.configure_activity);
         setActionBar();
+
+        imageView = findViewById(R.id.testImageView);
         sp = getSharedPreferences("Hydrogen", Context.MODE_PRIVATE);
 
         updateConfigText();
@@ -68,7 +86,7 @@ public class ConfigureActivity extends AppCompatActivity {
     }
 
     private void setActionBar() {
-        getSupportActionBar().setTitle("Configure My Children");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Configure My Children");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
                 .getColor(R.color.darker_navy_blue)));
     }
@@ -87,6 +105,7 @@ public class ConfigureActivity extends AppCompatActivity {
             EditText input = new EditText(ConfigureActivity.this);
             builder.setView(input);
 
+
             builder.setPositiveButton("OK", (dialogInterface, i) -> {
                 String name = input.getText().toString();
 
@@ -104,11 +123,53 @@ public class ConfigureActivity extends AppCompatActivity {
                 }
             });
 
+            builder.setNeutralButton("Add Image", (dialogInterface, i) -> {
+                setAddImageButton();
+            });
+
             builder.setNegativeButton("Cancel", null);
 
             AlertDialog alert = builder.create();
             alert.show();
         });
+    }
+
+    //code inspired by https://www.youtube.com/watch?v=wBuWqqBWziU&list=PL73qvSDlAVVh5MO1Bfujfb_SDPABjJ2BY&t=0s
+    private void setAddImageButton() {
+        Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK);
+        File imageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        String imageDirectoryPath = imageDirectory.getPath();
+
+        Uri data = Uri.parse(imageDirectoryPath);
+        pickPhotoIntent.setDataAndType(data, "image/*");
+
+        startActivityForResult(pickPhotoIntent, IMAGE_GALLERY_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == RESULT_OK) {
+            //successful processing
+            if (requestCode == IMAGE_GALLERY_REQUEST) {
+                Uri imageFromGallery = data.getData();
+
+                InputStream inputStream;
+
+                try {
+                    inputStream = getContentResolver().openInputStream(imageFromGallery);
+
+                    Bitmap image = BitmapFactory.decodeStream(inputStream);
+
+                    imageView.setImageBitmap(image);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(this,
+                            "Unable to open image",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     /**
@@ -179,7 +240,7 @@ public class ConfigureActivity extends AppCompatActivity {
         Gson myGson = new GsonBuilder().create();
         String jsonString = myGson.toJson(childManager.getChildrenList());
         editor.putString("childList", jsonString);
-        editor.commit();
+        editor.apply();
     }
 
     /**

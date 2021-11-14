@@ -31,8 +31,8 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
     private final int ANIMATION_DURATION = 1000;
     private final float ROTATION_VALUE = 1800;
 
-    private ChildManager childManager = ChildManager.getInstance();
-    private CoinFlipManager coinFlipManager = CoinFlipManager.getInstance();
+    private final ChildManager childManager = ChildManager.getInstance();
+    private final CoinFlipManager coinFlipManager = CoinFlipManager.getInstance();
     private Child flipCoinChild;
     private MediaPlayer soundEffectPlayer;
     private String rawChoiceInput;
@@ -57,7 +57,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
     }
 
     private void setActionBar() {
-        getSupportActionBar().setTitle("Coin Flip");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Coin Flip");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
                 .getColor(R.color.darker_navy_blue)));
     }
@@ -213,11 +213,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
     private void setChildChoice(String optionChosen) {
         //extrapolates the raw data from the radio buttons and converts it to a more
         //manageable boolean value.
-        if (optionChosen.equals("Heads")) {
-            isHeads = true;
-        } else {
-            isHeads = false;
-        }
+        isHeads = optionChosen.equals("Heads");
     }
 
     @Override

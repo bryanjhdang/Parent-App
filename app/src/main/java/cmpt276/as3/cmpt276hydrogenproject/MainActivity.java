@@ -1,17 +1,17 @@
 package cmpt276.as3.cmpt276hydrogenproject;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import cmpt276.as3.cmpt276hydrogenproject.model.Child;
 import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
         sp = getSharedPreferences("Hydrogen", MODE_PRIVATE);
 
         loadChildren();
@@ -46,23 +47,23 @@ public class MainActivity extends AppCompatActivity {
         toConfigureBtn();
         toCoinflipBtn();
         toTimeoutBtn();
-
-//        TextView tempText = findViewById(R.id.menuTitle);
+        toTaskManagerBtn();
+        toHelpBtn();
     }
 
     void toConfigureBtn() {
         Button btn = findViewById(R.id.configureBtn);
         btn.setOnClickListener(v -> {
-            Intent launchGame = ConfigureActivity.makeIntent(MainActivity.this);
-            startActivity(launchGame);
+            Intent launchActivity = ConfigureActivity.makeIntent(MainActivity.this);
+            startActivity(launchActivity);
         });
     }
 
     void toCoinflipBtn() {
         Button btn = findViewById(R.id.coinFlipBtn);
         btn.setOnClickListener(v -> {
-            Intent launchGame = CoinFlipActivity.makeIntent(MainActivity.this);
-            startActivity(launchGame);
+            Intent launchActivity = CoinFlipActivity.makeIntent(MainActivity.this);
+            startActivity(launchActivity);
         });
     }
 
@@ -71,6 +72,25 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(v -> {
             Intent launchGame = TimeoutActivity.makeIntent(MainActivity.this);
             startActivity(launchGame);
+        });
+    }
+
+    void toHelpBtn() {
+        FloatingActionButton fab = findViewById(R.id.helpMenuButton);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent helpIntent = HelpActivity.makeIntent(MainActivity.this);
+                startActivity(helpIntent);
+            }
+        });
+    }
+
+    void toTaskManagerBtn() {
+        Button btn = findViewById(R.id.taskManagerBtn);
+        btn.setOnClickListener(v -> {
+            Intent launchActivity = TaskManagerActivity.makeIntent(MainActivity.this);
+            startActivity(launchActivity);
         });
     }
 

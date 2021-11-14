@@ -1,5 +1,7 @@
 package cmpt276.as3.cmpt276hydrogenproject.model;
 
+import androidx.annotation.NonNull;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -8,28 +10,21 @@ public class CoinFlip {
     private boolean won;
     private Child choosingChild;
     private boolean childChoseHeads;
-    private LocalDateTime flipTime;
+    private final LocalDateTime flipTime;
+    private final double COIN_FLIP_THRESHOLD = 0.5;
 
     private void flipCoin() {
         //generates random number between 0 and 1.
         double numericalResult = (Math.random());
         //0 <= x <= 0.5 is heads. x > 0.5 is tails.
-        if(numericalResult <= 0.5) {
-            this.isHeads = true;
-        } else {
-            this.isHeads = false;
-        }
+        this.isHeads = numericalResult <= COIN_FLIP_THRESHOLD;
     }
 
     public CoinFlip(Child childWhoChose, boolean childChoseHeads) {
         this.choosingChild = childWhoChose;
         this.childChoseHeads = childChoseHeads;
         flipCoin();
-        if (childChoseHeads == isHeads) {
-            won = true;
-        } else {
-            won = false;
-        }
+        won = childChoseHeads == isHeads;
         this.flipTime = LocalDateTime.now();
     }
 
@@ -50,6 +45,7 @@ public class CoinFlip {
         return choosingChild;
     }
 
+    @NonNull
     @Override
     public String toString() {
         String cfString = "";
