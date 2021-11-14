@@ -1,7 +1,6 @@
 package cmpt276.as3.cmpt276hydrogenproject;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -13,7 +12,6 @@ import android.os.Environment;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -29,7 +27,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -109,7 +106,7 @@ public class ConfigureActivity extends AppCompatActivity {
             builder.setPositiveButton("OK", (dialogInterface, i) -> {
                 String name = input.getText().toString();
 
-                if (isValidName(name)) {
+                if (ChildManager.isValidName(name)) {
                     childManager.addChild(name);
                     String msg = "Added " + name + ".";
                     Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
@@ -173,23 +170,6 @@ public class ConfigureActivity extends AppCompatActivity {
     }
 
     /**
-     * Determines if an inputted name is valid.
-     * Names with no characters and names with all spaces are invalid.
-     */
-    private boolean isValidName(String name) {
-        if (name.length() == 0) {
-            return false;
-        }
-
-        for (int i = 0; i < name.length(); i++) {
-            if (name.charAt(i) != ' ') {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * Update the ListView item on the activity to display
      * the list of children
      */
@@ -249,50 +229,15 @@ public class ConfigureActivity extends AppCompatActivity {
     private void registerClickCallback() {
         ListView list = findViewById(R.id.childListView);
         list.setOnItemClickListener((adapterView, view, index, id) -> {
-            promptEditDeleteChild(index);
+            promptEditChild(index);
         });
     }
 
     /**
      * Gives the user the option to change the selected child name or delete the child.
      */
-    private void promptEditDeleteChild(int childIndex) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(ConfigureActivity.this);
-        builder.setTitle("Edit child name:");
-
-        // Prompt the user for input
-
-        EditText input = new EditText(ConfigureActivity.this);
-        builder.setView(input);
-
-        // Edit child name on the list
-        builder.setPositiveButton("Confirm", (dialogInterface, i) -> {
-            String name = input.getText().toString();
-
-            if (isValidName(name)) {
-                childManager.editChildName(childIndex, name);
-                String msg = "Name changed.";
-                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
-                        .show();
-                updateListView();
-            } else {
-                String msg = "Name is invalid!";
-                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
-                        .show();
-            }
-        });
-
-        // Remove child from list when clicking on "Delete Child" prompt
-        builder.setNegativeButton("Delete Child", (dialogInterface, i) -> {
-            String msg = childManager.getChildAt(childIndex).getName() + " has been removed.";
-            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
-                    .show();
-            childManager.removeChild(childIndex);
-            updateListView();
-            updateConfigText();
-        });
-
-        AlertDialog alert = builder.create();
-        alert.show();
+    private void promptEditChild(int childIndex) {
+        Intent launchEditChildActivity = EditChildActivity.makeIntent(ConfigureActivity.this, childIndex);
+        startActivity(launchEditChildActivity);
     }
 }
