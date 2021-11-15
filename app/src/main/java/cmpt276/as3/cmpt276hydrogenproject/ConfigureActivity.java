@@ -46,6 +46,9 @@ public class ConfigureActivity extends AppCompatActivity {
 
     SharedPreferences sp;
 
+    private final String TITLE_MSG = "actionBarTitle";
+    private final String INDEX_MSG = "childIndex";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -237,7 +240,9 @@ public class ConfigureActivity extends AppCompatActivity {
      * Gives the user the option to change the selected child name or delete the child.
      */
     private void promptEditChild(int childIndex) {
-        Intent launchEditChildActivity = EditChildActivity.makeIntent(ConfigureActivity.this, childIndex);
+        Intent launchEditChildActivity = EditChildActivity.makeIntent(ConfigureActivity.this);
+        launchEditChildActivity.putExtra(TITLE_MSG, "Edit Child");
+        launchEditChildActivity.putExtra(INDEX_MSG, childIndex);
         startActivity(launchEditChildActivity);
     }
 }

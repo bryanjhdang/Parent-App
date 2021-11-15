@@ -16,6 +16,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
 
+import cmpt276.as3.cmpt276hydrogenproject.model.Child;
 import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
 
 /**
@@ -34,25 +35,39 @@ import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
  * - Need to pass over if it came from adding / editing
  */
 public class EditChildActivity extends AppCompatActivity {
+    private String actionBarTitle;
+    private Child child;
+    private ChildManager childManager = ChildManager.getInstance();
+
+    private final String TITLE_MSG = "actionBarTitle";
+    private final String INDEX_MSG = "childIndex";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_child);
-        setActionBar();
+        initializeIntentInfo();
 
+        setActionBar();
         setChangeChildInformation();
         setDeleteChildButton();
         setSaveChildButton();
     }
 
     // call the intent when the user presses on a child in the listview
-    public static Intent makeIntent(Context context, int childIndex) {
+    public static Intent makeIntent(Context context) {
         return new Intent(context, EditChildActivity.class);
     }
 
+    private void initializeIntentInfo() {
+        Intent intent = getIntent();
+        actionBarTitle = intent.getStringExtra(TITLE_MSG);
+        int childIndex = intent.getIntExtra(INDEX_MSG, 0);
+        child = childManager.getChildAt(childIndex);
+    }
+
     private void setActionBar() {
-        Objects.requireNonNull(getSupportActionBar()).setTitle("Configure Child");
+        Objects.requireNonNull(getSupportActionBar()).setTitle(actionBarTitle);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
                 .getColor(R.color.darker_navy_blue)));
     }
@@ -63,7 +78,8 @@ public class EditChildActivity extends AppCompatActivity {
     }
 
     private void setChangeName() {
-        // allow the user to change the name
+        EditText nameInput = findViewById(R.id.childNameEditText);
+        nameInput.setText(child.getName());
     }
 
     private void setChangeImage() {
@@ -79,10 +95,6 @@ public class EditChildActivity extends AppCompatActivity {
     }
 
     private void setDeleteChildButton() {
-        // fab
-        // give a warning
-        // if click ok, then delete the child and return to configure child screen
-
         FloatingActionButton deleteButton = findViewById(R.id.deleteChildButton);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,18 +109,18 @@ public class EditChildActivity extends AppCompatActivity {
         builder.setTitle("Delete child? This action cannot be reversed!");
 
         builder.setPositiveButton("OK", ((dialogInterface, i) -> {
-            String tempStr = "[NAME HERE] deleted!";
-            Toast.makeText(getApplicationContext(), tempStr, Toast.LENGTH_SHORT).show();
-            finish();
             deleteChild();
+            finish();
         }));
+
+        builder.setNegativeButton("Cancel", null);
 
         AlertDialog alert = builder.create();
         alert.show();
     }
 
     private void deleteChild() {
-        // stub for now
+        childManager.removeChildByObject(child);
     }
 
     private void setSaveChildButton() {
@@ -135,8 +147,7 @@ public class EditChildActivity extends AppCompatActivity {
     }
 
     private void setNewChildInfo(String newChildName) {
-        // need to store the name the user chose
-        // need to add helper method to save it in the singleton
+        child.setName(newChildName);
     }
 }
 
