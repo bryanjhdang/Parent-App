@@ -37,12 +37,7 @@ import cmpt276.as3.cmpt276hydrogenproject.model.Child;
 import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
 
 public class ConfigureActivity extends AppCompatActivity {
-
-    private final int IMAGE_GALLERY_REQUEST = 20;
-
     private final ChildManager childManager = ChildManager.getInstance();
-
-    private ImageView imageView;
 
     SharedPreferences sp;
 
@@ -55,7 +50,6 @@ public class ConfigureActivity extends AppCompatActivity {
         setContentView(R.layout.configure_activity);
         setActionBar();
 
-        imageView = findViewById(R.id.testImageView);
         sp = getSharedPreferences("Hydrogen", Context.MODE_PRIVATE);
 
         updateConfigText();
@@ -67,6 +61,7 @@ public class ConfigureActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        updateConfigText();
         updateListView();
     }
 
@@ -96,80 +91,16 @@ public class ConfigureActivity extends AppCompatActivity {
      * Valid name will be added to list of children.
      */
     private void setAddChildButton() {
-        FloatingActionButton addChildBtn = findViewById(R.id.addChildBtn);
-        addChildBtn.setOnClickListener(view -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(ConfigureActivity.this);
-            builder.setTitle("Enter the name of the child:");
+        FloatingActionButton addChildButton = findViewById(R.id.addChildBtn);
 
-            // Prompt the user for input
-            EditText input = new EditText(ConfigureActivity.this);
-            builder.setView(input);
-
-
-            builder.setPositiveButton("OK", (dialogInterface, i) -> {
-                String name = input.getText().toString();
-
-                if (ChildManager.isValidName(name)) {
-                    childManager.addChild(name);
-                    String msg = "Added " + name + ".";
-                    Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
-                            .show();
-                    updateListView();
-                    updateConfigText();
-                } else {
-                    String msg = "Name is invalid!";
-                    Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
-                            .show();
-                }
-            });
-
-            builder.setNeutralButton("Add Image", (dialogInterface, i) -> {
-                setAddImageButton();
-            });
-
-            builder.setNegativeButton("Cancel", null);
-
-            AlertDialog alert = builder.create();
-            alert.show();
-        });
-    }
-
-    //code inspired by https://www.youtube.com/watch?v=wBuWqqBWziU&list=PL73qvSDlAVVh5MO1Bfujfb_SDPABjJ2BY&t=0s
-    private void setAddImageButton() {
-        Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK);
-        File imageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        String imageDirectoryPath = imageDirectory.getPath();
-
-        Uri data = Uri.parse(imageDirectoryPath);
-        pickPhotoIntent.setDataAndType(data, "image/*");
-
-        startActivityForResult(pickPhotoIntent, IMAGE_GALLERY_REQUEST);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (resultCode == RESULT_OK) {
-            //successful processing
-            if (requestCode == IMAGE_GALLERY_REQUEST) {
-                Uri imageFromGallery = data.getData();
-
-                InputStream inputStream;
-
-                try {
-                    inputStream = getContentResolver().openInputStream(imageFromGallery);
-
-                    Bitmap image = BitmapFactory.decodeStream(inputStream);
-
-                    imageView.setImageBitmap(image);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast.makeText(this,
-                            "Unable to open image",
-                            Toast.LENGTH_SHORT).show();
-                }
+        addChildButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent launchEditChildActivity = EditChildActivity.makeIntent(ConfigureActivity.this);
+                launchEditChildActivity.putExtra(TITLE_MSG, "Add Child");
+                startActivity(launchEditChildActivity);
             }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
+        });
     }
 
     /**

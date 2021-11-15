@@ -1,12 +1,17 @@
 package cmpt276.as3.cmpt276hydrogenproject;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -14,6 +19,9 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
 
 import cmpt276.as3.cmpt276hydrogenproject.model.Child;
@@ -24,16 +32,6 @@ import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
  * - Name
  * - Image
  */
-
-/**
- * TODO: Delete this section later
- * High level concepts
- * - Mark differences between editing / adding
- *      - Change title bar
- *      - Show delete button
- * - Need to pass over the child index to display the proper name to edit
- * - Need to pass over if it came from adding / editing
- */
 public class EditChildActivity extends AppCompatActivity {
     private String actionBarTitle;
     private Child child;
@@ -41,6 +39,10 @@ public class EditChildActivity extends AppCompatActivity {
 
     private final String TITLE_MSG = "actionBarTitle";
     private final String INDEX_MSG = "childIndex";
+    private final String EDIT_CHILD = "Edit Child";
+
+    private final int IMAGE_GALLERY_REQUEST = 20;
+    private ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +50,15 @@ public class EditChildActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_child);
         initializeIntentInfo();
 
+        // TODO: this is a test image, remove later
+        imageView = findViewById(R.id.testImageView);
+
         setActionBar();
         setChangeChildInformation();
         setDeleteChildButton();
         setSaveChildButton();
     }
 
-    // call the intent when the user presses on a child in the listview
     public static Intent makeIntent(Context context) {
         return new Intent(context, EditChildActivity.class);
     }
@@ -62,8 +66,10 @@ public class EditChildActivity extends AppCompatActivity {
     private void initializeIntentInfo() {
         Intent intent = getIntent();
         actionBarTitle = intent.getStringExtra(TITLE_MSG);
-        int childIndex = intent.getIntExtra(INDEX_MSG, 0);
-        child = childManager.getChildAt(childIndex);
+        if (isEditingChild()) {
+            int childIndex = intent.getIntExtra(INDEX_MSG, 0);
+            child = childManager.getChildAt(childIndex);
+        }
     }
 
     private void setActionBar() {
@@ -73,29 +79,72 @@ public class EditChildActivity extends AppCompatActivity {
     }
 
     private void setChangeChildInformation() {
-        setChangeName();
-        setChangeImage();
+        setChangeNameInput();
+        setChangeImageInput();
     }
 
-    private void setChangeName() {
-        EditText nameInput = findViewById(R.id.childNameEditText);
-        nameInput.setText(child.getName());
+    private void setChangeNameInput() {
+        if (isEditingChild()) {
+            EditText nameInput = findViewById(R.id.childNameEditText);
+            nameInput.setText(child.getName());
+        }
     }
 
-    private void setChangeImage() {
-        // at the moment display
+    private void setChangeImageInput() {
         ImageView childPortrait = findViewById(R.id.childPortrait);
         childPortrait.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String tempStr = "Clicked on image";
-                Toast.makeText(getApplicationContext(), tempStr, Toast.LENGTH_SHORT).show();
+                editImage();
             }
         });
     }
 
+    private void editImage() {
+        Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK);
+        File imageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        String imageDirectoryPath = imageDirectory.getPath();
+
+        Uri data = Uri.parse(imageDirectoryPath);
+        pickPhotoIntent.setDataAndType(data, "image/*");
+
+        startActivityForResult(pickPhotoIntent, IMAGE_GALLERY_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == RESULT_OK) {
+            //successful processing
+            if (requestCode == IMAGE_GALLERY_REQUEST) {
+                Uri imageFromGallery = data.getData();
+
+                InputStream inputStream;
+
+                try {
+                    inputStream = getContentResolver().openInputStream(imageFromGallery);
+
+                    Bitmap image = BitmapFactory.decodeStream(inputStream);
+
+                    imageView.setImageBitmap(image);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(this,
+                            "Unable to open image",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     private void setDeleteChildButton() {
         FloatingActionButton deleteButton = findViewById(R.id.deleteChildButton);
+
+        if (!isEditingChild()) {
+            deleteButton.hide();
+            return;
+        }
+
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,14 +178,20 @@ public class EditChildActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 EditText childNameInput = findViewById(R.id.childNameEditText);
-                String childName = childNameInput.getText().toString();
+                String newChildName = childNameInput.getText().toString();
 
-                if (ChildManager.isValidName(childName)) {
-                    setNewChildInfo(childName);
-                    String msg = "Child added.";
-                    Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
-                            .show();
-                    finish();
+                if (ChildManager.isValidName(newChildName)) {
+                    if (isEditingChild() && newChildName.equals(child.getName())) {
+                        String msg = "No changes were made!";
+                        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
+                                .show();
+                    } else {
+                        setNewChildInfo(newChildName);
+                        String msg = "Child added.";
+                        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
+                                .show();
+                        finish();
+                    }
                 } else {
                     String msg = "Name is invalid!";
                     Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
@@ -147,44 +202,17 @@ public class EditChildActivity extends AppCompatActivity {
     }
 
     private void setNewChildInfo(String newChildName) {
-        child.setName(newChildName);
+        if (isEditingChild()) {
+            child.setName(newChildName);
+        } else {
+            childManager.addChild(newChildName);
+        }
+    }
+
+    private boolean isEditingChild() {
+        if (actionBarTitle.equals(EDIT_CHILD)) {
+            return true;
+        }
+        return false;
     }
 }
-
-//    AlertDialog.Builder builder = new AlertDialog.Builder(ConfigureActivity.this);
-//        builder.setTitle("Edit child name:");
-//
-//                // Prompt the user for input
-//
-//                EditText input = new EditText(ConfigureActivity.this);
-//                builder.setView(input);
-//
-//                // Edit child name on the list
-//                builder.setPositiveButton("Confirm", (dialogInterface, i) -> {
-//                String name = input.getText().toString();
-//
-//                if (isValidName(name)) {
-//                childManager.editChildName(childIndex, name);
-//                String msg = "Name changed.";
-//                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
-//                .show();
-//                updateListView();
-//                } else {
-//                String msg = "Name is invalid!";
-//                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
-//                .show();
-//                }
-//                });
-//
-//                // Remove child from list when clicking on "Delete Child" prompt
-//                builder.setNegativeButton("Delete Child", (dialogInterface, i) -> {
-//                String msg = childManager.getChildAt(childIndex).getName() + " has been removed.";
-//                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
-//                .show();
-//                childManager.removeChild(childIndex);
-//                updateListView();
-//                updateConfigText();
-//                });
-//
-//                AlertDialog alert = builder.create();
-//                alert.show();
