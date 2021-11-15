@@ -35,12 +35,13 @@
         <item>Tails</item>
     </string-array>
     <string-array name="appDevInformation">
-        <item>Team Name:</item>
-        <item>Developers:</item>
+        <item><b>Team Name: </b>Hydrogen</item>
+        <item><b>Developers:</b></item>
         <item>Gurseerat Brar</item>
         <item>Kevin Chen</item>
         <item>Ethan Chou</item>
         <item>Bryan Dang</item>
-        <item>A list of all the images and resources used is linked below:</item>
+        <item><u>A list of all the images and resources used is linked below:</u></item>
+        <item>https://bit.ly/3ox6VlL</item>
     </string-array>
 </resources>
