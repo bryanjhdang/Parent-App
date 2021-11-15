@@ -69,7 +69,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
             playCoinFlipSound();
             getResultOfCoinFlip(childlessCoinFlip);
         } else {
-            flipCoinChild = childManager.getChildSuggestion(coinFlipManager.getPreviousPick());
+            flipCoinChild = childManager.getNextChild(coinFlipManager.getPreviousPick());
         }
     }
 

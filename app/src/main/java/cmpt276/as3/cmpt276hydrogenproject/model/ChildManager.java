@@ -23,8 +23,12 @@ public class ChildManager {
         return CHILDREN_LIST.get(index);
     }
 
+    public Child getFirstChild() {
+        return CHILDREN_LIST.get(0);
+    }
+
     //suggests a child to pick
-    public Child getChildSuggestion(Child previousPick) {
+    public Child getNextChild(Child previousPick) {
         int index = CHILDREN_LIST.indexOf(previousPick);
         index++;
         if (index == CHILDREN_LIST.size()) {
