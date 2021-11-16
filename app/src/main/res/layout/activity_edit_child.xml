@@ -35,31 +35,40 @@
         android:id="@+id/childNameEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:backgroundTint="@color/white"
         android:ems="10"
         android:inputType="textPersonName"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/childPortrait" />
 
     <ImageView
         android:id="@+id/childPortrait"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="72dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/heads" />
+        app:srcCompat="@drawable/icon" />
 
     <TextView
         android:id="@+id/nameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Name:"
+        android:layout_width="78dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/name"
         android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_constraintEnd_toStartOf="@+id/childNameEditText"
+        app:layout_constraintHorizontal_bias="0.727"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/childNameEditText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

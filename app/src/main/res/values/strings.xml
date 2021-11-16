@@ -33,6 +33,7 @@
     <string name="taskManagerLabel">List of Tasks</string>
     <string name="noTaskMessage">There are no tasks! Press + to add tasks.</string>
     <string name="addTaskBtn">addTaskBtn</string>
+    <string name="name">Name:</string>
     <string-array name="choices">
         <item>Heads</item>
         <item>Tails</item>

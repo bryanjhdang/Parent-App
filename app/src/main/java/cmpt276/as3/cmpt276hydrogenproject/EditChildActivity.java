@@ -51,7 +51,7 @@ public class EditChildActivity extends AppCompatActivity {
         initializeIntentInfo();
 
         // TODO: this is a test image, remove later
-        imageView = findViewById(R.id.testImageView);
+        imageView = findViewById(R.id.childPortrait);
 
         setActionBar();
         setChangeChildInformation();
