@@ -43,7 +43,7 @@ public class TaskManager {
             }
         }
     }
-    
+
     //TODO: MAKE METHOD TO ASSIGN NEXT CHILD
 
     public Task getTaskAt(int index) {

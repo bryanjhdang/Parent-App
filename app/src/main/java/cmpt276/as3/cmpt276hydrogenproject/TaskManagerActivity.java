@@ -38,9 +38,16 @@ public class TaskManagerActivity extends AppCompatActivity {
         setContentView(R.layout.task_manager_activity);
         setActionBar();
 
-
         showTaskList();
+        taskManager.refreshTaskChildren();
         addTaskButton();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showTaskList();
+        taskManager.refreshTaskChildren();
     }
 
     private void addTaskButton() {
