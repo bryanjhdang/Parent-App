@@ -1,7 +1,6 @@
 package cmpt276.as3.cmpt276hydrogenproject;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -13,7 +12,6 @@ import android.os.Environment;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -29,7 +27,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -40,14 +37,12 @@ import cmpt276.as3.cmpt276hydrogenproject.model.Child;
 import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
 
 public class ConfigureActivity extends AppCompatActivity {
-
-    private final int IMAGE_GALLERY_REQUEST = 20;
-
     private final ChildManager childManager = ChildManager.getInstance();
 
-    private ImageView imageView;
-
     SharedPreferences sp;
+
+    private final String TITLE_MSG = "actionBarTitle";
+    private final String INDEX_MSG = "childIndex";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +50,6 @@ public class ConfigureActivity extends AppCompatActivity {
         setContentView(R.layout.configure_activity);
         setActionBar();
 
-        imageView = findViewById(R.id.testImageView);
         sp = getSharedPreferences("Hydrogen", Context.MODE_PRIVATE);
 
         updateConfigText();
@@ -67,6 +61,7 @@ public class ConfigureActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        updateConfigText();
         updateListView();
     }
 
@@ -96,97 +91,16 @@ public class ConfigureActivity extends AppCompatActivity {
      * Valid name will be added to list of children.
      */
     private void setAddChildButton() {
-        FloatingActionButton addChildBtn = findViewById(R.id.addChildBtn);
-        addChildBtn.setOnClickListener(view -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(ConfigureActivity.this);
-            builder.setTitle("Enter the name of the child:");
+        FloatingActionButton addChildButton = findViewById(R.id.addChildBtn);
 
-            // Prompt the user for input
-            EditText input = new EditText(ConfigureActivity.this);
-            builder.setView(input);
-
-
-            builder.setPositiveButton("OK", (dialogInterface, i) -> {
-                String name = input.getText().toString();
-
-                if (isValidName(name)) {
-                    childManager.addChild(name);
-                    String msg = "Added " + name + ".";
-                    Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
-                            .show();
-                    updateListView();
-                    updateConfigText();
-                } else {
-                    String msg = "Name is invalid!";
-                    Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
-                            .show();
-                }
-            });
-
-            builder.setNeutralButton("Add Image", (dialogInterface, i) -> {
-                setAddImageButton();
-            });
-
-            builder.setNegativeButton("Cancel", null);
-
-            AlertDialog alert = builder.create();
-            alert.show();
+        addChildButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent launchEditChildActivity = EditChildActivity.makeIntent(ConfigureActivity.this);
+                launchEditChildActivity.putExtra(TITLE_MSG, "Add Child");
+                startActivity(launchEditChildActivity);
+            }
         });
-    }
-
-    //code inspired by https://www.youtube.com/watch?v=wBuWqqBWziU&list=PL73qvSDlAVVh5MO1Bfujfb_SDPABjJ2BY&t=0s
-    private void setAddImageButton() {
-        Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK);
-        File imageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        String imageDirectoryPath = imageDirectory.getPath();
-
-        Uri data = Uri.parse(imageDirectoryPath);
-        pickPhotoIntent.setDataAndType(data, "image/*");
-
-        startActivityForResult(pickPhotoIntent, IMAGE_GALLERY_REQUEST);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (resultCode == RESULT_OK) {
-            //successful processing
-            if (requestCode == IMAGE_GALLERY_REQUEST) {
-                Uri imageFromGallery = data.getData();
-
-                InputStream inputStream;
-
-                try {
-                    inputStream = getContentResolver().openInputStream(imageFromGallery);
-
-                    Bitmap image = BitmapFactory.decodeStream(inputStream);
-
-                    imageView.setImageBitmap(image);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast.makeText(this,
-                            "Unable to open image",
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    /**
-     * Determines if an inputted name is valid.
-     * Names with no characters and names with all spaces are invalid.
-     */
-    private boolean isValidName(String name) {
-        if (name.length() == 0) {
-            return false;
-        }
-
-        for (int i = 0; i < name.length(); i++) {
-            if (name.charAt(i) != ' ') {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
@@ -249,50 +163,17 @@ public class ConfigureActivity extends AppCompatActivity {
     private void registerClickCallback() {
         ListView list = findViewById(R.id.childListView);
         list.setOnItemClickListener((adapterView, view, index, id) -> {
-            promptEditDeleteChild(index);
+            promptEditChild(index);
         });
     }
 
     /**
      * Gives the user the option to change the selected child name or delete the child.
      */
-    private void promptEditDeleteChild(int childIndex) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(ConfigureActivity.this);
-        builder.setTitle("Edit child name:");
-
-        // Prompt the user for input
-
-        EditText input = new EditText(ConfigureActivity.this);
-        builder.setView(input);
-
-        // Edit child name on the list
-        builder.setPositiveButton("Confirm", (dialogInterface, i) -> {
-            String name = input.getText().toString();
-
-            if (isValidName(name)) {
-                childManager.editChildName(childIndex, name);
-                String msg = "Name changed.";
-                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
-                        .show();
-                updateListView();
-            } else {
-                String msg = "Name is invalid!";
-                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
-                        .show();
-            }
-        });
-
-        // Remove child from list when clicking on "Delete Child" prompt
-        builder.setNegativeButton("Delete Child", (dialogInterface, i) -> {
-            String msg = childManager.getChildAt(childIndex).getName() + " has been removed.";
-            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
-                    .show();
-            childManager.removeChild(childIndex);
-            updateListView();
-            updateConfigText();
-        });
-
-        AlertDialog alert = builder.create();
-        alert.show();
+    private void promptEditChild(int childIndex) {
+        Intent launchEditChildActivity = EditChildActivity.makeIntent(ConfigureActivity.this);
+        launchEditChildActivity.putExtra(TITLE_MSG, "Edit Child");
+        launchEditChildActivity.putExtra(INDEX_MSG, childIndex);
+        startActivity(launchEditChildActivity);
     }
 }

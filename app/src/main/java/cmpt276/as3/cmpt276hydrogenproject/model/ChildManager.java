@@ -56,12 +56,33 @@ public class ChildManager {
         CHILDREN_LIST.add(child);
     }
 
-    public void removeChild(int idx) {
+    public void removeChildByIdx(int idx) {
         CHILDREN_LIST.remove(idx);
+    }
+
+    public void removeChildByObject(Child child) {
+        CHILDREN_LIST.remove(child);
     }
 
     public void editChildName(int idx, String name) {
         Child child = CHILDREN_LIST.get(idx);
         child.setName(name);
+    }
+
+    /**
+     * Determines if an inputted name is valid.
+     * Names with no characters and names with all spaces are invalid.
+     */
+    public static boolean isValidName(String name) {
+        if (name.length() == 0) {
+            return false;
+        }
+
+        for (int i = 0; i < name.length(); i++) {
+            if (name.charAt(i) != ' ') {
+                return true;
+            }
+        }
+        return false;
     }
 }
