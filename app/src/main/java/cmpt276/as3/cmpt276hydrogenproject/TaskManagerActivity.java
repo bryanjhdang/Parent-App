@@ -38,15 +38,9 @@ public class TaskManagerActivity extends AppCompatActivity {
         setContentView(R.layout.task_manager_activity);
         setActionBar();
 
-        //dummy();
 
         showTaskList();
         addTaskButton();
-    }
-
-    private void dummy() {
-        Task one = new Task("DUMMY", childManager.getFirstChild());
-        taskManager.addTask(one);
     }
 
     private void addTaskButton() {
@@ -62,7 +56,7 @@ public class TaskManagerActivity extends AppCompatActivity {
                 String taskName = input.getText().toString();
 
                 if (isValidTaskName(taskName)) {
-                    taskManager.addTask(taskName, childManager.getFirstChild());
+                    taskManager.addTask(taskName);
                     Toast.makeText(getApplicationContext(), "Added task!", Toast.LENGTH_SHORT)
                             .show();
                     showTaskList();

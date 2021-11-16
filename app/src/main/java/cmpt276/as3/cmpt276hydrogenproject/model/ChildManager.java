@@ -56,6 +56,10 @@ public class ChildManager {
         CHILDREN_LIST.add(child);
     }
 
+    public boolean isEmpty() {
+        return CHILDREN_LIST.isEmpty();
+    }
+
     public void removeChild(int idx) {
         CHILDREN_LIST.remove(idx);
     }
