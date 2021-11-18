@@ -56,6 +56,14 @@ public class ChildManager {
         CHILDREN_LIST.add(child);
     }
 
+    public boolean containsChild (Child child) {
+        if (CHILDREN_LIST.contains(child)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public boolean isEmpty() {
         return CHILDREN_LIST.isEmpty();
     }

@@ -1,7 +1,5 @@
 package cmpt276.as3.cmpt276hydrogenproject;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,11 +17,8 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import org.w3c.dom.Text;
-
 import java.util.Objects;
 
-import cmpt276.as3.cmpt276hydrogenproject.model.Child;
 import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
 import cmpt276.as3.cmpt276hydrogenproject.model.Task;
 import cmpt276.as3.cmpt276hydrogenproject.model.TaskManager;
@@ -39,7 +34,7 @@ public class TaskManagerActivity extends AppCompatActivity {
         setActionBar();
 
         showTaskList();
-        taskManager.refreshTaskChildren();
+        taskManager.updateTaskChildren();
         addTaskButton();
     }
 
@@ -47,7 +42,7 @@ public class TaskManagerActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         showTaskList();
-        taskManager.refreshTaskChildren();
+        taskManager.updateTaskChildren();
     }
 
     private void addTaskButton() {

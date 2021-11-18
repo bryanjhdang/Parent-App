@@ -36,10 +36,19 @@ public class TaskManager {
         TASK_LIST.add(newTask);
     }
 
-    public void refreshTaskChildren() {
-        for (Task task : TASK_LIST) {
-            if (task.getCurrentChild() == null) {
-                task.setCurrentChild(childManager.getFirstChild());
+    public void updateTaskChildren() {
+        if (childManager.isEmpty()) {
+            for (Task task : TASK_LIST) {
+                task.setCurrentChild(null);
+            }
+            return;
+        } else {
+            for (Task task : TASK_LIST) {
+                if (task.getCurrentChild() == null) {
+                    task.setCurrentChild(childManager.getFirstChild());
+                } else if (!childManager.containsChild(task.getCurrentChild())) {
+                    task.setCurrentChild(childManager.getFirstChild());
+                }
             }
         }
     }
