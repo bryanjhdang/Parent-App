@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -95,12 +96,35 @@ public class EditChildActivity extends AppCompatActivity {
         childPortrait.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editImage();
+                setImageSelectionAlert();
             }
         });
     }
 
-    private void editImage() {
+    private void setImageSelectionAlert() {
+        String[] imageOptions = getResources().getStringArray(R.array.photoOptions);
+        final int CAMERA = 0;
+        final int GALLERY = 1;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(EditChildActivity.this);
+        builder.setTitle("Choose image from:");
+        builder.setItems(imageOptions, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (i == CAMERA) {
+                    String tempMsg = "Clicked on Camera!";
+                    Toast.makeText(getApplicationContext(), tempMsg, Toast.LENGTH_SHORT)
+                            .show();
+                } else if (i == GALLERY) {
+                    editImageFromGallery();
+                }
+            }
+        });
+
+        builder.show();
+    }
+
+    private void editImageFromGallery() {
         Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK);
         File imageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         String imageDirectoryPath = imageDirectory.getPath();

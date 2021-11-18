@@ -38,6 +38,10 @@
         <item>Heads</item>
         <item>Tails</item>
     </string-array>
+    <string-array name="photoOptions">
+        <item>Camera</item>
+        <item>Gallery</item>
+    </string-array>
     <string-array name="appDevInformation">
         <item><b>Team Name: </b>Hydrogen</item>
         <item><b>Developers:</b></item>
