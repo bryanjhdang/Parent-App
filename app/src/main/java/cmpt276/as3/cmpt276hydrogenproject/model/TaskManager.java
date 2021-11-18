@@ -22,10 +22,6 @@ public class TaskManager {
         this.TASK_LIST = taskList;
     }
 
-    public void addTask(Task newTask) {
-        TASK_LIST.add(newTask);
-    }
-
     public void addTask(String taskName) {
         Task newTask;
         if (childManager.isEmpty()) {
@@ -52,8 +48,6 @@ public class TaskManager {
             }
         }
     }
-
-    //TODO: MAKE METHOD TO ASSIGN NEXT CHILD
 
     public Task getTaskAt(int index) {
         return TASK_LIST.get(index);
