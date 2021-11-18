@@ -155,8 +155,8 @@ public class TaskManagerActivity extends AppCompatActivity {
             showTaskList();
         }));
 
-        builder.setNeutralButton("Delete", ((dialogInterface, i) -> {
-            confirmDeleteDialog(index);
+        builder.setNeutralButton("Edit", ((dialogInterface, i) -> {
+            editTaskDialog(index);
         }));
 
         builder.setNegativeButton("Cancel", null);
@@ -165,10 +165,28 @@ public class TaskManagerActivity extends AppCompatActivity {
         alert.show();
     }
 
-    private void confirmDeleteDialog(int index) {
+    private void editTaskDialog(int index) {
+        EditText input = new EditText(TaskManagerActivity.this);
+        Task currentTask = taskManager.getTaskAt(index);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(TaskManagerActivity.this);
-        builder.setTitle("Delete this task?");
-        builder.setPositiveButton("Yes", ((dialogInterface, i) -> {
+        builder.setTitle("Edit task:");
+        builder.setView(input);
+        builder.setPositiveButton("Save", ((dialogInterface, i) -> {
+            String taskName = input.getText().toString();
+
+            if (isValidTaskName(taskName)) {
+                currentTask.setTaskName(taskName);
+                Toast.makeText(getApplicationContext(), "Edited task!", Toast.LENGTH_SHORT)
+                        .show();
+                showTaskList();
+            } else {
+                Toast.makeText(getApplicationContext(), "Invalid task name!",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }));
+
+        builder.setNeutralButton("Delete", ((dialogInterface, i) -> {
             taskManager.deleteTaskAt(index);
             showTaskList();
         }));
