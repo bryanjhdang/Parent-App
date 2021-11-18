@@ -53,7 +53,9 @@ public class TaskManager {
         }
     }
 
-    //TODO: MAKE METHOD TO ASSIGN NEXT CHILD
+    public void deleteTaskAt(int index) {
+        TASK_LIST.remove(index);
+    }
 
     public Task getTaskAt(int index) {
         return TASK_LIST.get(index);

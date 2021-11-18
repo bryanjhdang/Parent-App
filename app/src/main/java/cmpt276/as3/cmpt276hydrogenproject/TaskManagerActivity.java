@@ -155,6 +155,24 @@ public class TaskManagerActivity extends AppCompatActivity {
             showTaskList();
         }));
 
+        builder.setNeutralButton("Delete", ((dialogInterface, i) -> {
+            confirmDeleteDialog(index);
+        }));
+
+        builder.setNegativeButton("Cancel", null);
+
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    private void confirmDeleteDialog(int index) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(TaskManagerActivity.this);
+        builder.setTitle("Delete this task?");
+        builder.setPositiveButton("Yes", ((dialogInterface, i) -> {
+            taskManager.deleteTaskAt(index);
+            showTaskList();
+        }));
+
         builder.setNegativeButton("Cancel", null);
 
         AlertDialog alert = builder.create();
