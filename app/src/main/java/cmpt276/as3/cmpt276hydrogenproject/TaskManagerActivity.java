@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +37,7 @@ public class TaskManagerActivity extends AppCompatActivity {
         showTaskList();
         taskManager.updateTaskChildren();
         addTaskButton();
+        registerClickCallback();
     }
 
     @Override
@@ -128,5 +130,34 @@ public class TaskManagerActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setTitle("Task Manager");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
                 .getColor(R.color.darker_navy_blue)));
+    }
+
+    private void registerClickCallback() {
+        ListView list = findViewById(R.id.taskListView);
+        list.setOnItemClickListener((adapterView, view, index, id) -> {
+                Toast.makeText(getApplicationContext(), "HI", Toast.LENGTH_SHORT).show();
+                expandTaskInfo(index);
+        });
+    }
+
+    private void expandTaskInfo(int index) {
+        ImageView image = new ImageView(this);
+        image.setImageResource(R.drawable.icon);
+        Task currentTask = taskManager.getTaskAt(index);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(TaskManagerActivity.this);
+        builder.setTitle("Task: " + currentTask.getTaskName());
+        builder.setMessage("This task is assigned to: " + currentTask.getChildName());
+        builder.setView(image);
+
+        builder.setPositiveButton("Finished!", ((dialogInterface, i) -> {
+            currentTask.taskCompleted();
+            showTaskList();
+        }));
+
+        builder.setNegativeButton("Cancel", null);
+
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }

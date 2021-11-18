@@ -26,6 +26,14 @@ public class Task {
         currentChild = childManager.getNextChild(currentChild);
     }
 
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public String getChildName() {
+        return currentChild.getName();
+    }
+
     @Override
     public String toString() {
         if (currentChild == null) {
