@@ -20,6 +20,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.Objects;
 
 import cmpt276.as3.cmpt276hydrogenproject.model.Child;
@@ -45,6 +47,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_coinflip_activity);
         setActionBar();
+        setEmptyFlipBtn();
         emptyChildListCoinFlip();
         flipCoinButton();
         setNextChoiceSuggestion();
@@ -54,6 +57,27 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, AddCoinFlipActivity.class);
+    }
+
+    private void setEmptyFlipBtn() {
+        FloatingActionButton emptyFlipBtn = findViewById(R.id.emptyFlipBtn);
+        emptyFlipBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(AddCoinFlipActivity.this);
+                builder.setTitle("Do you want to perform a coin flip with no child?");
+                builder.setPositiveButton("Yes", ((dialogInterface, i) -> {
+                    CoinFlip childlessCoinFlip = new CoinFlip();
+                    coinFlipManager.addCoinFlip(childlessCoinFlip);
+                    playCoinFlipSound();
+                    getResultOfCoinFlip(childlessCoinFlip);
+                }));
+                builder.setNegativeButton("No", null);
+
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
     }
 
     private void setActionBar() {
