@@ -1,5 +1,9 @@
 package cmpt276.as3.cmpt276hydrogenproject.model;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+
 import java.util.ArrayList;
 
 public class ChildManager {
@@ -51,8 +55,8 @@ public class ChildManager {
 
     public int getSizeOfChildList() { return CHILDREN_LIST.size(); }
 
-    public void addChild(String name) {
-        Child child = new Child(name);
+    public void addChild(String name, Bitmap profilePic) {
+        Child child = new Child(name, profilePic);
         CHILDREN_LIST.add(child);
     }
 
@@ -67,6 +71,13 @@ public class ChildManager {
     public void editChildName(int idx, String name) {
         Child child = CHILDREN_LIST.get(idx);
         child.setName(name);
+    }
+
+    public Bitmap convertStringToBitmap(String string) {
+        byte[] byteArray;
+        byteArray = Base64.decode(string, Base64.DEFAULT);
+        Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+        return bmp;
     }
 
     /**

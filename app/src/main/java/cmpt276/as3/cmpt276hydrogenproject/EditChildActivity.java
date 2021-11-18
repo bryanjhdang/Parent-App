@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -44,6 +45,8 @@ public class EditChildActivity extends AppCompatActivity {
 
     private final int IMAGE_GALLERY_REQUEST = 20;
     private ImageView imageView;
+    private Bitmap image;
+    private boolean imageAdded;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,9 +150,10 @@ public class EditChildActivity extends AppCompatActivity {
                 try {
                     inputStream = getContentResolver().openInputStream(imageFromGallery);
 
-                    Bitmap image = BitmapFactory.decodeStream(inputStream);
+                    image = BitmapFactory.decodeStream(inputStream);
 
                     imageView.setImageBitmap(image);
+                    imageAdded = true;
                 } catch (IOException e) {
                     e.printStackTrace();
                     Toast.makeText(this,
@@ -211,9 +215,9 @@ public class EditChildActivity extends AppCompatActivity {
                                 .show();
                     } else {
                         setNewChildInfo(newChildName);
-                        String msg = "Child added.";
-                        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
-                                .show();
+                        //String msg = "Child added.";
+                        //Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
+                        //        .show();
                         finish();
                     }
                 } else {
@@ -228,8 +232,10 @@ public class EditChildActivity extends AppCompatActivity {
     private void setNewChildInfo(String newChildName) {
         if (isEditingChild()) {
             child.setName(newChildName);
+            child.setProfilePicture(image);
         } else {
-            childManager.addChild(newChildName);
+            childManager.addChild(newChildName, image);
+            Toast.makeText(this, image.toString(), Toast.LENGTH_LONG).show();
         }
     }
 
