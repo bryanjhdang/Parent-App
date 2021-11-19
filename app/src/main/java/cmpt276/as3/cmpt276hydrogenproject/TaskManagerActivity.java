@@ -147,11 +147,57 @@ public class TaskManagerActivity extends AppCompatActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(TaskManagerActivity.this);
         builder.setTitle("Task: " + currentTask.getTaskName());
-        builder.setMessage("This task is assigned to: " + currentTask.getChildName());
+        if (currentTask.getCurrentChild() != null) {
+            builder.setMessage("This task is assigned to: " + currentTask.getChildName());
+        } else {
+            builder.setMessage("There are no children to assign tasks to!");
+        }
         builder.setView(image);
 
         builder.setPositiveButton("Finished!", ((dialogInterface, i) -> {
-            currentTask.taskCompleted();
+            if (currentTask.getCurrentChild() != null) {
+                currentTask.taskCompleted();
+            } else {
+                Toast.makeText(getApplicationContext(),
+                        "There are no children to finish this task!", Toast.LENGTH_SHORT)
+                        .show();
+            }
+            showTaskList();
+        }));
+
+        builder.setNeutralButton("Edit", ((dialogInterface, i) -> {
+            editTaskDialog(index);
+        }));
+
+        builder.setNegativeButton("Cancel", null);
+
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    private void editTaskDialog(int index) {
+        EditText input = new EditText(TaskManagerActivity.this);
+        Task currentTask = taskManager.getTaskAt(index);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(TaskManagerActivity.this);
+        builder.setTitle("Edit task:");
+        builder.setView(input);
+        builder.setPositiveButton("Save", ((dialogInterface, i) -> {
+            String taskName = input.getText().toString();
+
+            if (isValidTaskName(taskName)) {
+                currentTask.setTaskName(taskName);
+                Toast.makeText(getApplicationContext(), "Edited task!", Toast.LENGTH_SHORT)
+                        .show();
+                showTaskList();
+            } else {
+                Toast.makeText(getApplicationContext(), "Invalid task name!",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }));
+
+        builder.setNeutralButton("Delete", ((dialogInterface, i) -> {
+            taskManager.deleteTaskAt(index);
             showTaskList();
         }));
 
