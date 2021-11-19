@@ -41,6 +41,10 @@ public class CoinFlip {
         return won;
     }
 
+    public void setChoosingChild(Child choosingChild) {
+        this.choosingChild = choosingChild;
+    }
+
     public Child getChoosingChild() {
         return choosingChild;
     }
