@@ -3,6 +3,9 @@ package cmpt276.as3.cmpt276hydrogenproject;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
@@ -30,11 +33,14 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import cmpt276.as3.cmpt276hydrogenproject.model.Child;
+import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
 import cmpt276.as3.cmpt276hydrogenproject.model.CoinFlip;
 import cmpt276.as3.cmpt276hydrogenproject.model.CoinFlipManager;
 
 public class CoinFlipActivity extends AppCompatActivity {
     private final CoinFlipManager coinFlipManager = CoinFlipManager.getInstance();
+    private final ChildManager childManager = ChildManager.getInstance();
     SharedPreferences sp;
 
     @Override
@@ -120,18 +126,19 @@ public class CoinFlipActivity extends AppCompatActivity {
 
             // Set green (win), red (lost), or white (no child) icon next to corresponding result
             ImageView resultIconImg = view.findViewById(R.id.resultIconImg);
-            int id;
+            Child choosingChild = coinFlip.getChoosingChild();
+            Bitmap childProfilePic = childManager.decodeToBase64(choosingChild.getProfilePicture());
             if (coinFlip.getWinStatus()) {
-                id = R.drawable.ic_baseline_circle_24_green;
+                resultIconImg.setImageBitmap(childProfilePic);
+                resultIconImg.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
             } else {
-                id = R.drawable.ic_baseline_circle_24_red;
+                resultIconImg.setImageBitmap(childProfilePic);
+                resultIconImg.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
             }
             if (coinFlip.getChoosingChild() == null) {
-                id = R.drawable.ic_baseline_circle_24_white;
+                resultIconImg.setImageBitmap(childProfilePic);
+                resultIconImg.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
             }
-
-            resultIconImg.setImageResource(id);
-
             return view;
         }
     }
