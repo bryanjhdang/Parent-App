@@ -52,8 +52,7 @@ public class EditChildActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_child);
         initializeIntentInfo();
 
-        // TODO: this is a test image, remove later
-        imageView = findViewById(R.id.childPortrait);
+        imageView = findViewById(R.id.childPortraitPreview);
 
         setActionBar();
         setChangeChildInformation();
@@ -93,7 +92,7 @@ public class EditChildActivity extends AppCompatActivity {
     }
 
     private void setChangeImageInput() {
-        ImageView childPortrait = findViewById(R.id.childPortrait);
+        ImageView childPortrait = findViewById(R.id.childPortraitPreview);
         childPortrait.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

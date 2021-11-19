@@ -34,6 +34,7 @@
     <string name="noTaskMessage">There are no tasks! Press + to add tasks.</string>
     <string name="addTaskBtn">addTaskBtn</string>
     <string name="name">Name:</string>
+    <string name="clickToChangeImg">To change the image, click on the icon!</string>
     <string-array name="choices">
         <item>Heads</item>
         <item>Tails</item>

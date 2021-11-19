@@ -43,17 +43,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/childPortrait" />
+        app:layout_constraintTop_toBottomOf="@+id/childPortraitPreview" />
 
     <ImageView
-        android:id="@+id/childPortrait"
+        android:id="@+id/childPortraitPreview"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="80dp"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/icon" />
@@ -70,5 +70,19 @@
         app:layout_constraintHorizontal_bias="0.727"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/childNameEditText" />
+
+    <TextView
+        android:id="@+id/configText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:gravity="center"
+        android:text="@string/clickToChangeImg"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
