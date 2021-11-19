@@ -57,11 +57,7 @@ public class ChildManager {
     }
 
     public boolean containsChild (Child child) {
-        if (CHILDREN_LIST.contains(child)) {
-            return true;
-        } else {
-            return false;
-        }
+        return CHILDREN_LIST.contains(child);
     }
 
     public boolean isEmpty() {

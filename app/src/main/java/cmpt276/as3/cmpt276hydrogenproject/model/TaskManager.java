@@ -40,9 +40,10 @@ public class TaskManager {
             return;
         } else {
             for (Task task : TASK_LIST) {
+                boolean assignedChildDeleted = !childManager.containsChild(task.getCurrentChild());
                 if (task.getCurrentChild() == null) {
                     task.setCurrentChild(childManager.getFirstChild());
-                } else if (!childManager.containsChild(task.getCurrentChild())) {
+                } else if (assignedChildDeleted) {
                     task.setCurrentChild(childManager.getFirstChild());
                 }
             }
