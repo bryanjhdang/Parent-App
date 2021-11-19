@@ -1,5 +1,10 @@
 package cmpt276.as3.cmpt276hydrogenproject.model;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 public class ChildManager {
@@ -51,9 +56,17 @@ public class ChildManager {
 
     public int getSizeOfChildList() { return CHILDREN_LIST.size(); }
 
-    public void addChild(String name) {
-        Child child = new Child(name);
+    public void addChild(String name, String profilePic) {
+        Child child = new Child(name, profilePic);
         CHILDREN_LIST.add(child);
+    }
+
+    public boolean containsChild (Child child) {
+        return CHILDREN_LIST.contains(child);
+    }
+
+    public boolean isEmpty() {
+        return CHILDREN_LIST.isEmpty();
     }
 
     public void removeChildByIdx(int idx) {
@@ -67,6 +80,22 @@ public class ChildManager {
     public void editChildName(int idx, String name) {
         Child child = CHILDREN_LIST.get(idx);
         child.setName(name);
+    }
+
+    //code inspiration from https://stackoverflow.com/questions/18072448/how-to-save-image-in-shared-preference-in-android-shared-preference-issue-in-a
+    //this code is to help with the decoding and encoding of a bitmap into an image when read into the program via shared preferences
+    public String encodeToBase64(Bitmap image) {
+        Bitmap newImage = image;
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        newImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] b = byteArrayOutputStream.toByteArray();
+        String stringifiedImage = Base64.encodeToString(b, Base64.DEFAULT);
+        return stringifiedImage;
+    }
+
+    public Bitmap decodeToBase64(String userInput) {
+        byte[] decodedString = Base64.decode(userInput, 0);
+        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
 
     /**

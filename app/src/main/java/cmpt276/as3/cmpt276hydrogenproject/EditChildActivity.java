@@ -1,10 +1,7 @@
 package cmpt276.as3.cmpt276hydrogenproject;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,6 +14,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
@@ -26,6 +27,8 @@ import java.util.Objects;
 
 import cmpt276.as3.cmpt276hydrogenproject.model.Child;
 import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
+import cmpt276.as3.cmpt276hydrogenproject.model.CoinFlipManager;
+import cmpt276.as3.cmpt276hydrogenproject.model.TaskManager;
 
 /**
  * Showcases the information of an individual child, allowing the following changes:
@@ -36,6 +39,8 @@ public class EditChildActivity extends AppCompatActivity {
     private String actionBarTitle;
     private Child child;
     private ChildManager childManager = ChildManager.getInstance();
+    private CoinFlipManager coinFlipManager = CoinFlipManager.getInstance();
+    private TaskManager taskManager = TaskManager.getInstance();
 
     private final String TITLE_MSG = "actionBarTitle";
     private final String INDEX_MSG = "childIndex";
@@ -43,6 +48,7 @@ public class EditChildActivity extends AppCompatActivity {
 
     private final int IMAGE_GALLERY_REQUEST = 20;
     private ImageView imageView;
+    private Bitmap image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +56,7 @@ public class EditChildActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_child);
         initializeIntentInfo();
 
-        // TODO: this is a test image, remove later
-        imageView = findViewById(R.id.childPortrait);
+        imageView = findViewById(R.id.childPortraitPreview);
 
         setActionBar();
         setChangeChildInformation();
@@ -91,16 +96,39 @@ public class EditChildActivity extends AppCompatActivity {
     }
 
     private void setChangeImageInput() {
-        ImageView childPortrait = findViewById(R.id.childPortrait);
+        ImageView childPortrait = findViewById(R.id.childPortraitPreview);
         childPortrait.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editImage();
+                setImageSelectionAlert();
             }
         });
     }
 
-    private void editImage() {
+    private void setImageSelectionAlert() {
+        String[] imageOptions = getResources().getStringArray(R.array.photoOptions);
+        final int CAMERA = 0;
+        final int GALLERY = 1;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(EditChildActivity.this);
+        builder.setTitle("Choose image from:");
+        builder.setItems(imageOptions, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (i == CAMERA) {
+                    String tempMsg = "Clicked on Camera!";
+                    Toast.makeText(getApplicationContext(), tempMsg, Toast.LENGTH_SHORT)
+                            .show();
+                } else if (i == GALLERY) {
+                    editImageFromGallery();
+                }
+            }
+        });
+
+        builder.show();
+    }
+
+    private void editImageFromGallery() {
         Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK);
         File imageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         String imageDirectoryPath = imageDirectory.getPath();
@@ -122,9 +150,7 @@ public class EditChildActivity extends AppCompatActivity {
 
                 try {
                     inputStream = getContentResolver().openInputStream(imageFromGallery);
-
-                    Bitmap image = BitmapFactory.decodeStream(inputStream);
-
+                    image = BitmapFactory.decodeStream(inputStream);
                     imageView.setImageBitmap(image);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -159,6 +185,7 @@ public class EditChildActivity extends AppCompatActivity {
 
         builder.setPositiveButton("OK", ((dialogInterface, i) -> {
             deleteChild();
+            taskManager.updateTaskChildren();
             finish();
         }));
 
@@ -202,10 +229,16 @@ public class EditChildActivity extends AppCompatActivity {
     }
 
     private void setNewChildInfo(String newChildName) {
+        //if no image is chosen by the user, the default image is set.
+        if(image == null) {
+            image = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
+        }
         if (isEditingChild()) {
+            coinFlipManager.updateCoinFlipChild(child.getName(), newChildName);
             child.setName(newChildName);
+            child.setProfilePicture(childManager.encodeToBase64(image));
         } else {
-            childManager.addChild(newChildName);
+            childManager.addChild(newChildName, childManager.encodeToBase64(image));
         }
     }
 

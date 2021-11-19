@@ -3,6 +3,7 @@ package cmpt276.as3.cmpt276hydrogenproject;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -97,10 +98,12 @@ public class MainActivity extends AppCompatActivity {
     void loadChildren() {
         Gson myGson = new GsonBuilder().create();
         String jsonString = sp.getString("childList", "");
+        Log.i("LOAD", jsonString);
         if (!jsonString.equals("")) {
             Type listType = new TypeToken<ArrayList<Child>>(){}.getType();
             childManager.setAllChildren(myGson.fromJson(jsonString, listType));
         }
+        //Log.i("kasdhg", childManager.getChildAt(0).getProfilePicture().toString());
     }
 
     void loadCoinFlips() {

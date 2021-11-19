@@ -6,9 +6,11 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -137,22 +139,23 @@ public class ConfigureActivity extends AppCompatActivity {
             if (view == null) {
                 view = getLayoutInflater().inflate(R.layout.child_item, parent, false);
             }
-
             // Get name from child list and set TextView to that name
             Child child = childManager.getChildAt(position);
             String name = child.getName();
             TextView childName = view.findViewById(R.id.childNameTxt);
             childName.setText(name);
-
+            ImageView profilePic = view.findViewById(R.id.childIconImg);
+            //the below three lines of code can be commented and uncommented if app crashes upon launch.
+            profilePic.setImageBitmap(childManager.decodeToBase64(child.getProfilePicture()));
             return view;
         }
     }
-
 
     void saveChildren() {
         SharedPreferences.Editor editor = sp.edit();
         Gson myGson = new GsonBuilder().create();
         String jsonString = myGson.toJson(childManager.getChildrenList());
+        Log.i("SAVE", jsonString);
         editor.putString("childList", jsonString);
         editor.apply();
     }

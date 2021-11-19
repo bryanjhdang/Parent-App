@@ -14,12 +14,32 @@ public class Task {
         this.taskName = taskName;
     }
 
+    public Child getCurrentChild() {
+        return currentChild;
+    }
+
+    public void setCurrentChild(Child currentChild) {
+        this.currentChild = currentChild;
+    }
+
     public void taskCompleted() {
         currentChild = childManager.getNextChild(currentChild);
     }
 
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public String getChildName() {
+        return currentChild.getName();
+    }
+
     @Override
     public String toString() {
-        return taskName + "\nIt is " + currentChild.getName() + "'s turn!";
+        if (currentChild == null) {
+            return taskName + "\nThere are no children to do this task!";
+        } else {
+            return taskName + "\nIt is " + currentChild.getName() + "'s turn!";
+        }
     }
 }
