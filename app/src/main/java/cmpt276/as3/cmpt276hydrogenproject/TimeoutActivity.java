@@ -180,10 +180,12 @@ public class TimeoutActivity extends AppCompatActivity {
             setTimeBtn.setVisibility(View.INVISIBLE);
             resetTimerBtn.setVisibility(View.VISIBLE);
             startTimerBtn.setText(R.string.btnTextPause);
+            resetTimerBtn.setText("Stop");
         } else {                                            // Timer is not running
             editTextInput.setVisibility(View.VISIBLE);
             setTimeBtn.setVisibility(View.VISIBLE);
             startTimerBtn.setText(R.string.timerTextResume);
+            resetTimerBtn.setText("Reset");
 
             if (leftTimeInMilli < startTimeInMilli) {
                 resetTimerBtn.setVisibility(View.VISIBLE);
