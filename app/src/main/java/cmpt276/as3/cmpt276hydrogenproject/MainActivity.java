@@ -30,10 +30,13 @@ import cmpt276.as3.cmpt276hydrogenproject.model.Child;
 import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
 import cmpt276.as3.cmpt276hydrogenproject.model.CoinFlip;
 import cmpt276.as3.cmpt276hydrogenproject.model.CoinFlipManager;
+import cmpt276.as3.cmpt276hydrogenproject.model.Task;
+import cmpt276.as3.cmpt276hydrogenproject.model.TaskManager;
 
 public class MainActivity extends AppCompatActivity {
     ChildManager childManager = ChildManager.getInstance();
     CoinFlipManager coinFlipManager = CoinFlipManager.getInstance();
+    TaskManager taskManager = TaskManager.getInstance();
     SharedPreferences sp;
 
     @Override
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
         loadChildren();
         loadCoinFlips();
+        loadTasks();
         toConfigureBtn();
         toCoinflipBtn();
         toTimeoutBtn();
@@ -103,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
             Type listType = new TypeToken<ArrayList<Child>>(){}.getType();
             childManager.setAllChildren(myGson.fromJson(jsonString, listType));
         }
-        //Log.i("kasdhg", childManager.getChildAt(0).getProfilePicture().toString());
     }
 
     void loadCoinFlips() {
@@ -123,6 +126,15 @@ public class MainActivity extends AppCompatActivity {
         if (!jsonString.equals("")) {
             Type listType = new TypeToken<ArrayList<CoinFlip>>(){}.getType();
             coinFlipManager.setCoinFlipList(myGson.fromJson(jsonString, listType));
+        }
+    }
+
+    void loadTasks() {
+        Gson myGson = new GsonBuilder().create();
+        String jsonString = sp.getString("taskList", "");
+        if (!jsonString.equals("")) {
+            Type listType = new TypeToken<ArrayList<Task>>(){}.getType();
+            taskManager.setTaskList(myGson.fromJson(jsonString, listType));
         }
     }
 }

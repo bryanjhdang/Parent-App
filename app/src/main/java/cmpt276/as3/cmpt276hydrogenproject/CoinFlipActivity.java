@@ -151,7 +151,7 @@ public class CoinFlipActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    void saveCoinFlips() {
+    private void saveCoinFlips() {
         SharedPreferences.Editor editor = sp.edit();
         Gson myGson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class,
                 new TypeAdapter<LocalDateTime>() {
