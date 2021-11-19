@@ -1,7 +1,5 @@
 package cmpt276.as3.cmpt276hydrogenproject;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,17 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import org.w3c.dom.Text;
-
 import java.util.Objects;
 
-import cmpt276.as3.cmpt276hydrogenproject.model.Child;
 import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
 import cmpt276.as3.cmpt276hydrogenproject.model.Task;
 import cmpt276.as3.cmpt276hydrogenproject.model.TaskManager;
@@ -38,15 +34,17 @@ public class TaskManagerActivity extends AppCompatActivity {
         setContentView(R.layout.task_manager_activity);
         setActionBar();
 
-        //dummy();
-
         showTaskList();
+        taskManager.updateTaskChildren();
         addTaskButton();
+        registerClickCallback();
     }
 
-    private void dummy() {
-        Task one = new Task("DUMMY", childManager.getFirstChild());
-        taskManager.addTask(one);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showTaskList();
+        taskManager.updateTaskChildren();
     }
 
     private void addTaskButton() {
@@ -62,7 +60,7 @@ public class TaskManagerActivity extends AppCompatActivity {
                 String taskName = input.getText().toString();
 
                 if (isValidTaskName(taskName)) {
-                    taskManager.addTask(taskName, childManager.getFirstChild());
+                    taskManager.addTask(taskName);
                     Toast.makeText(getApplicationContext(), "Added task!", Toast.LENGTH_SHORT)
                             .show();
                     showTaskList();
@@ -132,5 +130,80 @@ public class TaskManagerActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setTitle("Task Manager");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
                 .getColor(R.color.darker_navy_blue)));
+    }
+
+    private void registerClickCallback() {
+        ListView list = findViewById(R.id.taskListView);
+        list.setOnItemClickListener((adapterView, view, index, id) -> {
+                Toast.makeText(getApplicationContext(), "HI", Toast.LENGTH_SHORT).show();
+                expandTaskInfo(index);
+        });
+    }
+
+    private void expandTaskInfo(int index) {
+        ImageView image = new ImageView(this);
+        image.setImageResource(R.drawable.icon);
+        Task currentTask = taskManager.getTaskAt(index);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(TaskManagerActivity.this);
+        builder.setTitle("Task: " + currentTask.getTaskName());
+        if (currentTask.getCurrentChild() != null) {
+            builder.setMessage("This task is assigned to: " + currentTask.getChildName());
+        } else {
+            builder.setMessage("There are no children to assign tasks to!");
+        }
+        builder.setView(image);
+
+        builder.setPositiveButton("Finished!", ((dialogInterface, i) -> {
+            if (currentTask.getCurrentChild() != null) {
+                currentTask.taskCompleted();
+            } else {
+                Toast.makeText(getApplicationContext(),
+                        "There are no children to finish this task!", Toast.LENGTH_SHORT)
+                        .show();
+            }
+            showTaskList();
+        }));
+
+        builder.setNeutralButton("Edit", ((dialogInterface, i) -> {
+            editTaskDialog(index);
+        }));
+
+        builder.setNegativeButton("Cancel", null);
+
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    private void editTaskDialog(int index) {
+        EditText input = new EditText(TaskManagerActivity.this);
+        Task currentTask = taskManager.getTaskAt(index);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(TaskManagerActivity.this);
+        builder.setTitle("Edit task:");
+        builder.setView(input);
+        builder.setPositiveButton("Save", ((dialogInterface, i) -> {
+            String taskName = input.getText().toString();
+
+            if (isValidTaskName(taskName)) {
+                currentTask.setTaskName(taskName);
+                Toast.makeText(getApplicationContext(), "Edited task!", Toast.LENGTH_SHORT)
+                        .show();
+                showTaskList();
+            } else {
+                Toast.makeText(getApplicationContext(), "Invalid task name!",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }));
+
+        builder.setNeutralButton("Delete", ((dialogInterface, i) -> {
+            taskManager.deleteTaskAt(index);
+            showTaskList();
+        }));
+
+        builder.setNegativeButton("Cancel", null);
+
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }
