@@ -127,17 +127,20 @@ public class CoinFlipActivity extends AppCompatActivity {
             // Set green (win), red (lost), or white (no child) icon next to corresponding result
             ImageView resultIconImg = view.findViewById(R.id.resultIconImg);
             Child choosingChild = coinFlip.getChoosingChild();
-            Bitmap childProfilePic = childManager.decodeToBase64(choosingChild.getProfilePicture());
+            Bitmap childProfilePic = null;
+            if(choosingChild != null) {
+                childProfilePic = childManager.decodeToBase64(choosingChild.getProfilePicture());
+            }
             if (coinFlip.getWinStatus()) {
                 resultIconImg.setImageBitmap(childProfilePic);
-                resultIconImg.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
+                resultIconImg.setBackgroundColor(Color.GREEN);
             } else {
                 resultIconImg.setImageBitmap(childProfilePic);
-                resultIconImg.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+                resultIconImg.setBackgroundColor(Color.RED);
             }
             if (coinFlip.getChoosingChild() == null) {
-                resultIconImg.setImageBitmap(childProfilePic);
-                resultIconImg.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
+                resultIconImg.setImageResource(R.drawable.ic_baseline_person_24);
+                resultIconImg.setBackgroundColor(Color.GRAY);
             }
             return view;
         }

@@ -33,6 +33,8 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginStart="24dp"
+        android:scaleType="fitXY"
+        android:padding="2dp"
         app:layout_constraintBottom_toBottomOf="@+id/rectangularCoinFlipBG"
         app:layout_constraintStart_toStartOf="@+id/rectangularCoinFlipBG"
         app:layout_constraintTop_toTopOf="@+id/rectangularCoinFlipBG"
