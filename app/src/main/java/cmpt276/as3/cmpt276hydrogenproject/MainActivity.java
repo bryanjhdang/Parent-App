@@ -103,10 +103,7 @@ public class MainActivity extends AppCompatActivity {
             Type listType = new TypeToken<ArrayList<Child>>(){}.getType();
             childManager.setAllChildren(myGson.fromJson(jsonString, listType));
         }
-        Log.i("kasdhg", childManager.getChildAt(0).getProfilePicture().toString());
-        for(Child child : childManager.getChildrenList()) {
-            childManager.convertStringToBitmap(child.getProfilePicture().toString());
-        }
+        //Log.i("kasdhg", childManager.getChildAt(0).getProfilePicture().toString());
     }
 
     void loadCoinFlips() {

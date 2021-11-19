@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 public class ChildManager {
@@ -55,7 +56,7 @@ public class ChildManager {
 
     public int getSizeOfChildList() { return CHILDREN_LIST.size(); }
 
-    public void addChild(String name, Bitmap profilePic) {
+    public void addChild(String name, String profilePic) {
         Child child = new Child(name, profilePic);
         CHILDREN_LIST.add(child);
     }
@@ -73,11 +74,18 @@ public class ChildManager {
         child.setName(name);
     }
 
-    public Bitmap convertStringToBitmap(String string) {
-        byte[] byteArray;
-        byteArray = Base64.decode(string, Base64.DEFAULT);
-        Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-        return bmp;
+    public String encodeToBase64(Bitmap image) {
+        Bitmap newImage = image;
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        newImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] b = byteArrayOutputStream.toByteArray();
+        String stringifiedImage = Base64.encodeToString(b, Base64.DEFAULT);
+        return stringifiedImage;
+    }
+
+    public Bitmap decodeToBase64(String userInput) {
+        byte[] decodedString = Base64.decode(userInput, 0);
+        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
 
     /**

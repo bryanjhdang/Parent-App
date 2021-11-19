@@ -14,6 +14,7 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,9 +22,11 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+
 import java.util.Objects;
 
 import cmpt276.as3.cmpt276hydrogenproject.model.Child;
@@ -230,12 +233,14 @@ public class EditChildActivity extends AppCompatActivity {
     }
 
     private void setNewChildInfo(String newChildName) {
+        if(image == null) {
+            image = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
+        }
         if (isEditingChild()) {
             child.setName(newChildName);
-            child.setProfilePicture(image);
+            child.setProfilePicture(childManager.encodeToBase64(image));
         } else {
-            childManager.addChild(newChildName, image);
-            Toast.makeText(this, image.toString(), Toast.LENGTH_LONG).show();
+            childManager.addChild(newChildName, childManager.encodeToBase64(image));
         }
     }
 
