@@ -147,11 +147,21 @@ public class TaskManagerActivity extends AppCompatActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(TaskManagerActivity.this);
         builder.setTitle("Task: " + currentTask.getTaskName());
-        builder.setMessage("This task is assigned to: " + currentTask.getChildName());
+        if (currentTask.getCurrentChild() != null) {
+            builder.setMessage("This task is assigned to: " + currentTask.getChildName());
+        } else {
+            builder.setMessage("There are no children to assign tasks to!");
+        }
         builder.setView(image);
 
         builder.setPositiveButton("Finished!", ((dialogInterface, i) -> {
-            currentTask.taskCompleted();
+            if (currentTask.getCurrentChild() != null) {
+                currentTask.taskCompleted();
+            } else {
+                Toast.makeText(getApplicationContext(),
+                        "There are no children to finish this task!", Toast.LENGTH_SHORT)
+                        .show();
+            }
             showTaskList();
         }));
 
