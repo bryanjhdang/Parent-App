@@ -34,7 +34,8 @@ public class NotificationBroadcast extends BroadcastReceiver {
                 .setContentIntent(pendingIntent)
                 .setVibrate(VIBRATE_PATTERN)
                 .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
-                .setAutoCancel(true);
+                .setAutoCancel(true)
+                .setOnlyAlertOnce(true);
 
         NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "name", NotificationManager.IMPORTANCE_HIGH);
         channel.setDescription("description");
