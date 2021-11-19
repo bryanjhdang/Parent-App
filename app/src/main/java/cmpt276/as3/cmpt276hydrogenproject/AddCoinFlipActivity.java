@@ -74,8 +74,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
                 }));
                 builder.setNegativeButton("No", null);
 
-                AlertDialog alert = builder.create();
-                alert.show();
+                builder.show();
             }
         });
     }
