@@ -1,32 +1,28 @@
 package cmpt276.as3.cmpt276hydrogenproject;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-
 import java.util.Objects;
 
 import cmpt276.as3.cmpt276hydrogenproject.model.Child;
@@ -40,7 +36,7 @@ import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
 public class EditChildActivity extends AppCompatActivity {
     private String actionBarTitle;
     private Child child;
-    private ChildManager childManager = ChildManager.getInstance();
+    private final ChildManager childManager = ChildManager.getInstance();
 
     private final String TITLE_MSG = "actionBarTitle";
     private final String INDEX_MSG = "childIndex";
@@ -49,7 +45,6 @@ public class EditChildActivity extends AppCompatActivity {
     private final int IMAGE_GALLERY_REQUEST = 20;
     private ImageView imageView;
     private Bitmap image;
-    private boolean imageAdded;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,11 +147,8 @@ public class EditChildActivity extends AppCompatActivity {
 
                 try {
                     inputStream = getContentResolver().openInputStream(imageFromGallery);
-
                     image = BitmapFactory.decodeStream(inputStream);
-
                     imageView.setImageBitmap(image);
-                    imageAdded = true;
                 } catch (IOException e) {
                     e.printStackTrace();
                     Toast.makeText(this,
@@ -218,9 +210,9 @@ public class EditChildActivity extends AppCompatActivity {
                                 .show();
                     } else {
                         setNewChildInfo(newChildName);
-                        //String msg = "Child added.";
-                        //Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
-                        //        .show();
+                        String msg = "Child added.";
+                        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
+                                .show();
                         finish();
                     }
                 } else {
@@ -233,6 +225,7 @@ public class EditChildActivity extends AppCompatActivity {
     }
 
     private void setNewChildInfo(String newChildName) {
+        //if no image is chosen by the user, the default image is set.
         if(image == null) {
             image = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
         }
