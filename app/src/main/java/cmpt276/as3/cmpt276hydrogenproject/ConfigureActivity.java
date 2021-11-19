@@ -146,9 +146,7 @@ public class ConfigureActivity extends AppCompatActivity {
             childName.setText(name);
             ImageView profilePic = view.findViewById(R.id.childIconImg);
             //the below three lines of code can be commented and uncommented if app crashes upon launch.
-            if(profilePic != null) {
-                profilePic.setImageBitmap(childManager.decodeToBase64(child.getProfilePicture()));
-            }
+            profilePic.setImageBitmap(childManager.decodeToBase64(child.getProfilePicture()));
             return view;
         }
     }
