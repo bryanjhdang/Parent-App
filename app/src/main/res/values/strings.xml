@@ -34,9 +34,14 @@
     <string name="noTaskMessage">There are no tasks! Press + to add tasks.</string>
     <string name="addTaskBtn">addTaskBtn</string>
     <string name="name">Name:</string>
+    <string name="clickToChangeImg">To change the image, click on the icon!</string>
     <string-array name="choices">
         <item>Heads</item>
         <item>Tails</item>
+    </string-array>
+    <string-array name="photoOptions">
+        <item>Camera</item>
+        <item>Gallery</item>
     </string-array>
     <string-array name="appDevInformation">
         <item><b>Team Name: </b>Hydrogen</item>
