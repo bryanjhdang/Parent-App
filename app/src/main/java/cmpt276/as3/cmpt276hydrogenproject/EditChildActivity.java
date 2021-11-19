@@ -26,6 +26,8 @@ import java.util.Objects;
 
 import cmpt276.as3.cmpt276hydrogenproject.model.Child;
 import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
+import cmpt276.as3.cmpt276hydrogenproject.model.Task;
+import cmpt276.as3.cmpt276hydrogenproject.model.TaskManager;
 
 /**
  * Showcases the information of an individual child, allowing the following changes:
@@ -36,6 +38,7 @@ public class EditChildActivity extends AppCompatActivity {
     private String actionBarTitle;
     private Child child;
     private ChildManager childManager = ChildManager.getInstance();
+    private TaskManager taskManager = TaskManager.getInstance();
 
     private final String TITLE_MSG = "actionBarTitle";
     private final String INDEX_MSG = "childIndex";
@@ -159,6 +162,7 @@ public class EditChildActivity extends AppCompatActivity {
 
         builder.setPositiveButton("OK", ((dialogInterface, i) -> {
             deleteChild();
+            taskManager.updateTaskChildren();
             finish();
         }));
 

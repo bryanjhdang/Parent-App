@@ -9,8 +9,8 @@
 
     <ListView
         android:id="@+id/taskListView"
-        android:layout_width="411dp"
-        android:layout_height="732dp"
+        android:layout_width="406dp"
+        android:layout_height="655dp"
         android:divider="@null"
         android:dividerHeight="20dp"
         app:layout_constraintBottom_toBottomOf="parent"

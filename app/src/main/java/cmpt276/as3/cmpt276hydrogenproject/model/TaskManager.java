@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class TaskManager {
     private ArrayList<Task> TASK_LIST = new ArrayList<>();
     private static TaskManager instance;
+    private ChildManager childManager = ChildManager.getInstance();
 
     public static TaskManager getInstance() {
         if (instance == null) {
@@ -17,7 +18,7 @@ public class TaskManager {
         return TASK_LIST;
     }
 
-    public void setTaskListT(ArrayList<Task> taskList) {
+    public void setTaskList(ArrayList<Task> taskList) {
         this.TASK_LIST = taskList;
     }
 
@@ -25,9 +26,35 @@ public class TaskManager {
         TASK_LIST.add(newTask);
     }
 
-    public void addTask(String taskName, Child child) {
-        Task newTask = new Task(taskName, child);
+    public void addTask(String taskName) {
+        Task newTask;
+        if (childManager.isEmpty()) {
+            newTask = new Task(taskName, null);
+        } else {
+            newTask = new Task(taskName, childManager.getFirstChild());
+        }
         TASK_LIST.add(newTask);
+    }
+
+    public void updateTaskChildren() {
+        if (childManager.isEmpty()) {
+            for (Task task : TASK_LIST) {
+                task.setCurrentChild(null);
+            }
+            return;
+        } else {
+            for (Task task : TASK_LIST) {
+                if (task.getCurrentChild() == null) {
+                    task.setCurrentChild(childManager.getFirstChild());
+                } else if (!childManager.containsChild(task.getCurrentChild())) {
+                    task.setCurrentChild(childManager.getFirstChild());
+                }
+            }
+        }
+    }
+
+    public void deleteTaskAt(int index) {
+        TASK_LIST.remove(index);
     }
 
     public Task getTaskAt(int index) {
