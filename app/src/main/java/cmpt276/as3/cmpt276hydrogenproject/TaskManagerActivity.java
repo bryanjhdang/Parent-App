@@ -5,9 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -19,6 +21,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.Objects;
 
@@ -28,6 +32,7 @@ import cmpt276.as3.cmpt276hydrogenproject.model.Task;
 import cmpt276.as3.cmpt276hydrogenproject.model.TaskManager;
 
 public class TaskManagerActivity extends AppCompatActivity {
+    SharedPreferences sp;
     private TaskManager taskManager = TaskManager.getInstance();
     private ChildManager childManager = ChildManager.getInstance();
 
@@ -36,9 +41,10 @@ public class TaskManagerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.task_manager_activity);
         setActionBar();
+        sp = getSharedPreferences("Hydrogen", Context.MODE_PRIVATE);
 
         showTaskList();
-        taskManager.updateTaskChildren();
+        //taskManager.updateTaskChildren();
         addTaskButton();
         registerClickCallback();
     }
@@ -47,7 +53,7 @@ public class TaskManagerActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         showTaskList();
-        taskManager.updateTaskChildren();
+        //taskManager.updateTaskChildren();
     }
 
     private void addTaskButton() {
@@ -99,7 +105,7 @@ public class TaskManagerActivity extends AppCompatActivity {
 
         TextView emptyMessage = findViewById(R.id.taskListEmptyText);
         taskListView.setEmptyView(emptyMessage);
-        //save here
+        saveTasks();
         arrayAdapter.notifyDataSetChanged();
 
     }
@@ -173,6 +179,7 @@ public class TaskManagerActivity extends AppCompatActivity {
         builder.setPositiveButton("Finished!", ((dialogInterface, i) -> {
             if (currentTask.getCurrentChild() != null) {
                 currentTask.taskCompleted();
+                saveTasks();
             } else {
                 Toast.makeText(getApplicationContext(),
                         "There are no children to finish this task!", Toast.LENGTH_SHORT)
@@ -221,5 +228,14 @@ public class TaskManagerActivity extends AppCompatActivity {
 
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    private void saveTasks() {
+        SharedPreferences.Editor editor = sp.edit();
+        Gson myGson = new GsonBuilder().create();
+        String jsonString = myGson.toJson(taskManager.getTaskList());
+        Log.d("TAG", jsonString);
+        editor.putString("taskList", jsonString);
+        editor.apply();
     }
 }

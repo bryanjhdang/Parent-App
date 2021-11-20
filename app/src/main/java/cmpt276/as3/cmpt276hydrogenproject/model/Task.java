@@ -23,6 +23,7 @@ public class Task {
     }
 
     public void taskCompleted() {
+        childManager = ChildManager.getInstance();
         currentChild = childManager.getNextChild(currentChild);
     }
 
