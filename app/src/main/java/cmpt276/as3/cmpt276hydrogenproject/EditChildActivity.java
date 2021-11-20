@@ -93,6 +93,8 @@ public class EditChildActivity extends AppCompatActivity {
         if (isEditingChild()) {
             EditText nameInput = findViewById(R.id.childNameEditText);
             nameInput.setText(child.getName());
+            Bitmap currentChildProfilePic = childManager.decodeToBase64(child.getProfilePicture());
+            imageView.setImageBitmap(currentChildProfilePic);
         }
     }
 
