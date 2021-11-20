@@ -24,13 +24,14 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/childIconImg"
         app:layout_constraintStart_toEndOf="@+id/childIconImg"
-        app:layout_constraintTop_toTopOf="@+id/childIconImg"></TextView>
+        app:layout_constraintTop_toTopOf="@+id/childIconImg" />
 
     <ImageView
         android:id="@+id/childIconImg"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
         android:layout_marginStart="24dp"
+        android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="@+id/rectangularChildListBG"
         app:layout_constraintStart_toStartOf="@+id/rectangularChildListBG"
         app:layout_constraintTop_toTopOf="@+id/rectangularChildListBG"

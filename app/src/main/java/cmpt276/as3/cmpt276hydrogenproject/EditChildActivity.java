@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -119,6 +120,7 @@ public class EditChildActivity extends AppCompatActivity {
                     String tempMsg = "Clicked on Camera!";
                     Toast.makeText(getApplicationContext(), tempMsg, Toast.LENGTH_SHORT)
                             .show();
+                    editImageFromCamera();
                 } else if (i == GALLERY) {
                     editImageFromGallery();
                 }
@@ -139,6 +141,11 @@ public class EditChildActivity extends AppCompatActivity {
         startActivityForResult(pickPhotoIntent, IMAGE_GALLERY_REQUEST);
     }
 
+    private void editImageFromCamera() {
+        Intent newPictureFromCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(newPictureFromCameraIntent, 69);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK) {
@@ -153,6 +160,18 @@ public class EditChildActivity extends AppCompatActivity {
                     image = BitmapFactory.decodeStream(inputStream);
                     imageView.setImageBitmap(image);
                 } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(this,
+                            "Unable to open image",
+                            Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                try {
+                    assert data != null;
+                    Bitmap cameraImage = (Bitmap) data.getExtras().get("data");
+                    image = cameraImage;
+                    imageView.setImageBitmap(cameraImage);
+                } catch (Exception e) {
                     e.printStackTrace();
                     Toast.makeText(this,
                             "Unable to open image",

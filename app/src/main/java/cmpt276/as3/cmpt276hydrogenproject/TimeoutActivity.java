@@ -2,6 +2,7 @@ package cmpt276.as3.cmpt276hydrogenproject;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -90,8 +91,10 @@ public class TimeoutActivity extends AppCompatActivity {
             // Parse string input into long
             long inputInMilli = Long.parseLong(input) * CONVERT_MILLIS_TO_SECONDS;
             if (inputInMilli == 0) {
+                //remove the below line and put return back later
+                inputInMilli = 5000;
                 Toast.makeText(TimeoutActivity.this, "Invalid: Enter 1 minute or greater", Toast.LENGTH_SHORT).show();
-                return;
+                //return;
             }
             editTextInput.setText("");
             setTime(inputInMilli);
@@ -140,9 +143,13 @@ public class TimeoutActivity extends AppCompatActivity {
     }
 
     private void resetTimer() {
+        Intent intent = new Intent(TimeoutActivity.this, NotificationBroadcast.class);
+        @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(TimeoutActivity.this, 0, intent, 0);
         if(backgroundTimerCountDown != null) {
             pauseTimer();
         }
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(0);
         leftTimeInMilli = startTimeInMilli;
         updateDisplayTimer();
         updateLayoutVisibility();
@@ -180,10 +187,12 @@ public class TimeoutActivity extends AppCompatActivity {
             setTimeBtn.setVisibility(View.INVISIBLE);
             resetTimerBtn.setVisibility(View.VISIBLE);
             startTimerBtn.setText(R.string.btnTextPause);
+            resetTimerBtn.setText("Stop");
         } else {                                            // Timer is not running
             editTextInput.setVisibility(View.VISIBLE);
             setTimeBtn.setVisibility(View.VISIBLE);
             startTimerBtn.setText(R.string.timerTextResume);
+            resetTimerBtn.setText("Reset");
 
             if (leftTimeInMilli < startTimeInMilli) {
                 resetTimerBtn.setVisibility(View.VISIBLE);

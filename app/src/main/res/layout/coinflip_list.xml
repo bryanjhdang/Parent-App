@@ -30,9 +30,11 @@
 
     <ImageView
         android:id="@+id/resultIconImg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
         android:layout_marginStart="24dp"
+        android:scaleType="fitXY"
+        android:padding="2dp"
         app:layout_constraintBottom_toBottomOf="@+id/rectangularCoinFlipBG"
         app:layout_constraintStart_toStartOf="@+id/rectangularCoinFlipBG"
         app:layout_constraintTop_toTopOf="@+id/rectangularCoinFlipBG"
