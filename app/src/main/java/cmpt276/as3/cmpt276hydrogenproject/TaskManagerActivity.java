@@ -44,7 +44,6 @@ public class TaskManagerActivity extends AppCompatActivity {
         sp = getSharedPreferences("Hydrogen", Context.MODE_PRIVATE);
 
         showTaskList();
-        //taskManager.updateTaskChildren();
         addTaskButton();
         registerClickCallback();
     }
@@ -53,7 +52,6 @@ public class TaskManagerActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         showTaskList();
-        //taskManager.updateTaskChildren();
     }
 
     private void addTaskButton() {
