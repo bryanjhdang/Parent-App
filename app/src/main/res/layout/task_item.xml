@@ -19,25 +19,27 @@
 
     <ImageView
         android:id="@+id/taskIconImg"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="@+id/taskListBG"
         app:layout_constraintEnd_toEndOf="@+id/taskListBG"
-        app:layout_constraintHorizontal_bias="0.046"
+        app:layout_constraintHorizontal_bias="0.068"
         app:layout_constraintStart_toStartOf="@+id/taskListBG"
         app:layout_constraintTop_toTopOf="@+id/taskListBG"
-        app:layout_constraintVertical_bias="0.628"
+        app:layout_constraintVertical_bias="0.625"
         app:srcCompat="@drawable/ic_baseline_person_24" />
 
     <TextView
         android:id="@+id/taskViewText"
-        android:layout_width="279dp"
-        android:layout_height="47dp"
+        android:layout_width="253dp"
+        android:layout_height="32dp"
         android:text="TextView"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/taskListBG"
         app:layout_constraintEnd_toEndOf="@+id/taskListBG"
-        app:layout_constraintHorizontal_bias="0.662"
+        app:layout_constraintHorizontal_bias="0.818"
         app:layout_constraintStart_toStartOf="@+id/taskListBG"
         app:layout_constraintTop_toTopOf="@+id/taskListBG"
-        app:layout_constraintVertical_bias="0.535" />
+        app:layout_constraintVertical_bias="0.405" />
 </androidx.constraintlayout.widget.ConstraintLayout>
