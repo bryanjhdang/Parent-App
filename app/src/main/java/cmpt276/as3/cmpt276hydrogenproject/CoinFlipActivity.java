@@ -179,4 +179,8 @@ public class CoinFlipActivity extends AppCompatActivity {
         editor.putString("coinFlipList", jsonString);
         editor.apply();
     }
+
+    private void saveChildQueue() {
+
+    }
 }

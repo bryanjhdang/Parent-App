@@ -88,6 +88,10 @@ public class ChildManager {
         CHILDREN_LIST.remove(idx);
     }
 
+    public void setChildQueue(ArrayList<Child> COIN_FLIP_QUEUE) {
+        this.COIN_FLIP_QUEUE = COIN_FLIP_QUEUE;
+    }
+
     public void removeChildByObject(Child child) {
         CHILDREN_LIST.remove(child);
         COIN_FLIP_QUEUE.remove(child);

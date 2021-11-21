@@ -126,6 +126,7 @@ public class ConfigureActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
 
         saveChildren();
+        saveChildQueue();
     }
 
     private class ChildrenListAdapter extends ArrayAdapter<Child> {
@@ -151,12 +152,21 @@ public class ConfigureActivity extends AppCompatActivity {
         }
     }
 
-    void saveChildren() {
+    private void saveChildren() {
         SharedPreferences.Editor editor = sp.edit();
         Gson myGson = new GsonBuilder().create();
         String jsonString = myGson.toJson(childManager.getChildrenList());
         Log.i("SAVE", jsonString);
         editor.putString("childList", jsonString);
+        editor.apply();
+    }
+
+    private void saveChildQueue() {
+        SharedPreferences.Editor editor = sp.edit();
+        Gson myGson = new GsonBuilder().create();
+        String jsonString = myGson.toJson(childManager.getQueue());
+        Log.i("SAVE", jsonString);
+        editor.putString("childQueue", jsonString);
         editor.apply();
     }
 
