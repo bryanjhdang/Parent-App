@@ -53,6 +53,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
         setNextChoiceSuggestion();
         choosingChildSpinner();
         createRadioButtons();
+
     }
 
     public static Intent makeIntent(Context context) {
@@ -92,7 +93,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
             playCoinFlipSound();
             getResultOfCoinFlip(childlessCoinFlip);
         } else {
-            flipCoinChild = childManager.getNextChild(coinFlipManager.getPreviousPick());
+            flipCoinChild = childManager.getNextChildInCoinFlipQueue(coinFlipManager.getPreviousPick());
         }
     }
 
@@ -189,13 +190,14 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
             String noKids = "There are no children in the database!";
             nextChildSuggestion.setText(noKids);
         } else {
-            int indexOfNextChild = childManager.indexOfChild(coinFlipManager.getPreviousPick()) + 1;
+            Child previousChild = coinFlipManager.getPreviousPick();
+            int indexOfNextChild = childManager.indexOfChildInCoinFlipQueue(previousChild) + 1;
             //if the next index is greater than [size-1] (which is the highest index for an arraylist
             //of size = n) then it returns to beginning of the list to suggest.
             if (indexOfNextChild > (childManager.getSizeOfChildList()-1)) {
                 indexOfNextChild = 0;
             }
-            Child nextChild = childManager.getChildAt(indexOfNextChild);
+            Child nextChild = childManager.getChildFromCoinFlipQueueAt(indexOfNextChild);
             String suggestion = "The next suggested child to pick is: " + nextChild;
             nextChildSuggestion.setText(suggestion);
         }
@@ -206,11 +208,11 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
 
         ArrayAdapter adapter = new ArrayAdapter<Child>(this,
                 android.R.layout.simple_spinner_dropdown_item,
-                childManager.getChildrenList());
+                childManager.getQueue());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
 
         choosingChildSpinner.setAdapter(adapter);
-        choosingChildSpinner.setSelection(childManager.indexOfChild(flipCoinChild));
+        choosingChildSpinner.setSelection(childManager.indexOfChildInCoinFlipQueue(flipCoinChild));
         choosingChildSpinner.setOnItemSelectedListener(this);
     }
 
@@ -242,7 +244,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         int choice = parent.getSelectedItemPosition();
-        Child choosingChild = childManager.getChildAt(choice);
+        Child choosingChild = childManager.getChildFromCoinFlipQueueAt(choice);
 
         ((TextView) parent.getSelectedView()).setTextColor(Color.WHITE);
         //if the user wants to have the same child as last time pick, display a helpful message

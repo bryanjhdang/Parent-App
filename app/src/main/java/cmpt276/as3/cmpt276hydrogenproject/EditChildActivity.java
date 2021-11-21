@@ -216,6 +216,7 @@ public class EditChildActivity extends AppCompatActivity {
 
     private void deleteChild() {
         childManager.removeChildByObject(child);
+        // TODO: Implement queue
     }
 
     private void setSaveChildButton() {
@@ -258,6 +259,7 @@ public class EditChildActivity extends AppCompatActivity {
             child.setProfilePicture(childManager.encodeToBase64(image));
         } else {
             childManager.addChild(newChildName, childManager.encodeToBase64(image));
+            // TODO: Implement queue manager
         }
     }
 
