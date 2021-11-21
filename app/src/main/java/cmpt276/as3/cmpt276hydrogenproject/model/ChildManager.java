@@ -51,6 +51,11 @@ public class ChildManager {
         return COIN_FLIP_QUEUE.indexOf(child);
     }
 
+    public void moveChildToBackOfQueue(Child child) {
+        COIN_FLIP_QUEUE.remove(child);
+        COIN_FLIP_QUEUE.add(child);
+    }
+
     public ArrayList<Child> getChildrenList() {
         return CHILDREN_LIST;
     }
@@ -68,7 +73,7 @@ public class ChildManager {
     public void addChild(String name, String profilePic) {
         Child child = new Child(name, profilePic);
         CHILDREN_LIST.add(child);
-//        COIN_FLIP_QUEUE.add(child);
+        COIN_FLIP_QUEUE.add(child);
     }
 
     public boolean containsChild (Child child) {
@@ -85,7 +90,7 @@ public class ChildManager {
 
     public void removeChildByObject(Child child) {
         CHILDREN_LIST.remove(child);
-//        COIN_FLIP_QUEUE.remove(child);
+        COIN_FLIP_QUEUE.remove(child);
     }
 
     public void editChildName(int idx, String name) {
