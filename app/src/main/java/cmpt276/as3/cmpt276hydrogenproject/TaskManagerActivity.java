@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +26,7 @@ import com.google.gson.GsonBuilder;
 
 import java.util.Objects;
 
+import cmpt276.as3.cmpt276hydrogenproject.model.Child;
 import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
 import cmpt276.as3.cmpt276hydrogenproject.model.Task;
 import cmpt276.as3.cmpt276hydrogenproject.model.TaskManager;
@@ -41,7 +44,6 @@ public class TaskManagerActivity extends AppCompatActivity {
         sp = getSharedPreferences("Hydrogen", Context.MODE_PRIVATE);
 
         showTaskList();
-        //taskManager.updateTaskChildren();
         addTaskButton();
         registerClickCallback();
     }
@@ -50,7 +52,6 @@ public class TaskManagerActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         showTaskList();
-        //taskManager.updateTaskChildren();
     }
 
     private void addTaskButton() {
@@ -120,6 +121,13 @@ public class TaskManagerActivity extends AppCompatActivity {
             }
 
             Task task = taskManager.getTaskAt(position);
+            Child currentChild = task.getCurrentChild();
+
+            ImageView imageView = view.findViewById(R.id.taskIconImg);
+            if(currentChild != null) {
+                Bitmap bitmap = childManager.decodeToBase64(currentChild.getProfilePicture());
+                imageView.setImageBitmap(bitmap);
+            }
 
             TextView taskText = view.findViewById(R.id.taskViewText);
             taskText.setText(task.toString());
@@ -148,8 +156,14 @@ public class TaskManagerActivity extends AppCompatActivity {
 
     private void expandTaskInfo(int index) {
         ImageView image = new ImageView(this);
-        image.setImageResource(R.drawable.icon);
         Task currentTask = taskManager.getTaskAt(index);
+        Child currentTaskChild = currentTask.getCurrentChild();
+        if (currentTaskChild == null) {
+            image.setImageResource(R.drawable.icon);
+        } else {
+            Bitmap childProfilePic = childManager.decodeToBase64(currentTaskChild.getProfilePicture());
+            image.setImageBitmap(childProfilePic);
+        }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(TaskManagerActivity.this);
         builder.setTitle("Task: " + currentTask.getTaskName());
