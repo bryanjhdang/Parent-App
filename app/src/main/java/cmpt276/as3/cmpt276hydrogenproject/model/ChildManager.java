@@ -6,9 +6,11 @@ import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Queue;
 
 public class ChildManager {
     private ArrayList<Child> CHILDREN_LIST = new ArrayList<>();
+    private ArrayList<Child> COIN_FLIP_QUEUE = new ArrayList<>();
     private static ChildManager instance;
 
     /**
@@ -28,26 +30,42 @@ public class ChildManager {
         return CHILDREN_LIST.get(index);
     }
 
+    public Child getChildFromCoinFlipQueueAt(int index) {
+        return COIN_FLIP_QUEUE.get(index);
+    }
+
     public Child getFirstChild() {
         return CHILDREN_LIST.get(0);
     }
 
-    //suggests a child to pick
-    public Child getNextChild(Child previousPick) {
-        int index = CHILDREN_LIST.indexOf(previousPick);
+    public Child getNextChildInCoinFlipQueue(Child previousPick) {
+        int index = COIN_FLIP_QUEUE.indexOf(previousPick);
         index++;
-        if (index == CHILDREN_LIST.size()) {
+        if (index == COIN_FLIP_QUEUE.size()) {
             index = 0;
         }
-        return CHILDREN_LIST.get(index);
+        return COIN_FLIP_QUEUE.get(index);
     }
 
-    public int indexOfChild(Child child) {
-        return CHILDREN_LIST.indexOf(child);
+    public int indexOfChildInCoinFlipQueue(Child child) {
+        return COIN_FLIP_QUEUE.indexOf(child);
+    }
+
+    public void moveChildToBackOfQueue(Child child) {
+        COIN_FLIP_QUEUE.remove(child);
+        COIN_FLIP_QUEUE.add(child);
     }
 
     public ArrayList<Child> getChildrenList() {
         return CHILDREN_LIST;
+    }
+
+    public ArrayList<Child> getChildQueue() {
+        return COIN_FLIP_QUEUE;
+    }
+
+    public void setChildQueue(ArrayList<Child> COIN_FLIP_QUEUE) {
+        this.COIN_FLIP_QUEUE = COIN_FLIP_QUEUE;
     }
 
     public void setAllChildren(ArrayList<Child> childList) {
@@ -59,6 +77,7 @@ public class ChildManager {
     public void addChild(String name, String profilePic) {
         Child child = new Child(name, profilePic);
         CHILDREN_LIST.add(child);
+        COIN_FLIP_QUEUE.add(child);
     }
 
     public boolean containsChild (Child child) {
@@ -75,11 +94,16 @@ public class ChildManager {
 
     public void removeChildByObject(Child child) {
         CHILDREN_LIST.remove(child);
+        COIN_FLIP_QUEUE.remove(child);
     }
 
     public void editChildName(int idx, String name) {
         Child child = CHILDREN_LIST.get(idx);
         child.setName(name);
+    }
+
+    public Child getFirstQueued() {
+        return COIN_FLIP_QUEUE.get(0);
     }
 
     //code inspiration from https://stackoverflow.com/questions/18072448/how-to-save-image-in-shared-preference-in-android-shared-preference-issue-in-a
@@ -98,10 +122,6 @@ public class ChildManager {
         return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
 
-    /**
-     * Determines if an inputted name is valid.
-     * Names with no characters and names with all spaces are invalid.
-     */
     public static boolean isValidName(String name) {
         if (name.length() == 0) {
             return false;

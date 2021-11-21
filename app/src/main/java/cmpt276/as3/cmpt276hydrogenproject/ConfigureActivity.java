@@ -3,34 +3,22 @@ package cmpt276.as3.cmpt276hydrogenproject;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
-import android.media.Image;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -126,6 +114,7 @@ public class ConfigureActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
 
         saveChildren();
+        //saveChildQueue();
     }
 
     private class ChildrenListAdapter extends ArrayAdapter<Child> {
@@ -151,14 +140,29 @@ public class ConfigureActivity extends AppCompatActivity {
         }
     }
 
-    void saveChildren() {
+    private void saveChildren() {
         SharedPreferences.Editor editor = sp.edit();
         Gson myGson = new GsonBuilder().create();
+
         String jsonString = myGson.toJson(childManager.getChildrenList());
         Log.i("SAVE", jsonString);
         editor.putString("childList", jsonString);
         editor.apply();
+
+        jsonString = myGson.toJson(childManager.getChildQueue());
+        Log.i("SAVE", jsonString);
+        editor.putString("childQueue", jsonString);
+        editor.apply();
     }
+
+//    private void saveChildQueue() {
+//        SharedPreferences.Editor editor = sp.edit();
+//        Gson myGson = new GsonBuilder().create();
+//        String jsonString = myGson.toJson(childManager.getChildQueue());
+//        Log.i("SAVE", jsonString);
+//        editor.putString("childQueue", jsonString);
+//        editor.apply();
+//    }
 
     /**
      * Check if any name on the list was clicked and prompt the configure child pop-up.

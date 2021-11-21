@@ -46,14 +46,19 @@ public class MainActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
         sp = getSharedPreferences("Hydrogen", MODE_PRIVATE);
 
-        loadChildren();
-        loadCoinFlips();
-        loadTasks();
+        loadData();
         toConfigureBtn();
         toCoinflipBtn();
         toTimeoutBtn();
         toTaskManagerBtn();
         toHelpBtn();
+    }
+
+    private void loadData() {
+        loadChildren();
+        loadChildQueue();
+        loadCoinFlips();
+        loadTasks();
     }
 
     void toConfigureBtn() {
@@ -106,6 +111,16 @@ public class MainActivity extends AppCompatActivity {
         if (!jsonString.equals("")) {
             Type listType = new TypeToken<ArrayList<Child>>(){}.getType();
             childManager.setAllChildren(myGson.fromJson(jsonString, listType));
+        }
+    }
+
+    void loadChildQueue() {
+        Gson myGson = new GsonBuilder().create();
+        String jsonString = sp.getString("childQueue", "");
+        Log.i("LOAD", jsonString);
+        if (!jsonString.equals("")) {
+            Type listType = new TypeToken<ArrayList<Child>>(){}.getType();
+            childManager.setChildQueue(myGson.fromJson(jsonString, listType));
         }
     }
 

@@ -6,7 +6,9 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,11 +19,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import cmpt276.as3.cmpt276hydrogenproject.model.Child;
@@ -33,7 +38,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
     private final int ANIMATION_DURATION = 1000;
     private final float ROTATION_VALUE = 1800;
 
-    private final ChildManager childManager = ChildManager.getInstance();
+    private ChildManager childManager = ChildManager.getInstance();
     private final CoinFlipManager coinFlipManager = CoinFlipManager.getInstance();
     private Child flipCoinChild;
     private MediaPlayer soundEffectPlayer;
@@ -53,6 +58,12 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
         setNextChoiceSuggestion();
         choosingChildSpinner();
         createRadioButtons();
+    }
+
+    @Override
+    protected void onStart() {
+        childManager = ChildManager.getInstance();
+        super.onStart();
     }
 
     public static Intent makeIntent(Context context) {
@@ -92,7 +103,8 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
             playCoinFlipSound();
             getResultOfCoinFlip(childlessCoinFlip);
         } else {
-            flipCoinChild = childManager.getNextChild(coinFlipManager.getPreviousPick());
+            //flipCoinChild = childManager.getNextChildInCoinFlipQueue(coinFlipManager.getPreviousPick());
+            flipCoinChild = childManager.getFirstQueued();
         }
     }
 
@@ -174,6 +186,8 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
         }));
         dialog = builder.create();
         dialog.show();
+
+        childManager.moveChildToBackOfQueue(flipCoinChild);
     }
 
     private void playCoinFlipSound() {
@@ -189,14 +203,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
             String noKids = "There are no children in the database!";
             nextChildSuggestion.setText(noKids);
         } else {
-            int indexOfNextChild = childManager.indexOfChild(coinFlipManager.getPreviousPick()) + 1;
-            //if the next index is greater than [size-1] (which is the highest index for an arraylist
-            //of size = n) then it returns to beginning of the list to suggest.
-            if (indexOfNextChild > (childManager.getSizeOfChildList()-1)) {
-                indexOfNextChild = 0;
-            }
-            Child nextChild = childManager.getChildAt(indexOfNextChild);
-            String suggestion = "The next suggested child to pick is: " + nextChild;
+            String suggestion = "The next suggested child to pick is: " + flipCoinChild;
             nextChildSuggestion.setText(suggestion);
         }
     }
@@ -204,14 +211,45 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
     public void choosingChildSpinner() {
         Spinner choosingChildSpinner = findViewById(R.id.choosingChildSpinner);
 
-        ArrayAdapter adapter = new ArrayAdapter<Child>(this,
-                android.R.layout.simple_spinner_dropdown_item,
-                childManager.getChildrenList());
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        ArrayList<Child> childrenList = childManager.getChildQueue();
+        CoinFlipSpinnerAdapter adapter = new CoinFlipSpinnerAdapter(AddCoinFlipActivity.this, childrenList);
 
         choosingChildSpinner.setAdapter(adapter);
-        choosingChildSpinner.setSelection(childManager.indexOfChild(flipCoinChild));
+        choosingChildSpinner.setSelection(childManager.indexOfChildInCoinFlipQueue(flipCoinChild));
         choosingChildSpinner.setOnItemSelectedListener(this);
+    }
+
+    private class CoinFlipSpinnerAdapter extends ArrayAdapter<Child> {
+        public CoinFlipSpinnerAdapter(Context context, ArrayList<Child> childArrayList) {
+            super(context, 0, childArrayList);
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            return createView(position, convertView, parent);
+        }
+
+        @Override
+        public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            return createView(position, convertView, parent);
+        }
+
+        private View createView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = LayoutInflater.from(getContext()).inflate(
+                        R.layout.coinflip_spinner_item, parent, false);
+            }
+
+            Child child = childManager.getChildFromCoinFlipQueueAt(position);
+            String name = child.getName();
+            TextView childName = convertView.findViewById(R.id.childNameSpinner);
+            childName.setText(name);
+            ImageView childImage = convertView.findViewById(R.id.childImageSpinner);
+            childImage.setImageBitmap(childManager.decodeToBase64(child.getProfilePicture()));
+
+            return convertView;
+        }
     }
 
     private void createRadioButtons() {
@@ -242,9 +280,8 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         int choice = parent.getSelectedItemPosition();
-        Child choosingChild = childManager.getChildAt(choice);
+        Child choosingChild = childManager.getChildFromCoinFlipQueueAt(choice);
 
-        ((TextView) parent.getSelectedView()).setTextColor(Color.WHITE);
         //if the user wants to have the same child as last time pick, display a helpful message
         //telling them that this child did pick the last time a coin was flipped.
         if(coinFlipManager.getPreviousPick() != null) {
