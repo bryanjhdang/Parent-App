@@ -38,7 +38,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
     private final int ANIMATION_DURATION = 1000;
     private final float ROTATION_VALUE = 1800;
 
-    private final ChildManager childManager = ChildManager.getInstance();
+    private ChildManager childManager = ChildManager.getInstance();
     private final CoinFlipManager coinFlipManager = CoinFlipManager.getInstance();
     private Child flipCoinChild;
     private MediaPlayer soundEffectPlayer;
@@ -58,7 +58,12 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
         setNextChoiceSuggestion();
         choosingChildSpinner();
         createRadioButtons();
+    }
 
+    @Override
+    protected void onStart() {
+        childManager = ChildManager.getInstance();
+        super.onStart();
     }
 
     public static Intent makeIntent(Context context) {
@@ -211,9 +216,10 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
     }
 
     public void choosingChildSpinner() {
+        //childManager = ChildManager.getInstance();
         Spinner choosingChildSpinner = findViewById(R.id.choosingChildSpinner);
 
-        ArrayList<Child> childrenList = childManager.getQueue();
+        ArrayList<Child> childrenList = childManager.getChildQueue();
         CoinFlipSpinnerAdapter adapter = new CoinFlipSpinnerAdapter(AddCoinFlipActivity.this, childrenList);
 
         choosingChildSpinner.setAdapter(adapter);

@@ -60,8 +60,12 @@ public class ChildManager {
         return CHILDREN_LIST;
     }
 
-    public ArrayList<Child> getQueue() {
+    public ArrayList<Child> getChildQueue() {
         return COIN_FLIP_QUEUE;
+    }
+
+    public void setChildQueue(ArrayList<Child> COIN_FLIP_QUEUE) {
+        this.COIN_FLIP_QUEUE = COIN_FLIP_QUEUE;
     }
 
     public void setAllChildren(ArrayList<Child> childList) {
@@ -86,10 +90,6 @@ public class ChildManager {
 
     public void removeChildByIdx(int idx) {
         CHILDREN_LIST.remove(idx);
-    }
-
-    public void setChildQueue(ArrayList<Child> COIN_FLIP_QUEUE) {
-        this.COIN_FLIP_QUEUE = COIN_FLIP_QUEUE;
     }
 
     public void removeChildByObject(Child child) {

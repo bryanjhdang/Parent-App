@@ -46,15 +46,19 @@ public class MainActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
         sp = getSharedPreferences("Hydrogen", MODE_PRIVATE);
 
-        loadChildren();
-        loadChildQueue();
-        loadCoinFlips();
-        loadTasks();
+        loadData();
         toConfigureBtn();
         toCoinflipBtn();
         toTimeoutBtn();
         toTaskManagerBtn();
         toHelpBtn();
+    }
+
+    private void loadData() {
+        loadChildren();
+        loadChildQueue();
+        loadCoinFlips();
+        loadTasks();
     }
 
     void toConfigureBtn() {
