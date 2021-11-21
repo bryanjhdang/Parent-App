@@ -103,7 +103,8 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
             playCoinFlipSound();
             getResultOfCoinFlip(childlessCoinFlip);
         } else {
-            flipCoinChild = childManager.getNextChildInCoinFlipQueue(coinFlipManager.getPreviousPick());
+            //flipCoinChild = childManager.getNextChildInCoinFlipQueue(coinFlipManager.getPreviousPick());
+            flipCoinChild = childManager.getFirstQueued();
         }
     }
 
@@ -202,21 +203,12 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
             String noKids = "There are no children in the database!";
             nextChildSuggestion.setText(noKids);
         } else {
-            Child previousChild = coinFlipManager.getPreviousPick();
-            int indexOfNextChild = childManager.indexOfChildInCoinFlipQueue(previousChild) + 1;
-            //if the next index is greater than [size-1] (which is the highest index for an arraylist
-            //of size = n) then it returns to beginning of the list to suggest.
-            if (indexOfNextChild > (childManager.getSizeOfChildList()-1)) {
-                indexOfNextChild = 0;
-            }
-            Child nextChild = childManager.getChildFromCoinFlipQueueAt(indexOfNextChild);
-            String suggestion = "The next suggested child to pick is: " + nextChild;
+            String suggestion = "The next suggested child to pick is: " + flipCoinChild;
             nextChildSuggestion.setText(suggestion);
         }
     }
 
     public void choosingChildSpinner() {
-        //childManager = ChildManager.getInstance();
         Spinner choosingChildSpinner = findViewById(R.id.choosingChildSpinner);
 
         ArrayList<Child> childrenList = childManager.getChildQueue();

@@ -102,6 +102,10 @@ public class ChildManager {
         child.setName(name);
     }
 
+    public Child getFirstQueued() {
+        return COIN_FLIP_QUEUE.get(0);
+    }
+
     //code inspiration from https://stackoverflow.com/questions/18072448/how-to-save-image-in-shared-preference-in-android-shared-preference-issue-in-a
     //this code is to help with the decoding and encoding of a bitmap into an image when read into the program via shared preferences
     public String encodeToBase64(Bitmap image) {
