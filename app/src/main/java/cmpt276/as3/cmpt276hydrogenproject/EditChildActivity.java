@@ -50,6 +50,7 @@ public class EditChildActivity extends AppCompatActivity {
     private final int IMAGE_GALLERY_REQUEST = 20;
     private ImageView imageView;
     private Bitmap image;
+    private boolean imageChanged;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,12 +140,14 @@ public class EditChildActivity extends AppCompatActivity {
 
         Uri data = Uri.parse(imageDirectoryPath);
         pickPhotoIntent.setDataAndType(data, "image/*");
+        imageChanged = true;
 
         startActivityForResult(pickPhotoIntent, IMAGE_GALLERY_REQUEST);
     }
 
     private void editImageFromCamera() {
         Intent newPictureFromCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        imageChanged = true;
         startActivityForResult(newPictureFromCameraIntent, 69);
     }
 
@@ -233,8 +236,22 @@ public class EditChildActivity extends AppCompatActivity {
                         String msg = "No changes were made!";
                         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
                                 .show();
+
+                        if(imageChanged == true){
+                            imageChanged = false;
+                            if(image == null) {
+                                image = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
+                            }
+                            child.setProfilePicture(childManager.encodeToBase64(image));
+                            String msgImage = "Profile Picture Updated";
+                            Toast.makeText(getApplicationContext(), msgImage, Toast.LENGTH_SHORT)
+                                    .show();
+                            finish();
+                        }
+
                     } else {
                         setNewChildInfo(newChildName);
+                        imageChanged = false;
                         String msg = "Child added.";
                         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
                                 .show();
@@ -260,6 +277,7 @@ public class EditChildActivity extends AppCompatActivity {
             child.setProfilePicture(childManager.encodeToBase64(image));
         } else {
             childManager.addChild(newChildName, childManager.encodeToBase64(image));
+            imageChanged = false;
         }
     }
 
