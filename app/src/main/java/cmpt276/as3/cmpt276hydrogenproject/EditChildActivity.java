@@ -250,6 +250,7 @@ public class EditChildActivity extends AppCompatActivity {
                                 image = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
                             }
                             child.setProfilePicture(childManager.encodeToBase64(image));
+                            saveButton.setClickable(false);
                             String msgImage = "Profile Picture Updated";
                             Toast.makeText(getApplicationContext(), msgImage, Toast.LENGTH_SHORT)
                                     .show();
@@ -258,6 +259,7 @@ public class EditChildActivity extends AppCompatActivity {
 
                     } else {
                         setNewChildInfo(newChildName);
+                        saveButton.setClickable(false);
                         imageChanged = false;
                         String msg = "Child added.";
                         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
