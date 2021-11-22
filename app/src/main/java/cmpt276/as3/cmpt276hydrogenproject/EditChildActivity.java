@@ -94,7 +94,7 @@ public class EditChildActivity extends AppCompatActivity {
         if (isEditingChild()) {
             EditText nameInput = findViewById(R.id.childNameEditText);
             nameInput.setText(child.getName());
-            Bitmap currentChildProfilePic = childManager.decodeToBase64(child.getProfilePicture());
+            Bitmap currentChildProfilePic = childManager.decodeToBase64(child.getStringProfilePicture());
             imageView.setImageBitmap(currentChildProfilePic);
         }
     }
@@ -242,7 +242,7 @@ public class EditChildActivity extends AppCompatActivity {
                             if(image == null) {
                                 image = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
                             }
-                            child.setProfilePicture(childManager.encodeToBase64(image));
+                            child.setStringProfilePicture(childManager.encodeToBase64(image));
                             String msgImage = "Profile Picture Updated";
                             Toast.makeText(getApplicationContext(), msgImage, Toast.LENGTH_SHORT)
                                     .show();

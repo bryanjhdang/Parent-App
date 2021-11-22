@@ -6,7 +6,6 @@ import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.Queue;
 
 public class ChildManager {
     private ArrayList<Child> CHILDREN_LIST = new ArrayList<>();
@@ -65,11 +64,20 @@ public class ChildManager {
     }
 
     public void setChildQueue(ArrayList<Child> COIN_FLIP_QUEUE) {
+        decodeAllChildrenImages(COIN_FLIP_QUEUE);
         this.COIN_FLIP_QUEUE = COIN_FLIP_QUEUE;
     }
 
     public void setAllChildren(ArrayList<Child> childList) {
+        decodeAllChildrenImages(childList);
         this.CHILDREN_LIST = childList;
+    }
+
+    private void decodeAllChildrenImages(ArrayList<Child> childList) {
+        for(Child c : childList) {
+            Bitmap bitmap = decodeToBase64(c.getStringProfilePicture());
+            c.setBitmapProfilePicture(bitmap);
+        }
     }
 
     public int getSizeOfChildList() { return CHILDREN_LIST.size(); }
@@ -116,10 +124,16 @@ public class ChildManager {
         return COIN_FLIP_QUEUE.get(0);
     }
 
+
     //code inspiration from https://stackoverflow.com/questions/18072448/how-to-save-image-in-shared-preference-in-android-shared-preference-issue-in-a
     //this code is to help with the decoding and encoding of a bitmap into an image when read into the program via shared preferences
-    public String encodeToBase64(Bitmap image) {
-        Bitmap newImage = image;
+    public static String encodeToBase64(Bitmap image) {
+        int imgWidth = image.getWidth();
+        int imgHeight = image.getHeight();
+        int scaledHeight = (imgHeight * 200) / imgWidth;
+
+
+        Bitmap newImage = Bitmap.createScaledBitmap(image, 200, scaledHeight, false);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         newImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
         byte[] b = byteArrayOutputStream.toByteArray();
@@ -127,7 +141,7 @@ public class ChildManager {
         return stringifiedImage;
     }
 
-    public Bitmap decodeToBase64(String userInput) {
+    public static Bitmap decodeToBase64(String userInput) {
         byte[] decodedString = Base64.decode(userInput, 0);
         return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
