@@ -104,7 +104,8 @@ public class MainActivity extends AppCompatActivity {
         Gson myGson = new GsonBuilder().create();
         String jsonString = sp.getString("childList", "");
         if (!jsonString.equals("")) {
-            Type listType = new TypeToken<ArrayList<Child>>(){}.getType();
+            Type listType = new TypeToken<ArrayList<Child>>() {
+            }.getType();
             childManager.setAllChildren(myGson.fromJson(jsonString, listType));
         }
     }
@@ -113,7 +114,8 @@ public class MainActivity extends AppCompatActivity {
         Gson myGson = new GsonBuilder().create();
         String jsonString = sp.getString("childQueue", "");
         if (!jsonString.equals("")) {
-            Type listType = new TypeToken<ArrayList<Child>>(){}.getType();
+            Type listType = new TypeToken<ArrayList<Child>>() {
+            }.getType();
             childManager.setChildQueue(myGson.fromJson(jsonString, listType));
         }
     }
@@ -126,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
                                       LocalDateTime localDateTime) throws IOException {
                         jsonWriter.value(localDateTime.toString());
                     }
+
                     @Override
                     public LocalDateTime read(JsonReader jsonReader) throws IOException {
                         return LocalDateTime.parse(jsonReader.nextString());
@@ -133,7 +136,8 @@ public class MainActivity extends AppCompatActivity {
                 }).create();
         String jsonString = sp.getString("coinFlipList", "");
         if (!jsonString.equals("")) {
-            Type listType = new TypeToken<ArrayList<CoinFlip>>(){}.getType();
+            Type listType = new TypeToken<ArrayList<CoinFlip>>() {
+            }.getType();
             coinFlipManager.setCoinFlipList(myGson.fromJson(jsonString, listType));
         }
     }
@@ -142,7 +146,8 @@ public class MainActivity extends AppCompatActivity {
         Gson myGson = new GsonBuilder().create();
         String jsonString = sp.getString("taskList", "");
         if (!jsonString.equals("")) {
-            Type listType = new TypeToken<ArrayList<Task>>(){}.getType();
+            Type listType = new TypeToken<ArrayList<Task>>() {
+            }.getType();
             taskManager.setTaskList(myGson.fromJson(jsonString, listType));
         }
     }

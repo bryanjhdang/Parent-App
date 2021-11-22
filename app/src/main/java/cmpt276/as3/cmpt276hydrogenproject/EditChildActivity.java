@@ -237,9 +237,9 @@ public class EditChildActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
                                 .show();
 
-                        if(imageChanged){
+                        if (imageChanged) {
                             imageChanged = false;
-                            if(image == null) {
+                            if (image == null) {
                                 image = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
                             }
                             child.setStringProfilePicture(ChildManager.encodeToBase64(image));
@@ -268,7 +268,7 @@ public class EditChildActivity extends AppCompatActivity {
 
     private void setNewChildInfo(String newChildName) {
         //if no image is chosen by the user, the default image is set.
-        if(image == null) {
+        if (image == null) {
             image = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
         }
         if (isEditingChild()) {

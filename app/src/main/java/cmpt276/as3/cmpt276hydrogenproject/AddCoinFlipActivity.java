@@ -97,7 +97,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
     }
 
     private void emptyChildListCoinFlip() {
-        if(childManager.getSizeOfChildList() == 0) {
+        if (childManager.getSizeOfChildList() == 0) {
             CoinFlip childlessCoinFlip = new CoinFlip();
             coinFlipManager.addCoinFlip(childlessCoinFlip);
             playCoinFlipSound();
@@ -146,7 +146,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
      */
     private void getResultOfCoinFlip(CoinFlip coinFlip) {
         boolean resultIsHeads = coinFlip.getResult();
-        if(resultIsHeads) {
+        if (resultIsHeads) {
             animateFlip(R.drawable.heads, coinFlip);
         } else {
             animateFlip(R.drawable.tails, coinFlip);
@@ -168,13 +168,13 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
                 .rotationXBy(ROTATION_VALUE)
                 .withEndAction(endAction);
     }
-    
+
     private void retrieveWinnerFromCoinFlip(CoinFlip coinFlip) {
         boolean resultIsHeads = coinFlip.getResult();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(AddCoinFlipActivity.this);
         String stringifiedOutput = "The result of the flip is ";
-        if(resultIsHeads) {
+        if (resultIsHeads) {
             stringifiedOutput += "heads!";
         } else {
             stringifiedOutput += "tails!";
@@ -190,7 +190,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
     }
 
     private void playCoinFlipSound() {
-        if(soundEffectPlayer == null) {
+        if (soundEffectPlayer == null) {
             soundEffectPlayer = MediaPlayer.create(this, R.raw.flip_sound);
         }
         soundEffectPlayer.start();
@@ -198,7 +198,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
 
     private void setNextChoiceSuggestion() {
         TextView nextChildSuggestion = findViewById(R.id.nextChildSuggestion);
-        if(childManager.getSizeOfChildList() == 0) {
+        if (childManager.getSizeOfChildList() == 0) {
             String noKids = "There are no children in the database!";
             nextChildSuggestion.setText(noKids);
         } else {
@@ -283,9 +283,9 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
 
         //if the user wants to have the same child as last time pick, display a helpful message
         //telling them that this child did pick the last time a coin was flipped.
-        if(coinFlipManager.getPreviousPick() != null) {
+        if (coinFlipManager.getPreviousPick() != null) {
             if (choosingChild.getName().equals(coinFlipManager.getPreviousPick().getName())
-                && childManager.getSizeOfChildList() != 1) {
+                    && childManager.getSizeOfChildList() != 1) {
                 Toast.makeText(getApplicationContext(),
                         "Warning: This child also chose last time!", Toast.LENGTH_SHORT).show();
             }

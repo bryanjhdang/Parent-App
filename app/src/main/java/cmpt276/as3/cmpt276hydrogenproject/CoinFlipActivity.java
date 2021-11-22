@@ -128,7 +128,7 @@ public class CoinFlipActivity extends AppCompatActivity {
             ImageView resultIconImg = view.findViewById(R.id.resultIconImg);
             Child choosingChild = coinFlip.getChoosingChild();
             Bitmap childProfilePic = null;
-            if(choosingChild != null) {
+            if (choosingChild != null) {
                 childProfilePic = ChildManager.decodeToBase64(choosingChild.getStringProfilePicture());
             }
             if (coinFlip.getWinStatus()) {
@@ -154,7 +154,7 @@ public class CoinFlipActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.addCoinFlip) {
+        if (item.getItemId() == R.id.addCoinFlip) {
             Intent addGameIntent = AddCoinFlipActivity.makeIntent(this);
             startActivity(addGameIntent);
         }
@@ -170,6 +170,7 @@ public class CoinFlipActivity extends AppCompatActivity {
                                       LocalDateTime localDateTime) throws IOException {
                         jsonWriter.value(localDateTime.toString());
                     }
+
                     @Override
                     public LocalDateTime read(JsonReader jsonReader) throws IOException {
                         return LocalDateTime.parse(jsonReader.nextString());

@@ -13,10 +13,11 @@ import android.provider.Settings;
 import androidx.core.app.NotificationCompat;
 
 public class NotificationBroadcast extends BroadcastReceiver {
-    private final long[] VIBRATE_PATTERN = new long[] {0, 1000, 1000, 1000, 1000, 1000, 1000, 1000,
+    private final long[] VIBRATE_PATTERN = new long[]{0, 1000, 1000, 1000, 1000, 1000, 1000, 1000,
             1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000,
-            1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000 ,1000, 1000, 1000, 1000, 1000,
+            1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000,
             1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000};
+
     @Override
     //code was inspired by https://www.youtube.com/watch?v=nl-dheVpt8o
     //up until line 31

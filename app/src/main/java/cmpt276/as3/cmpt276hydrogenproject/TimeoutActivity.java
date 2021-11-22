@@ -134,7 +134,8 @@ public class TimeoutActivity extends AppCompatActivity {
             public void onFinish() {
                 timerWorkingState = false;
                 updateLayoutVisibility();
-            }}.start();
+            }
+        }.start();
 
         timerWorkingState = true;
         updateLayoutVisibility();
@@ -143,7 +144,7 @@ public class TimeoutActivity extends AppCompatActivity {
     private void resetTimer() {
         Intent intent = new Intent(TimeoutActivity.this, NotificationBroadcast.class);
         @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(TimeoutActivity.this, 0, intent, 0);
-        if(backgroundTimerCountDown != null) {
+        if (backgroundTimerCountDown != null) {
             pauseTimer();
         }
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -194,8 +195,7 @@ public class TimeoutActivity extends AppCompatActivity {
 
             if (leftTimeInMilli < startTimeInMilli) {
                 resetTimerBtn.setVisibility(View.VISIBLE);
-            }
-            else {
+            } else {
                 resetTimerBtn.setVisibility(View.INVISIBLE);
             }
 

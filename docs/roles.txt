@@ -2,13 +2,13 @@ SCRUM ROLES
 -----------
 
 Scrum Master
-    Kevin Chen (kfc7)
-
-Product Owner
-    Bryan Dang (bda37)
-
-Repo Manager
     Ethan Chou (elc10)
 
-Team Member
+Product Owner
     Gurseerat Brar (gsb15)
+
+Repo Manager
+    Kevin Chen (kfc7)
+
+Team Member
+    Bryan Dang (bda37)
