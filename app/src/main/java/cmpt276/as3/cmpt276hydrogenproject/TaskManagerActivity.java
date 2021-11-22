@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -32,8 +31,7 @@ import cmpt276.as3.cmpt276hydrogenproject.model.TaskManager;
 
 public class TaskManagerActivity extends AppCompatActivity {
     SharedPreferences sp;
-    private TaskManager taskManager = TaskManager.getInstance();
-    private ChildManager childManager = ChildManager.getInstance();
+    private final TaskManager taskManager = TaskManager.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,9 +121,8 @@ public class TaskManagerActivity extends AppCompatActivity {
             Child currentChild = task.getCurrentChild();
 
             ImageView imageView = view.findViewById(R.id.taskIconImg);
-            if(currentChild != null) {
-                Bitmap bitmap = childManager.decodeToBase64(currentChild.getStringProfilePicture());
-                //Bitmap bitmap = currentChild.getBitmapProfilePicture();
+            if (currentChild != null) {
+                Bitmap bitmap = ChildManager.decodeToBase64(currentChild.getStringProfilePicture());
                 imageView.setImageBitmap(bitmap);
             }
 
@@ -149,8 +146,7 @@ public class TaskManagerActivity extends AppCompatActivity {
     private void registerClickCallback() {
         ListView list = findViewById(R.id.taskListView);
         list.setOnItemClickListener((adapterView, view, index, id) -> {
-                Toast.makeText(getApplicationContext(), "HI", Toast.LENGTH_SHORT).show();
-                expandTaskInfo(index);
+            expandTaskInfo(index);
         });
     }
 
@@ -161,7 +157,7 @@ public class TaskManagerActivity extends AppCompatActivity {
         if (currentTaskChild == null) {
             image.setImageResource(R.drawable.icon);
         } else {
-            Bitmap childProfilePic = childManager.decodeToBase64(currentTaskChild.getStringProfilePicture());
+            Bitmap childProfilePic = ChildManager.decodeToBase64(currentTaskChild.getStringProfilePicture());
             image.setImageBitmap(childProfilePic);
         }
 
@@ -172,9 +168,9 @@ public class TaskManagerActivity extends AppCompatActivity {
         } else {
             builder.setMessage("There are no children to assign tasks to!");
         }
-        
+
         image.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        image.setLayoutParams(new ViewGroup.LayoutParams(300,300));
+        image.setLayoutParams(new ViewGroup.LayoutParams(300, 300));
         builder.setView(image);
 
         builder.setPositiveButton("Finished!", ((dialogInterface, i) -> {
@@ -235,7 +231,6 @@ public class TaskManagerActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sp.edit();
         Gson myGson = new GsonBuilder().create();
         String jsonString = myGson.toJson(taskManager.getTaskList());
-        Log.d("TAG", jsonString);
         editor.putString("taskList", jsonString);
         editor.apply();
     }

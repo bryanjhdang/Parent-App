@@ -14,6 +14,7 @@ public class ChildManager {
 
     /**
      * Method to retrieve the class without accessing it by the constructor
+     *
      * @return the only instance of the class
      */
     public static ChildManager getInstance() {
@@ -23,7 +24,8 @@ public class ChildManager {
         return instance;
     }
 
-    private ChildManager() {}
+    private ChildManager() {
+    }
 
     public Child getChildAt(int index) {
         return CHILDREN_LIST.get(index);
@@ -74,13 +76,15 @@ public class ChildManager {
     }
 
     private void decodeAllChildrenImages(ArrayList<Child> childList) {
-        for(Child c : childList) {
+        for (Child c : childList) {
             Bitmap bitmap = decodeToBase64(c.getStringProfilePicture());
             c.setBitmapProfilePicture(bitmap);
         }
     }
 
-    public int getSizeOfChildList() { return CHILDREN_LIST.size(); }
+    public int getSizeOfChildList() {
+        return CHILDREN_LIST.size();
+    }
 
     public void addChild(String name, String profilePic) {
         Child child = new Child(name, profilePic);
@@ -88,16 +92,12 @@ public class ChildManager {
         COIN_FLIP_QUEUE.add(child);
     }
 
-    public boolean containsChild (Child child) {
+    public boolean containsChild(Child child) {
         return CHILDREN_LIST.contains(child);
     }
 
     public boolean isEmpty() {
         return CHILDREN_LIST.isEmpty();
-    }
-
-    public void removeChildByIdx(int idx) {
-        CHILDREN_LIST.remove(idx);
     }
 
     public void removeChildByObject(Child removedChild) {
@@ -137,8 +137,7 @@ public class ChildManager {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         newImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
         byte[] b = byteArrayOutputStream.toByteArray();
-        String stringifiedImage = Base64.encodeToString(b, Base64.DEFAULT);
-        return stringifiedImage;
+        return Base64.encodeToString(b, Base64.DEFAULT);
     }
 
     public static Bitmap decodeToBase64(String userInput) {

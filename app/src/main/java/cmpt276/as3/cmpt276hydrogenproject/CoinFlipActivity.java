@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -129,9 +128,8 @@ public class CoinFlipActivity extends AppCompatActivity {
             ImageView resultIconImg = view.findViewById(R.id.resultIconImg);
             Child choosingChild = coinFlip.getChoosingChild();
             Bitmap childProfilePic = null;
-            if(choosingChild != null) {
-                childProfilePic = childManager.decodeToBase64(choosingChild.getStringProfilePicture());
-                //childProfilePic = choosingChild.getBitmapProfilePicture();
+            if (choosingChild != null) {
+                childProfilePic = ChildManager.decodeToBase64(choosingChild.getStringProfilePicture());
             }
             if (coinFlip.getWinStatus()) {
                 resultIconImg.setImageBitmap(childProfilePic);
@@ -156,7 +154,7 @@ public class CoinFlipActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.addCoinFlip) {
+        if (item.getItemId() == R.id.addCoinFlip) {
             Intent addGameIntent = AddCoinFlipActivity.makeIntent(this);
             startActivity(addGameIntent);
         }
@@ -172,6 +170,7 @@ public class CoinFlipActivity extends AppCompatActivity {
                                       LocalDateTime localDateTime) throws IOException {
                         jsonWriter.value(localDateTime.toString());
                     }
+
                     @Override
                     public LocalDateTime read(JsonReader jsonReader) throws IOException {
                         return LocalDateTime.parse(jsonReader.nextString());
@@ -187,12 +186,10 @@ public class CoinFlipActivity extends AppCompatActivity {
         Gson myGson = new GsonBuilder().create();
 
         String jsonString = myGson.toJson(childManager.getChildrenList());
-        Log.i("SAVE", jsonString);
         editor.putString("childList", jsonString);
         editor.apply();
 
         jsonString = myGson.toJson(childManager.getChildQueue());
-        Log.i("SAVE", jsonString);
         editor.putString("childQueue", jsonString);
         editor.apply();
     }

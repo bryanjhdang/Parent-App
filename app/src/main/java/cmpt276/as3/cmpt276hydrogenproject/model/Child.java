@@ -1,13 +1,10 @@
 package cmpt276.as3.cmpt276hydrogenproject.model;
 
 import android.graphics.Bitmap;
-import android.net.Uri;
 
 import androidx.annotation.NonNull;
 
 import java.util.Random;
-
-import cmpt276.as3.cmpt276hydrogenproject.R;
 
 public class Child {
     String name;
@@ -51,10 +48,6 @@ public class Child {
 
     public void setStringProfilePicture(String profilePicture) {
         this.uriProfilePicture = profilePicture;
-    }
-
-    public Bitmap getBitmapProfilePicture() {
-        return bitmapProfilePicture;
     }
 
     public void setBitmapProfilePicture(Bitmap profilePicture) {
