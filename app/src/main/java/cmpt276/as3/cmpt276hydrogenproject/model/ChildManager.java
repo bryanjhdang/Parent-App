@@ -98,9 +98,18 @@ public class ChildManager {
         COIN_FLIP_QUEUE.removeIf(child -> childID == child.getChildID());
     }
 
-    public void editChildName(int idx, String name) {
-        Child child = CHILDREN_LIST.get(idx);
-        child.setName(name);
+    public void editChildName(Child editedChild, String newName) {
+        int childID = editedChild.getChildID();
+        for (Child child : CHILDREN_LIST) {
+            if (childID == child.getChildID()) {
+                child.setName(newName);
+            }
+        }
+        for (Child child : COIN_FLIP_QUEUE) {
+            if (childID == child.getChildID()) {
+                child.setName(newName);
+            }
+        }
     }
 
     public Child getFirstQueued() {

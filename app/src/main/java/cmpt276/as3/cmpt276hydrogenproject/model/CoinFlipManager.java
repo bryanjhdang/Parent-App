@@ -37,6 +37,15 @@ public class CoinFlipManager {
         }
     }
 
+    public void updateChildNames(Child editedChild, String newName) {
+        int childID = editedChild.getChildID();
+        for (CoinFlip cf : COIN_FLIP_LIST) {
+            if (cf.getChoosingChild().getChildID() == childID) {
+                cf.getChoosingChild().setName(newName);
+            }
+        }
+    }
+
     public int getCoinFlipListSize() {
         return COIN_FLIP_LIST.size();
     }

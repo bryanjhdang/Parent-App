@@ -273,7 +273,8 @@ public class EditChildActivity extends AppCompatActivity {
         }
         if (isEditingChild()) {
             coinFlipManager.updateCoinFlipChild(child.getName(), newChildName);
-            child.setName(newChildName);
+            childManager.editChildName(child, newChildName);
+            coinFlipManager.updateChildNames(child, newChildName);
             child.setProfilePicture(childManager.encodeToBase64(image));
         } else {
             childManager.addChild(newChildName, childManager.encodeToBase64(image));
