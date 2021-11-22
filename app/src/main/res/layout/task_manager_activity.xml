@@ -35,12 +35,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
-        android:layout_marginEnd="44dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="25dp"
+        android:backgroundTint="@color/twitter_blue"
         android:clickable="true"
+        android:contentDescription="@string/addTaskBtn"
         app:layout_constraintBottom_toBottomOf="@+id/taskListView"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_baseline_add_24"
-        tools:ignore="SpeakableTextPresentCheck"
-        android:contentDescription="@string/addTaskBtn" />
+        tools:ignore="SpeakableTextPresentCheck" />
 </androidx.constraintlayout.widget.ConstraintLayout>
