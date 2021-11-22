@@ -5,10 +5,12 @@ import android.net.Uri;
 
 import androidx.annotation.NonNull;
 
-public class  Child {
+public class Child {
     String name;
 
     String uriProfilePicture;
+
+    Bitmap bitmapProfilePicture = null;
 
     public Child(String name, String profilePicture) {
         this.name = name;
@@ -29,11 +31,19 @@ public class  Child {
         return name;
     }
 
-    public String getProfilePicture() {
+    public String getStringProfilePicture() {
         return uriProfilePicture;
     }
 
-    public void setProfilePicture(String profilePicture) {
+    public void setStringProfilePicture(String profilePicture) {
         this.uriProfilePicture = profilePicture;
+    }
+
+    public Bitmap getBitmapProfilePicture() {
+        return bitmapProfilePicture;
+    }
+
+    public void setBitmapProfilePicture(Bitmap profilePicture) {
+        this.bitmapProfilePicture = profilePicture;
     }
 }

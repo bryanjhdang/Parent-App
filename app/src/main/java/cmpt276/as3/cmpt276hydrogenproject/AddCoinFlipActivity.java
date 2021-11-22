@@ -246,7 +246,8 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
             TextView childName = convertView.findViewById(R.id.childNameSpinner);
             childName.setText(name);
             ImageView childImage = convertView.findViewById(R.id.childImageSpinner);
-            childImage.setImageBitmap(childManager.decodeToBase64(child.getProfilePicture()));
+            //childImage.setImageBitmap(childManager.decodeToBase64(child.getStringProfilePicture()));
+            childImage.setImageBitmap(child.getBitmapProfilePicture());
 
             return convertView;
         }

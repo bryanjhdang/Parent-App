@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -125,7 +124,8 @@ public class TaskManagerActivity extends AppCompatActivity {
 
             ImageView imageView = view.findViewById(R.id.taskIconImg);
             if(currentChild != null) {
-                Bitmap bitmap = childManager.decodeToBase64(currentChild.getProfilePicture());
+                Bitmap bitmap = childManager.decodeToBase64(currentChild.getStringProfilePicture());
+                //Bitmap bitmap = currentChild.getBitmapProfilePicture();
                 imageView.setImageBitmap(bitmap);
             }
 
@@ -161,7 +161,7 @@ public class TaskManagerActivity extends AppCompatActivity {
         if (currentTaskChild == null) {
             image.setImageResource(R.drawable.icon);
         } else {
-            Bitmap childProfilePic = childManager.decodeToBase64(currentTaskChild.getProfilePicture());
+            Bitmap childProfilePic = childManager.decodeToBase64(currentTaskChild.getStringProfilePicture());
             image.setImageBitmap(childProfilePic);
         }
 
