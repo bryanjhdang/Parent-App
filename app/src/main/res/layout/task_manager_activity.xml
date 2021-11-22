@@ -22,11 +22,12 @@
 
     <TextView
         android:id="@+id/taskListEmptyText"
-        android:layout_width="144dp"
-        android:layout_height="110dp"
+        android:layout_width="210dp"
+        android:layout_height="102dp"
         android:text="@string/noTaskMessage"
         android:textAlignment="center"
         android:textColor="@color/white"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,6 +55,7 @@
         android:layout_marginTop="32dp"
         android:text="Tasks"
         android:textColor="@color/white"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
