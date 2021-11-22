@@ -90,4 +90,14 @@
         app:srcCompat="@android:drawable/ic_menu_more"
         tools:ignore="SpeakableTextPresentCheck" />
 
+    <Button
+        android:id="@+id/emptyFlip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/twitter_blue"
+        android:text="Childless Flip"
+        android:textColor="@color/black"
+        tools:layout_editor_absoluteX="18dp"
+        tools:layout_editor_absoluteY="616dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

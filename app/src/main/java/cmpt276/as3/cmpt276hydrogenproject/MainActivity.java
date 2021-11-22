@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -87,8 +88,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void toHelpBtn() {
-        FloatingActionButton fab = findViewById(R.id.helpMenuButton);
-        fab.setOnClickListener(new View.OnClickListener() {
+        ImageView helpBtn = findViewById(R.id.helpImg);
+        helpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent helpIntent = HelpActivity.makeIntent(MainActivity.this);
