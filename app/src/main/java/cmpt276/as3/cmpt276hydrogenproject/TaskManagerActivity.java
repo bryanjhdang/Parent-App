@@ -149,7 +149,6 @@ public class TaskManagerActivity extends AppCompatActivity {
     private void registerClickCallback() {
         ListView list = findViewById(R.id.taskListView);
         list.setOnItemClickListener((adapterView, view, index, id) -> {
-                Toast.makeText(getApplicationContext(), "HI", Toast.LENGTH_SHORT).show();
                 expandTaskInfo(index);
         });
     }
