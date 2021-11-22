@@ -96,10 +96,6 @@ public class ChildManager {
         return CHILDREN_LIST.isEmpty();
     }
 
-    public void removeChildByIdx(int idx) {
-        CHILDREN_LIST.remove(idx);
-    }
-
     public void removeChildByObject(Child removedChild) {
         int childID = removedChild.getChildID();
         CHILDREN_LIST.removeIf(child -> childID == child.getChildID());
@@ -137,8 +133,7 @@ public class ChildManager {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         newImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
         byte[] b = byteArrayOutputStream.toByteArray();
-        String stringifiedImage = Base64.encodeToString(b, Base64.DEFAULT);
-        return stringifiedImage;
+        return Base64.encodeToString(b, Base64.DEFAULT);
     }
 
     public static Bitmap decodeToBase64(String userInput) {

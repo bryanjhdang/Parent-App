@@ -32,8 +32,7 @@ import cmpt276.as3.cmpt276hydrogenproject.model.TaskManager;
 
 public class TaskManagerActivity extends AppCompatActivity {
     SharedPreferences sp;
-    private TaskManager taskManager = TaskManager.getInstance();
-    private ChildManager childManager = ChildManager.getInstance();
+    private final TaskManager taskManager = TaskManager.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,8 +123,7 @@ public class TaskManagerActivity extends AppCompatActivity {
 
             ImageView imageView = view.findViewById(R.id.taskIconImg);
             if(currentChild != null) {
-                Bitmap bitmap = childManager.decodeToBase64(currentChild.getStringProfilePicture());
-                //Bitmap bitmap = currentChild.getBitmapProfilePicture();
+                Bitmap bitmap = ChildManager.decodeToBase64(currentChild.getStringProfilePicture());
                 imageView.setImageBitmap(bitmap);
             }
 
@@ -161,7 +159,7 @@ public class TaskManagerActivity extends AppCompatActivity {
         if (currentTaskChild == null) {
             image.setImageResource(R.drawable.icon);
         } else {
-            Bitmap childProfilePic = childManager.decodeToBase64(currentTaskChild.getStringProfilePicture());
+            Bitmap childProfilePic = ChildManager.decodeToBase64(currentTaskChild.getStringProfilePicture());
             image.setImageBitmap(childProfilePic);
         }
 

@@ -103,7 +103,6 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
             playCoinFlipSound();
             getResultOfCoinFlip(childlessCoinFlip);
         } else {
-            //flipCoinChild = childManager.getNextChildInCoinFlipQueue(coinFlipManager.getPreviousPick());
             flipCoinChild = childManager.getFirstQueued();
         }
     }
@@ -246,8 +245,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
             TextView childName = convertView.findViewById(R.id.childNameSpinner);
             childName.setText(name);
             ImageView childImage = convertView.findViewById(R.id.childImageSpinner);
-            childImage.setImageBitmap(childManager.decodeToBase64(child.getStringProfilePicture()));
-//            childImage.setImageBitmap(child.getBitmapProfilePicture());
+            childImage.setImageBitmap(ChildManager.decodeToBase64(child.getStringProfilePicture()));
 
             return convertView;
         }

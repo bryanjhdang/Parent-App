@@ -130,8 +130,7 @@ public class CoinFlipActivity extends AppCompatActivity {
             Child choosingChild = coinFlip.getChoosingChild();
             Bitmap childProfilePic = null;
             if(choosingChild != null) {
-                childProfilePic = childManager.decodeToBase64(choosingChild.getStringProfilePicture());
-                //childProfilePic = choosingChild.getBitmapProfilePicture();
+                childProfilePic = ChildManager.decodeToBase64(choosingChild.getStringProfilePicture());
             }
             if (coinFlip.getWinStatus()) {
                 resultIconImg.setImageBitmap(childProfilePic);

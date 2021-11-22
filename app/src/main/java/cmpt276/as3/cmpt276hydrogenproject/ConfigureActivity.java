@@ -114,7 +114,6 @@ public class ConfigureActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
 
         saveChildren();
-        //saveChildQueue();
     }
 
     private class ChildrenListAdapter extends ArrayAdapter<Child> {
@@ -135,8 +134,7 @@ public class ConfigureActivity extends AppCompatActivity {
             childName.setText(name);
             ImageView profilePic = view.findViewById(R.id.childIconImg);
             //the below three lines of code can be commented and uncommented if app crashes upon launch.
-            profilePic.setImageBitmap(childManager.decodeToBase64(child.getStringProfilePicture()));
-            //profilePic.setImageBitmap(child.getBitmapProfilePicture());
+            profilePic.setImageBitmap(ChildManager.decodeToBase64(child.getStringProfilePicture()));
             return view;
         }
     }
@@ -155,15 +153,6 @@ public class ConfigureActivity extends AppCompatActivity {
         editor.putString("childQueue", jsonString);
         editor.apply();
     }
-
-//    private void saveChildQueue() {
-//        SharedPreferences.Editor editor = sp.edit();
-//        Gson myGson = new GsonBuilder().create();
-//        String jsonString = myGson.toJson(childManager.getChildQueue());
-//        Log.i("SAVE", jsonString);
-//        editor.putString("childQueue", jsonString);
-//        editor.apply();
-//    }
 
     /**
      * Check if any name on the list was clicked and prompt the configure child pop-up.
