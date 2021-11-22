@@ -172,6 +172,9 @@ public class TaskManagerActivity extends AppCompatActivity {
         } else {
             builder.setMessage("There are no children to assign tasks to!");
         }
+        
+        image.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        image.setLayoutParams(new ViewGroup.LayoutParams(300,300));
         builder.setView(image);
 
         builder.setPositiveButton("Finished!", ((dialogInterface, i) -> {
