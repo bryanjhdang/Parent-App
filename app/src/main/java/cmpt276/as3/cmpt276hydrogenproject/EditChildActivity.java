@@ -280,6 +280,7 @@ public class EditChildActivity extends AppCompatActivity {
             childManager.addChild(newChildName, childManager.encodeToBase64(image));
             imageChanged = false;
         }
+        taskManager.updateTaskChildren();
     }
 
     private boolean isEditingChild() {
