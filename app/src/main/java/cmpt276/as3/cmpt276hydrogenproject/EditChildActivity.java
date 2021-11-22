@@ -83,6 +83,13 @@ public class EditChildActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setTitle(actionBarTitle);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
                 .getColor(R.color.darker_navy_blue)));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 
     private void setChangeChildInformation() {
