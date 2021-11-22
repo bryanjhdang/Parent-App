@@ -100,9 +100,10 @@ public class ChildManager {
         CHILDREN_LIST.remove(idx);
     }
 
-    public void removeChildByObject(Child child) {
-        CHILDREN_LIST.remove(child);
-        COIN_FLIP_QUEUE.remove(child);
+    public void removeChildByObject(Child removedChild) {
+        int childID = removedChild.getChildID();
+        CHILDREN_LIST.removeIf(child -> childID == child.getChildID());
+        COIN_FLIP_QUEUE.removeIf(child -> childID == child.getChildID());
     }
 
     public void editChildName(int idx, String name) {
