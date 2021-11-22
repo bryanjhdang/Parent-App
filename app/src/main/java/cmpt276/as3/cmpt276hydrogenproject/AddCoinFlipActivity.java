@@ -71,7 +71,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
     }
 
     private void setEmptyFlipBtn() {
-        FloatingActionButton emptyFlipBtn = findViewById(R.id.emptyFlipBtn);
+        Button emptyFlipBtn = findViewById(R.id.emptyFlipBtn);
         emptyFlipBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
