@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -144,12 +143,10 @@ public class ConfigureActivity extends AppCompatActivity {
         Gson myGson = new GsonBuilder().create();
 
         String jsonString = myGson.toJson(childManager.getChildrenList());
-        Log.i("SAVE", jsonString);
         editor.putString("childList", jsonString);
         editor.apply();
 
         jsonString = myGson.toJson(childManager.getChildQueue());
-        Log.i("SAVE", jsonString);
         editor.putString("childQueue", jsonString);
         editor.apply();
     }

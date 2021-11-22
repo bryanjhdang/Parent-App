@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -233,7 +232,6 @@ public class TaskManagerActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sp.edit();
         Gson myGson = new GsonBuilder().create();
         String jsonString = myGson.toJson(taskManager.getTaskList());
-        Log.d("TAG", jsonString);
         editor.putString("taskList", jsonString);
         editor.apply();
     }

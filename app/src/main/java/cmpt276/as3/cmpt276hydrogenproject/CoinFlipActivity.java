@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -186,12 +185,10 @@ public class CoinFlipActivity extends AppCompatActivity {
         Gson myGson = new GsonBuilder().create();
 
         String jsonString = myGson.toJson(childManager.getChildrenList());
-        Log.i("SAVE", jsonString);
         editor.putString("childList", jsonString);
         editor.apply();
 
         jsonString = myGson.toJson(childManager.getChildQueue());
-        Log.i("SAVE", jsonString);
         editor.putString("childQueue", jsonString);
         editor.apply();
     }
