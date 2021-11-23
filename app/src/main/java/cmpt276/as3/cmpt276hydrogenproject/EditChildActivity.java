@@ -278,8 +278,6 @@ public class EditChildActivity extends AppCompatActivity {
     private void setNewChildInfo(String newChildName) {
         //if no image is chosen by the user, the default image is set.
         if (image == null) {
-            //TODO: this below is new code to fix bug where if only name is changed, it resets to default image.
-            //remove comment if this works.
             if(isEditingChild()) {
                 image = ChildManager.decodeToBase64(child.getStringProfilePicture());
             } else {
