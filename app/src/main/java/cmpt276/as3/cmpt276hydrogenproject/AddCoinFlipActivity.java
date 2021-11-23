@@ -52,8 +52,8 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_coinflip_activity);
         setActionBar();
-        setEmptyFlipBtn();
         emptyChildListCoinFlip();
+        setEmptyFlipBtn();
         flipCoinButton();
         setNextChoiceSuggestion();
         choosingChildSpinner();
@@ -97,7 +97,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
     }
 
     private void emptyChildListCoinFlip() {
-        if(childManager.getSizeOfChildList() == 0) {
+        if(childManager.isEmpty()) {
             CoinFlip childlessCoinFlip = new CoinFlip();
             coinFlipManager.addCoinFlip(childlessCoinFlip);
             playCoinFlipSound();
@@ -203,12 +203,18 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
             String noKids = "There are no children in the database!";
             nextChildSuggestion.setText(noKids);
         } else {
+            if (flipCoinChild == null) {
+                flipCoinChild = childManager.getFirstChild();
+            }
             String suggestion = "The next suggested child to pick is: " + flipCoinChild;
             nextChildSuggestion.setText(suggestion);
         }
     }
 
     public void choosingChildSpinner() {
+        if (childManager.isEmpty()) {
+            return;
+        }
         Spinner choosingChildSpinner = findViewById(R.id.choosingChildSpinner);
 
         ArrayList<Child> childrenList = childManager.getChildQueue();
@@ -217,6 +223,14 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
         choosingChildSpinner.setAdapter(adapter);
         choosingChildSpinner.setSelection(childManager.indexOfChildInCoinFlipQueue(flipCoinChild));
         choosingChildSpinner.setOnItemSelectedListener(this);
+
+        for (int i = 0; i < childManager.getSizeOfChildList()+1; i++) {
+            Child spinnerItem = adapter.getItem(i);
+            if (spinnerItem != null && spinnerItem.getName().equals("Temp name")) {
+                adapter.remove(spinnerItem);
+                adapter.notifyDataSetChanged();
+            }
+        }
     }
 
     private class CoinFlipSpinnerAdapter extends ArrayAdapter<Child> {
@@ -241,12 +255,22 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
                         R.layout.coinflip_spinner_item, parent, false);
             }
 
+            if (childManager.isEmpty()) {
+                return convertView;
+            }
+
             Child child = childManager.getChildFromCoinFlipQueueAt(position);
-            String name = child.getName();
+
+            String name = "";
+            if (child != null) {
+                name = child.getName();
+            }
             TextView childName = convertView.findViewById(R.id.childNameSpinner);
             childName.setText(name);
             ImageView childImage = convertView.findViewById(R.id.childImageSpinner);
-            childImage.setImageBitmap(childManager.decodeToBase64(child.getProfilePicture()));
+            if (child != null) {
+                childImage.setImageBitmap(childManager.decodeToBase64(child.getProfilePicture()));
+            }
 
             return convertView;
         }
@@ -285,7 +309,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
         //if the user wants to have the same child as last time pick, display a helpful message
         //telling them that this child did pick the last time a coin was flipped.
         if(coinFlipManager.getPreviousPick() != null) {
-            if (choosingChild.getName().equals(coinFlipManager.getPreviousPick().getName())
+            if (coinFlipManager.getPreviousPick() != null && choosingChild != null && choosingChild.getName().equals(coinFlipManager.getPreviousPick().getName())
                 && childManager.getSizeOfChildList() != 1) {
                 Toast.makeText(getApplicationContext(),
                         "Warning: This child also chose last time!", Toast.LENGTH_SHORT).show();
