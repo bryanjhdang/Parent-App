@@ -186,7 +186,9 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
         dialog = builder.create();
         dialog.show();
 
-        childManager.moveChildToBackOfQueue(flipCoinChild);
+        if (flipCoinChild != null) {
+            childManager.moveChildToBackOfQueue(flipCoinChild);
+        }
     }
 
     private void playCoinFlipSound() {
@@ -222,14 +224,6 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
         choosingChildSpinner.setAdapter(adapter);
         choosingChildSpinner.setSelection(childManager.indexOfChildInCoinFlipQueue(flipCoinChild));
         choosingChildSpinner.setOnItemSelectedListener(this);
-
-        for (int i = 0; i < childManager.getSizeOfChildList()+1; i++) {
-            Child spinnerItem = adapter.getItem(i);
-            if (spinnerItem != null && spinnerItem.getName().equals("Temp name")) {
-                adapter.remove(spinnerItem);
-                adapter.notifyDataSetChanged();
-            }
-        }
     }
 
     private class CoinFlipSpinnerAdapter extends ArrayAdapter<Child> {
