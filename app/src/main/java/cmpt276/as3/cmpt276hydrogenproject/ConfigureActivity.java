@@ -141,6 +141,7 @@ public class ConfigureActivity extends AppCompatActivity {
     private void saveChildren() {
         SharedPreferences.Editor editor = sp.edit();
         Gson myGson = new GsonBuilder().create();
+        childManager.cleanLists();
 
         String jsonString = myGson.toJson(childManager.getChildrenList());
         editor.putString("childList", jsonString);
