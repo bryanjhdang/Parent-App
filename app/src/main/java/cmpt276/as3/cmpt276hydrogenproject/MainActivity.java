@@ -31,6 +31,9 @@ import cmpt276.as3.cmpt276hydrogenproject.model.CoinFlipManager;
 import cmpt276.as3.cmpt276hydrogenproject.model.Task;
 import cmpt276.as3.cmpt276hydrogenproject.model.TaskManager;
 
+/**
+ * main menu display that allows the user to navigate to their desired feature
+ */
 public class MainActivity extends AppCompatActivity {
     ChildManager childManager = ChildManager.getInstance();
     CoinFlipManager coinFlipManager = CoinFlipManager.getInstance();

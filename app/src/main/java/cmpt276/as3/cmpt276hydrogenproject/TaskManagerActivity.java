@@ -29,6 +29,10 @@ import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
 import cmpt276.as3.cmpt276hydrogenproject.model.Task;
 import cmpt276.as3.cmpt276hydrogenproject.model.TaskManager;
 
+/**
+ * activity that display's the app's list of tasks; when task is clicked
+ * a dialog box pops up with according information.
+ */
 public class TaskManagerActivity extends AppCompatActivity {
     SharedPreferences sp;
     private final TaskManager taskManager = TaskManager.getInstance();

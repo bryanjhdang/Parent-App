@@ -12,6 +12,9 @@ import android.provider.Settings;
 
 import androidx.core.app.NotificationCompat;
 
+/**
+ * class object storing the notification object that goes off upon timer completion
+ */
 public class NotificationBroadcast extends BroadcastReceiver {
     private final long[] VIBRATE_PATTERN = new long[]{0, 1000, 1000, 1000, 1000, 1000, 1000, 1000,
             1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000,

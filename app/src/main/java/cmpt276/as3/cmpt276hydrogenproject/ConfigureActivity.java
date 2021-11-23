@@ -25,6 +25,10 @@ import java.util.Objects;
 import cmpt276.as3.cmpt276hydrogenproject.model.Child;
 import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
 
+/**
+ * display a listview of children. Interacting with a child object allows the user to edit
+ * the name and/or the image. Tapping button on bottom right sends user to screen to add child.
+ */
 public class ConfigureActivity extends AppCompatActivity {
     private final ChildManager childManager = ChildManager.getInstance();
 
@@ -115,6 +119,9 @@ public class ConfigureActivity extends AppCompatActivity {
         saveChildren();
     }
 
+    /**
+     * adapter to display the list of children and their names
+     */
     private class ChildrenListAdapter extends ArrayAdapter<Child> {
         public ChildrenListAdapter() {
             super(ConfigureActivity.this, R.layout.child_item, childManager.getChildrenList());
