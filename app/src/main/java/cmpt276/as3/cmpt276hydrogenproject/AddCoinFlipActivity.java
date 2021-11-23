@@ -223,13 +223,13 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
         choosingChildSpinner.setSelection(childManager.indexOfChildInCoinFlipQueue(flipCoinChild));
         choosingChildSpinner.setOnItemSelectedListener(this);
 
-        for (int i = 0; i < childManager.getSizeOfChildList()+1; i++) {
-            Child spinnerItem = adapter.getItem(i);
-            if (spinnerItem != null && spinnerItem.getName().equals("Temp name")) {
-                adapter.remove(spinnerItem);
-                adapter.notifyDataSetChanged();
-            }
-        }
+//        for (int i = 0; i < childManager.getSizeOfChildList()+1; i++) {
+//            Child spinnerItem = adapter.getItem(i);
+//            if (spinnerItem != null && spinnerItem.getName().equals("Temp name")) {
+//                adapter.remove(spinnerItem);
+//                adapter.notifyDataSetChanged();
+//            }
+//        }
     }
 
     private class CoinFlipSpinnerAdapter extends ArrayAdapter<Child> {
