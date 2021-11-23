@@ -31,8 +31,10 @@ public class CoinFlipManager {
 
     public void updateCoinFlipChild(String previous, String current) {
         for (CoinFlip cf : COIN_FLIP_LIST) {
-            if (cf.getChoosingChild() != null && cf.getChoosingChild().getName().equals(previous)) {
-                cf.getChoosingChild().setName(current);
+            if (cf.getChoosingChild() != null) {
+                if (cf.getChoosingChild().getName().equals(previous)) {
+                    cf.getChoosingChild().setName(current);
+                }
             }
         }
     }
