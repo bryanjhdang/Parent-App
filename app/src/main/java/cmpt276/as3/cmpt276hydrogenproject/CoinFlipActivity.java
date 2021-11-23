@@ -37,6 +37,10 @@ import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
 import cmpt276.as3.cmpt276hydrogenproject.model.CoinFlip;
 import cmpt276.as3.cmpt276hydrogenproject.model.CoinFlipManager;
 
+/**
+ * activity that displays all coin flips performed. Profile pictures have color coded borders
+ * to clearly indicate winners (red for loss, green for win, grey for neutral (no kid) flips
+ */
 public class CoinFlipActivity extends AppCompatActivity {
     private final CoinFlipManager coinFlipManager = CoinFlipManager.getInstance();
     private final ChildManager childManager = ChildManager.getInstance();
@@ -105,6 +109,9 @@ public class CoinFlipActivity extends AppCompatActivity {
         arrayAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * adapter to display the list of coin flips (neatly)
+     */
     private class CoinFlipListAdapter extends ArrayAdapter<CoinFlip> {
         public CoinFlipListAdapter() {
             super(CoinFlipActivity.this, R.layout.coinflip_list, coinFlipManager.getCoinFlipList());

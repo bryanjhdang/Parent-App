@@ -2,6 +2,9 @@ package cmpt276.as3.cmpt276hydrogenproject.model;
 
 import java.util.ArrayList;
 
+/**
+ * class that stores the list of tasks that the parent wants to be completed.
+ */
 public class TaskManager {
     private ArrayList<Task> TASK_LIST = new ArrayList<>();
     private static TaskManager instance;

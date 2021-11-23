@@ -22,6 +22,10 @@ import java.util.Objects;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * activity that allows user to set timer or choose from a selection
+ * of preset times with buttons on the screen.
+ */
 public class TimeoutActivity extends AppCompatActivity {
 
     private final int CONVERT_MILLIS_TO_SECONDS = 60000;

@@ -2,6 +2,10 @@ package cmpt276.as3.cmpt276hydrogenproject.model;
 
 import java.util.ArrayList;
 
+/**
+ * class that stores the collection of coin flips, along
+ * with its methods to control/alter the list and its contents.
+ */
 public class CoinFlipManager {
     private ArrayList<CoinFlip> COIN_FLIP_LIST = new ArrayList<>();
     private static CoinFlipManager instance;
@@ -31,8 +35,10 @@ public class CoinFlipManager {
 
     public void updateCoinFlipChild(String previous, String current) {
         for (CoinFlip cf : COIN_FLIP_LIST) {
-            if (cf.getChoosingChild().getName().equals(previous)) {
-                cf.getChoosingChild().setName(current);
+            if (cf.getChoosingChild() != null) {
+                if (cf.getChoosingChild().getName().equals(previous)) {
+                    cf.getChoosingChild().setName(current);
+                }
             }
         }
     }

@@ -6,7 +6,12 @@ import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Objects;
 
+/**
+ * class that stores the collection of children and a coin flip queue, along
+ * with its methods to control/alter the list and its contents.
+ */
 public class ChildManager {
     private ArrayList<Child> CHILDREN_LIST = new ArrayList<>();
     private ArrayList<Child> COIN_FLIP_QUEUE = new ArrayList<>();
@@ -66,7 +71,7 @@ public class ChildManager {
     }
 
     public void setChildQueue(ArrayList<Child> COIN_FLIP_QUEUE) {
-        decodeAllChildrenImages(COIN_FLIP_QUEUE);
+        //decodeAllChildrenImages(COIN_FLIP_QUEUE);
         this.COIN_FLIP_QUEUE = COIN_FLIP_QUEUE;
     }
 
@@ -156,5 +161,10 @@ public class ChildManager {
             }
         }
         return false;
+    }
+
+    public void cleanLists() {
+        CHILDREN_LIST.removeIf(Objects::isNull);
+        COIN_FLIP_QUEUE.removeIf(Objects::isNull);
     }
 }

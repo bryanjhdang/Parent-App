@@ -34,6 +34,10 @@ import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
 import cmpt276.as3.cmpt276hydrogenproject.model.CoinFlip;
 import cmpt276.as3.cmpt276hydrogenproject.model.CoinFlipManager;
 
+/**
+ * activity that allows the user to flip a coin, and subsequently add it to a database.
+ * if no kids exist, a flip without a child choosing is also possible.
+ */
 public class AddCoinFlipActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private final int ANIMATION_DURATION = 1000;
     private final float ROTATION_VALUE = 1800;
@@ -186,7 +190,9 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
         dialog = builder.create();
         dialog.show();
 
-        childManager.moveChildToBackOfQueue(flipCoinChild);
+        if (flipCoinChild != null) {
+            childManager.moveChildToBackOfQueue(flipCoinChild);
+        }
     }
 
     private void playCoinFlipSound() {
@@ -222,16 +228,11 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
         choosingChildSpinner.setAdapter(adapter);
         choosingChildSpinner.setSelection(childManager.indexOfChildInCoinFlipQueue(flipCoinChild));
         choosingChildSpinner.setOnItemSelectedListener(this);
-
-        for (int i = 0; i < childManager.getSizeOfChildList()+1; i++) {
-            Child spinnerItem = adapter.getItem(i);
-            if (spinnerItem != null && spinnerItem.getName().equals("Temp name")) {
-                adapter.remove(spinnerItem);
-                adapter.notifyDataSetChanged();
-            }
-        }
     }
 
+    /**
+     * adapter used to display the list of coin flips.
+     */
     private class CoinFlipSpinnerAdapter extends ArrayAdapter<Child> {
         public CoinFlipSpinnerAdapter(Context context, ArrayList<Child> childArrayList) {
             super(context, 0, childArrayList);

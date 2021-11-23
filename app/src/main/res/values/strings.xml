@@ -35,6 +35,11 @@
     <string name="addTaskBtn">addTaskBtn</string>
     <string name="name">Name:</string>
     <string name="clickToChangeImg">To change the image, click on the icon!</string>
+    <string name="flipBtn">Flip!</string>
+    <string name="noChildFlipBtn">No Child Flip</string>
+    <string name="tempName">Temp name</string>
+    <string name="defaultTextview">TextView</string>
+    <string name="tasksLabel">Tasks</string>
     <string-array name="choices">
         <item>Heads</item>
         <item>Tails</item>

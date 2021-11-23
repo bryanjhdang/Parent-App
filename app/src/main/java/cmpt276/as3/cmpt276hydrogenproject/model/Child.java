@@ -6,6 +6,9 @@ import androidx.annotation.NonNull;
 
 import java.util.Random;
 
+/**
+ * represents a single child object that contains a name and a portrait photo.
+ */
 public class Child {
     String name;
     int childID;

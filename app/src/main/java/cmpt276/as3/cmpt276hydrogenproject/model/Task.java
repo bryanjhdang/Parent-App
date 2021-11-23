@@ -2,6 +2,10 @@ package cmpt276.as3.cmpt276hydrogenproject.model;
 
 import androidx.annotation.NonNull;
 
+/**
+ * stores a single task object, storing important features like
+ * the task name and the child assigned to it
+ */
 public class Task {
     private String taskName;
     private Child currentChild;

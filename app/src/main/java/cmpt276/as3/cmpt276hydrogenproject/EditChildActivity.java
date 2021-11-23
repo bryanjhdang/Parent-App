@@ -32,9 +32,9 @@ import cmpt276.as3.cmpt276hydrogenproject.model.CoinFlipManager;
 import cmpt276.as3.cmpt276hydrogenproject.model.TaskManager;
 
 /**
- * Showcases the information of an individual child, allowing the following changes:
- * - Name
- * - Image
+ * Showcases the information of an individual child, allowing the user to change
+ * the child's image and/or name. If a new child is to be added, a default icon and empty
+ * edittext becomes available
  */
 public class EditChildActivity extends AppCompatActivity {
     private String actionBarTitle;
@@ -278,7 +278,11 @@ public class EditChildActivity extends AppCompatActivity {
     private void setNewChildInfo(String newChildName) {
         //if no image is chosen by the user, the default image is set.
         if (image == null) {
-            image = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
+            if(isEditingChild()) {
+                image = ChildManager.decodeToBase64(child.getStringProfilePicture());
+            } else {
+                image = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
+            }
         }
         if (isEditingChild()) {
             coinFlipManager.updateCoinFlipChild(child.getName(), newChildName);

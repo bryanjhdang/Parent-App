@@ -5,6 +5,10 @@ import androidx.annotation.NonNull;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * represents a single coinflip, storing important fields like the choosing child,
+ * the winner/loser, the result, and the date & time
+ */
 public class CoinFlip {
     private boolean isHeads;
     private boolean won;

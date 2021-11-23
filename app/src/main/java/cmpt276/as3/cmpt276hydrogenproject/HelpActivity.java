@@ -11,6 +11,9 @@ import android.widget.ListView;
 
 import java.util.Objects;
 
+/**
+ * activity that lists app info, including a link to a textdoc with all our sources
+ */
 public class HelpActivity extends AppCompatActivity {
     private final String actionBarTitle = "Help";
 
