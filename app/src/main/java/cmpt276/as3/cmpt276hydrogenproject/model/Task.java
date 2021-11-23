@@ -1,5 +1,7 @@
 package cmpt276.as3.cmpt276hydrogenproject.model;
 
+import androidx.annotation.NonNull;
+
 public class Task {
     private String taskName;
     private Child currentChild;
@@ -35,6 +37,7 @@ public class Task {
         return currentChild.getName();
     }
 
+    @NonNull
     @Override
     public String toString() {
         if (currentChild == null) {

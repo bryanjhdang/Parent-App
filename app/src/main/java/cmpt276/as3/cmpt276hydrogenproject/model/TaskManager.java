@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class TaskManager {
     private ArrayList<Task> TASK_LIST = new ArrayList<>();
     private static TaskManager instance;
-    private ChildManager childManager = ChildManager.getInstance();
+    private final ChildManager childManager = ChildManager.getInstance();
 
     public static TaskManager getInstance() {
         if (instance == null) {
@@ -37,7 +37,6 @@ public class TaskManager {
             for (Task task : TASK_LIST) {
                 task.setCurrentChild(null);
             }
-            return;
         } else {
             for (Task task : TASK_LIST) {
                 boolean assignedChildDeleted = !childManager.containsChild(task.getCurrentChild());

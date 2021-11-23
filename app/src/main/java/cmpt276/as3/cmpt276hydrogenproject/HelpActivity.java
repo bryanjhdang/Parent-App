@@ -42,7 +42,7 @@ public class HelpActivity extends AppCompatActivity {
     public void showAppCredentialsList() {
         ListView creditsListView = findViewById(R.id.creditsList);
         String[] creditsList = getResources().getStringArray(R.array.appDevInformation);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
                 this, R.layout.help_list, R.id.textView, creditsList
         );
         creditsListView.setAdapter(arrayAdapter);

@@ -39,9 +39,9 @@ import cmpt276.as3.cmpt276hydrogenproject.model.TaskManager;
 public class EditChildActivity extends AppCompatActivity {
     private String actionBarTitle;
     private Child child;
-    private ChildManager childManager = ChildManager.getInstance();
-    private CoinFlipManager coinFlipManager = CoinFlipManager.getInstance();
-    private TaskManager taskManager = TaskManager.getInstance();
+    private final ChildManager childManager = ChildManager.getInstance();
+    private final CoinFlipManager coinFlipManager = CoinFlipManager.getInstance();
+    private final TaskManager taskManager = TaskManager.getInstance();
 
     private final String TITLE_MSG = "actionBarTitle";
     private final String INDEX_MSG = "childIndex";
@@ -101,7 +101,7 @@ public class EditChildActivity extends AppCompatActivity {
         if (isEditingChild()) {
             EditText nameInput = findViewById(R.id.childNameEditText);
             nameInput.setText(child.getName());
-            Bitmap currentChildProfilePic = childManager.decodeToBase64(child.getProfilePicture());
+            Bitmap currentChildProfilePic = ChildManager.decodeToBase64(child.getStringProfilePicture());
             imageView.setImageBitmap(currentChildProfilePic);
         }
     }
@@ -163,7 +163,7 @@ public class EditChildActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             //successful processing
             if (requestCode == IMAGE_GALLERY_REQUEST) {
-                Uri imageFromGallery = data.getData();
+                Uri imageFromGallery = Objects.requireNonNull(data).getData();
 
                 InputStream inputStream;
 
@@ -244,13 +244,13 @@ public class EditChildActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
                                 .show();
 
-                        if(imageChanged == true){
+                        if (imageChanged) {
                             imageChanged = false;
-                            if(image == null) {
+                            if (image == null) {
                                 image = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
                             }
-                            child.setProfilePicture(childManager.encodeToBase64(image));
                             saveButton.setClickable(false);
+                            child.setStringProfilePicture(ChildManager.encodeToBase64(image));
                             String msgImage = "Profile Picture Updated";
                             Toast.makeText(getApplicationContext(), msgImage, Toast.LENGTH_SHORT)
                                     .show();
@@ -277,23 +277,22 @@ public class EditChildActivity extends AppCompatActivity {
 
     private void setNewChildInfo(String newChildName) {
         //if no image is chosen by the user, the default image is set.
-        if(image == null) {
+        if (image == null) {
             image = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
         }
         if (isEditingChild()) {
             coinFlipManager.updateCoinFlipChild(child.getName(), newChildName);
-            child.setName(newChildName);
-            child.setProfilePicture(childManager.encodeToBase64(image));
+            childManager.editChildName(child, newChildName);
+            coinFlipManager.updateChildNames(child, newChildName);
+            child.setStringProfilePicture(ChildManager.encodeToBase64(image));
         } else {
-            childManager.addChild(newChildName, childManager.encodeToBase64(image));
+            childManager.addChild(newChildName, ChildManager.encodeToBase64(image));
             imageChanged = false;
         }
+        taskManager.updateTaskChildren();
     }
 
     private boolean isEditingChild() {
-        if (actionBarTitle.equals(EDIT_CHILD)) {
-            return true;
-        }
-        return false;
+        return actionBarTitle.equals(EDIT_CHILD);
     }
 }

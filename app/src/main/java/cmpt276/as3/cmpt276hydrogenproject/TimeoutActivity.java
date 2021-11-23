@@ -91,10 +91,8 @@ public class TimeoutActivity extends AppCompatActivity {
             // Parse string input into long
             long inputInMilli = Long.parseLong(input) * CONVERT_MILLIS_TO_SECONDS;
             if (inputInMilli == 0) {
-                //remove the below line and put return back later
-                inputInMilli = 5000;
                 Toast.makeText(TimeoutActivity.this, "Invalid: Enter 1 minute or greater", Toast.LENGTH_SHORT).show();
-                //return;
+                return;
             }
             editTextInput.setText("");
             setTime(inputInMilli);
@@ -136,7 +134,8 @@ public class TimeoutActivity extends AppCompatActivity {
             public void onFinish() {
                 timerWorkingState = false;
                 updateLayoutVisibility();
-            }}.start();
+            }
+        }.start();
 
         timerWorkingState = true;
         updateLayoutVisibility();
@@ -145,7 +144,7 @@ public class TimeoutActivity extends AppCompatActivity {
     private void resetTimer() {
         Intent intent = new Intent(TimeoutActivity.this, NotificationBroadcast.class);
         @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(TimeoutActivity.this, 0, intent, 0);
-        if(backgroundTimerCountDown != null) {
+        if (backgroundTimerCountDown != null) {
             pauseTimer();
         }
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -196,8 +195,7 @@ public class TimeoutActivity extends AppCompatActivity {
 
             if (leftTimeInMilli < startTimeInMilli) {
                 resetTimerBtn.setVisibility(View.VISIBLE);
-            }
-            else {
+            } else {
                 resetTimerBtn.setVisibility(View.INVISIBLE);
             }
 

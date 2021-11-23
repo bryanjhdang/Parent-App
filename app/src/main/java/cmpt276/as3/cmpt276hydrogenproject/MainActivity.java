@@ -4,14 +4,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.VectorDrawable;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -50,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         loadData();
         toConfigureBtn();
-        toCoinflipBtn();
+        toCoinFlipBtn();
         toTimeoutBtn();
         toTaskManagerBtn();
         toHelpBtn();
@@ -71,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    void toCoinflipBtn() {
+    void toCoinFlipBtn() {
         Button btn = findViewById(R.id.coinFlipBtn);
         btn.setOnClickListener(v -> {
             Intent launchActivity = CoinFlipActivity.makeIntent(MainActivity.this);
@@ -109,9 +105,9 @@ public class MainActivity extends AppCompatActivity {
     void loadChildren() {
         Gson myGson = new GsonBuilder().create();
         String jsonString = sp.getString("childList", "");
-        Log.i("LOAD", jsonString);
         if (!jsonString.equals("")) {
-            Type listType = new TypeToken<ArrayList<Child>>(){}.getType();
+            Type listType = new TypeToken<ArrayList<Child>>() {
+            }.getType();
             childManager.setAllChildren(myGson.fromJson(jsonString, listType));
         }
     }
@@ -119,9 +115,9 @@ public class MainActivity extends AppCompatActivity {
     void loadChildQueue() {
         Gson myGson = new GsonBuilder().create();
         String jsonString = sp.getString("childQueue", "");
-        Log.i("LOAD", jsonString);
         if (!jsonString.equals("")) {
-            Type listType = new TypeToken<ArrayList<Child>>(){}.getType();
+            Type listType = new TypeToken<ArrayList<Child>>() {
+            }.getType();
             childManager.setChildQueue(myGson.fromJson(jsonString, listType));
         }
     }
@@ -134,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
                                       LocalDateTime localDateTime) throws IOException {
                         jsonWriter.value(localDateTime.toString());
                     }
+
                     @Override
                     public LocalDateTime read(JsonReader jsonReader) throws IOException {
                         return LocalDateTime.parse(jsonReader.nextString());
@@ -141,7 +138,8 @@ public class MainActivity extends AppCompatActivity {
                 }).create();
         String jsonString = sp.getString("coinFlipList", "");
         if (!jsonString.equals("")) {
-            Type listType = new TypeToken<ArrayList<CoinFlip>>(){}.getType();
+            Type listType = new TypeToken<ArrayList<CoinFlip>>() {
+            }.getType();
             coinFlipManager.setCoinFlipList(myGson.fromJson(jsonString, listType));
         }
     }
@@ -150,7 +148,8 @@ public class MainActivity extends AppCompatActivity {
         Gson myGson = new GsonBuilder().create();
         String jsonString = sp.getString("taskList", "");
         if (!jsonString.equals("")) {
-            Type listType = new TypeToken<ArrayList<Task>>(){}.getType();
+            Type listType = new TypeToken<ArrayList<Task>>() {
+            }.getType();
             taskManager.setTaskList(myGson.fromJson(jsonString, listType));
         }
     }

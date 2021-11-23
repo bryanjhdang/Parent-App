@@ -6,7 +6,6 @@ import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.Queue;
 
 public class ChildManager {
     private ArrayList<Child> CHILDREN_LIST = new ArrayList<>();
@@ -15,6 +14,7 @@ public class ChildManager {
 
     /**
      * Method to retrieve the class without accessing it by the constructor
+     *
      * @return the only instance of the class
      */
     public static ChildManager getInstance() {
@@ -24,7 +24,8 @@ public class ChildManager {
         return instance;
     }
 
-    private ChildManager() {}
+    private ChildManager() {
+    }
 
     public Child getChildAt(int index) {
         return CHILDREN_LIST.get(index);
@@ -65,14 +66,25 @@ public class ChildManager {
     }
 
     public void setChildQueue(ArrayList<Child> COIN_FLIP_QUEUE) {
+        decodeAllChildrenImages(COIN_FLIP_QUEUE);
         this.COIN_FLIP_QUEUE = COIN_FLIP_QUEUE;
     }
 
     public void setAllChildren(ArrayList<Child> childList) {
+        decodeAllChildrenImages(childList);
         this.CHILDREN_LIST = childList;
     }
 
-    public int getSizeOfChildList() { return CHILDREN_LIST.size(); }
+    private void decodeAllChildrenImages(ArrayList<Child> childList) {
+        for (Child c : childList) {
+            Bitmap bitmap = decodeToBase64(c.getStringProfilePicture());
+            c.setBitmapProfilePicture(bitmap);
+        }
+    }
+
+    public int getSizeOfChildList() {
+        return CHILDREN_LIST.size();
+    }
 
     public void addChild(String name, String profilePic) {
         Child child = new Child(name, profilePic);
@@ -80,7 +92,7 @@ public class ChildManager {
         COIN_FLIP_QUEUE.add(child);
     }
 
-    public boolean containsChild (Child child) {
+    public boolean containsChild(Child child) {
         return CHILDREN_LIST.contains(child);
     }
 
@@ -88,36 +100,47 @@ public class ChildManager {
         return CHILDREN_LIST.isEmpty();
     }
 
-    public void removeChildByIdx(int idx) {
-        CHILDREN_LIST.remove(idx);
+    public void removeChildByObject(Child removedChild) {
+        int childID = removedChild.getChildID();
+        CHILDREN_LIST.removeIf(child -> childID == child.getChildID());
+        COIN_FLIP_QUEUE.removeIf(child -> childID == child.getChildID());
     }
 
-    public void removeChildByObject(Child child) {
-        CHILDREN_LIST.remove(child);
-        COIN_FLIP_QUEUE.remove(child);
-    }
-
-    public void editChildName(int idx, String name) {
-        Child child = CHILDREN_LIST.get(idx);
-        child.setName(name);
+    public void editChildName(Child editedChild, String newName) {
+        int childID = editedChild.getChildID();
+        for (Child child : CHILDREN_LIST) {
+            if (childID == child.getChildID()) {
+                child.setName(newName);
+            }
+        }
+        for (Child child : COIN_FLIP_QUEUE) {
+            if (childID == child.getChildID()) {
+                child.setName(newName);
+            }
+        }
     }
 
     public Child getFirstQueued() {
         return COIN_FLIP_QUEUE.get(0);
     }
 
+
     //code inspiration from https://stackoverflow.com/questions/18072448/how-to-save-image-in-shared-preference-in-android-shared-preference-issue-in-a
     //this code is to help with the decoding and encoding of a bitmap into an image when read into the program via shared preferences
-    public String encodeToBase64(Bitmap image) {
-        Bitmap newImage = image;
+    public static String encodeToBase64(Bitmap image) {
+        int imgWidth = image.getWidth();
+        int imgHeight = image.getHeight();
+        int scaledHeight = (imgHeight * 200) / imgWidth;
+
+
+        Bitmap newImage = Bitmap.createScaledBitmap(image, 200, scaledHeight, false);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         newImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
         byte[] b = byteArrayOutputStream.toByteArray();
-        String stringifiedImage = Base64.encodeToString(b, Base64.DEFAULT);
-        return stringifiedImage;
+        return Base64.encodeToString(b, Base64.DEFAULT);
     }
 
-    public Bitmap decodeToBase64(String userInput) {
+    public static Bitmap decodeToBase64(String userInput) {
         byte[] decodedString = Base64.decode(userInput, 0);
         return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
