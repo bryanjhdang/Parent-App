@@ -12,4 +12,5 @@
     <color name="darker_navy_blue">#19212b</color>
     <color name="transparent">#00000000</color>
     <color name="light_navy_blue">#506887</color>
+    <color name="dark_grey">#404040</color>
 </resources>

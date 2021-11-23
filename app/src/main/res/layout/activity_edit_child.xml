@@ -35,13 +35,13 @@
         android:id="@+id/childNameEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="32dp"
         android:backgroundTint="@color/white"
         android:ems="10"
         android:inputType="textPersonName"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.63"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/childPortraitPreview" />
 
@@ -49,26 +49,25 @@
         android:id="@+id/childPortraitPreview"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="32dp"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/configText"
         app:srcCompat="@drawable/icon" />
 
     <TextView
         android:id="@+id/nameTextView"
-        android:layout_width="78dp"
-        android:layout_height="41dp"
-        android:layout_marginTop="4dp"
+        android:layout_width="59dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="16dp"
         android:text="@string/name"
         android:textColor="@color/white"
-        android:textSize="24sp"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/childNameEditText"
         app:layout_constraintEnd_toStartOf="@+id/childNameEditText"
-        app:layout_constraintHorizontal_bias="0.727"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/childNameEditText" />
 
     <TextView

@@ -9,22 +9,25 @@
 
     <ListView
         android:id="@+id/taskListView"
-        android:layout_width="406dp"
-        android:layout_height="655dp"
+        android:layout_width="412dp"
+        android:layout_height="672dp"
         android:divider="@null"
         android:dividerHeight="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.983" />
+        app:layout_constraintTop_toBottomOf="@+id/taskTxt"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/taskListEmptyText"
-        android:layout_width="144dp"
-        android:layout_height="110dp"
+        android:layout_width="210dp"
+        android:layout_height="102dp"
         android:text="@string/noTaskMessage"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,12 +38,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
-        android:layout_marginEnd="44dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="25dp"
+        android:backgroundTint="@color/twitter_blue"
         android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="@+id/taskListView"
+        android:contentDescription="@string/addTaskBtn"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_baseline_add_24"
-        tools:ignore="SpeakableTextPresentCheck"
-        android:contentDescription="@string/addTaskBtn" />
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <TextView
+        android:id="@+id/taskTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Tasks"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -31,7 +31,7 @@
     <string name="fiveMinutes">5:00</string>
     <string name="aboutTheApp">About the App</string>
     <string name="taskManagerLabel">List of Tasks</string>
-    <string name="noTaskMessage">There are no tasks! Press + to add tasks.</string>
+    <string name="noTaskMessage">There are no tasks!\nPress + to add tasks.</string>
     <string name="addTaskBtn">addTaskBtn</string>
     <string name="name">Name:</string>
     <string name="clickToChangeImg">To change the image, click on the icon!</string>
@@ -44,13 +44,13 @@
         <item>Gallery</item>
     </string-array>
     <string-array name="appDevInformation">
-        <item><b>Team Name: </b>Hydrogen</item>
-        <item><b>Developers:</b></item>
+        <item><b>Team Name:</b>\nHydrogen</item>
+        <item><b>\nDevelopers:</b></item>
         <item>Gurseerat Brar</item>
         <item>Kevin Chen</item>
         <item>Ethan Chou</item>
         <item>Bryan Dang</item>
-        <item><u>A list of all the images and resources used is linked below:</u></item>
+        <item><u>\nA list of all the images and resources used is linked below:</u></item>
         <item>https://textdoc.co/aGfq3u0jZA4xSXQp</item>
         <item>Code Style Guide found in docs is from CMPT213, Victor Cheung.</item>
     </string-array>

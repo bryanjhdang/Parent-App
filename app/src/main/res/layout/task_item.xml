@@ -26,20 +26,19 @@
         app:layout_constraintEnd_toEndOf="@+id/taskListBG"
         app:layout_constraintHorizontal_bias="0.068"
         app:layout_constraintStart_toStartOf="@+id/taskListBG"
-        app:layout_constraintTop_toTopOf="@+id/taskListBG"
-        app:layout_constraintVertical_bias="0.625"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_person_24" />
 
     <TextView
         android:id="@+id/taskViewText"
-        android:layout_width="253dp"
-        android:layout_height="32dp"
+        android:layout_width="255dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="8dp"
         android:text="TextView"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/taskListBG"
+        app:layout_constraintBottom_toBottomOf="@+id/taskIconImg"
         app:layout_constraintEnd_toEndOf="@+id/taskListBG"
-        app:layout_constraintHorizontal_bias="0.818"
-        app:layout_constraintStart_toStartOf="@+id/taskListBG"
-        app:layout_constraintTop_toTopOf="@+id/taskListBG"
-        app:layout_constraintVertical_bias="0.405" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/taskIconImg"
+        app:layout_constraintTop_toTopOf="@+id/taskIconImg" />
 </androidx.constraintlayout.widget.ConstraintLayout>

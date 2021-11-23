@@ -83,6 +83,13 @@ public class EditChildActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setTitle(actionBarTitle);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
                 .getColor(R.color.darker_navy_blue)));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 
     private void setChangeChildInformation() {
@@ -242,6 +249,7 @@ public class EditChildActivity extends AppCompatActivity {
                             if (image == null) {
                                 image = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
                             }
+                            saveButton.setClickable(false);
                             child.setStringProfilePicture(ChildManager.encodeToBase64(image));
                             String msgImage = "Profile Picture Updated";
                             Toast.makeText(getApplicationContext(), msgImage, Toast.LENGTH_SHORT)
@@ -251,6 +259,7 @@ public class EditChildActivity extends AppCompatActivity {
 
                     } else {
                         setNewChildInfo(newChildName);
+                        saveButton.setClickable(false);
                         imageChanged = false;
                         String msg = "Child added.";
                         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
