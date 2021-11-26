@@ -41,6 +41,7 @@ public class TaskInfoActivity extends AppCompatActivity {
     private ImageView assignedChildPicture;
     private EditText taskNameInput;
     private FloatingActionButton saveButton;
+    private FloatingActionButton completeTaskButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +51,13 @@ public class TaskInfoActivity extends AppCompatActivity {
 
         assignedChildPicture = findViewById(R.id.taskChildPicture);
         saveButton = findViewById(R.id.saveTaskChanges);
+        completeTaskButton = findViewById(R.id.completeTaskButton);
         taskNameInput = findViewById(R.id.taskHeading);
 
         setActionBar();
         setTaskInformation();
         setSaveTaskInfoButton();
+        setCompleteTaskButton();
 
         saveButton.setVisibility(View.INVISIBLE);
         TextWatcher taskInputChangeWatcher = new TextWatcher() {
@@ -142,6 +145,22 @@ public class TaskInfoActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),
                             "Invalid task name!",
                             Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }
+        });
+    }
+
+    private void setCompleteTaskButton() {
+        completeTaskButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (task.getCurrentChild() != null) {
+                    task.taskCompleted();
+                    finish();
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "There are no children to finish this task!", Toast.LENGTH_SHORT)
                             .show();
                 }
             }
