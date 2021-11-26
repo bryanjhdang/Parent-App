@@ -14,7 +14,8 @@
         <activity
             android:name=".TaskInfoActivity"
             android:parentActivityName=".TaskManagerActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".EditChildActivity"
             android:exported="true" />

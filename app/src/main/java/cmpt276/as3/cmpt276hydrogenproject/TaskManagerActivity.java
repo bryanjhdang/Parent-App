@@ -154,8 +154,6 @@ public class TaskManagerActivity extends AppCompatActivity {
         ListView list = findViewById(R.id.taskListView);
         list.setOnItemClickListener((adapterView, view, index, id) -> {
             expandTaskInfo(index);
-            Toast.makeText(getApplicationContext(), "cok", Toast.LENGTH_SHORT)
-                    .show();
         });
     }
 
