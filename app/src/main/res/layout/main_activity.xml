@@ -8,69 +8,6 @@
     android:background="@color/twitter_navy_blue"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/configureBtn"
-        android:layout_width="275dp"
-        android:layout_height="75dp"
-        android:layout_weight="1"
-        android:backgroundTint="@color/twitter_blue"
-        android:text="@string/configureBtnText"
-        android:textColor="@color/white"
-        app:icon="@drawable/ic_baseline_person_24"
-        app:iconTint="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/timeoutBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.522"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/coinFlipBtn"
-        android:layout_width="275dp"
-        android:layout_height="75dp"
-        android:layout_weight="1"
-        android:backgroundTint="@color/twitter_blue"
-        android:text="@string/coinFlipBtnText"
-        android:textColor="@color/white"
-        app:icon="@drawable/ic_baseline_monetization_on_24"
-        app:iconTint="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/taskManagerBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.522"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/timeoutBtn"
-        android:layout_width="275dp"
-        android:layout_height="75dp"
-        android:layout_weight="1"
-        android:height="10dp"
-        android:backgroundTint="@color/twitter_blue"
-        android:text="@string/timeoutBtnText"
-        android:textColor="@color/white"
-        app:icon="@drawable/ic_baseline_timer_24"
-        app:iconTint="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/coinFlipBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.522"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/taskManagerBtn"
-        android:layout_width="275dp"
-        android:layout_height="75dp"
-        android:layout_marginBottom="24dp"
-        android:layout_weight="1"
-        android:height="10dp"
-        android:backgroundTint="@color/twitter_blue"
-        android:text="@string/tasksBtnText"
-        android:textColor="@color/white"
-        app:icon="@drawable/ic_baseline_assignment_24"
-        app:iconTint="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.522"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <TextView
         android:id="@+id/menuTitle"
         android:layout_width="wrap_content"
@@ -89,22 +26,122 @@
         android:id="@+id/menuImg"
         android:layout_width="370dp"
         android:layout_height="233dp"
-        app:layout_constraintBottom_toTopOf="@+id/configureBtn"
+        app:layout_constraintBottom_toTopOf="@+id/menuButtonLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/menuTitle"
-        app:layout_constraintVertical_bias="0.618"
         app:srcCompat="@drawable/family_menu_icon" />
 
-    <ImageView
-        android:id="@+id/helpImg"
-        android:layout_width="33dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="15dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/menuButtonLayout"
+        android:layout_width="338dp"
+        android:layout_height="293dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_help_24" />
+        app:layout_constraintVertical_bias="0.84000003">
+
+        <Button
+            android:id="@+id/helpBtn"
+            android:layout_width="155dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="24dp"
+            android:backgroundTint="@color/twitter_blue"
+            android:text="@string/help"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:icon="@drawable/ic_baseline_help_24"
+            app:iconTint="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/taskManagerBtn" />
+
+        <Button
+            android:id="@+id/takeBreathBtn"
+            android:layout_width="155dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="24dp"
+            android:backgroundTint="@color/twitter_blue"
+            android:text="@string/take_a_breath"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:icon="@drawable/ic_baseline_accessibility_new_24"
+            app:iconTint="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/coinFlipBtn" />
+
+        <Button
+            android:id="@+id/taskManagerBtn"
+            android:layout_width="155dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="24dp"
+            android:layout_weight="1"
+            android:height="10dp"
+            android:backgroundTint="@color/twitter_blue"
+            android:text="@string/tasksBtnText"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:icon="@drawable/ic_baseline_assignment_24"
+            app:iconTint="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/timeoutBtn" />
+
+        <Button
+            android:id="@+id/timeoutBtn"
+            android:layout_width="155dp"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:height="10dp"
+            android:backgroundTint="@color/twitter_blue"
+            android:text="@string/timeoutBtnText"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:icon="@drawable/ic_baseline_timer_24"
+            app:iconTint="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/coinFlipBtn"
+            android:layout_width="155dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="24dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/twitter_blue"
+            android:text="@string/coinFlipBtnText"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:icon="@drawable/ic_baseline_monetization_on_24"
+            app:iconTint="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/configureBtn" />
+
+        <Button
+            android:id="@+id/configureBtn"
+            android:layout_width="155dp"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/twitter_blue"
+            android:text="@string/configureBtnText"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:icon="@drawable/ic_baseline_person_24"
+            app:iconTint="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

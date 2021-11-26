@@ -48,11 +48,7 @@ public class MainActivity extends AppCompatActivity {
         sp = getSharedPreferences("Hydrogen", MODE_PRIVATE);
 
         loadData();
-        toConfigureBtn();
-        toCoinFlipBtn();
-        toTimeoutBtn();
-        toTaskManagerBtn();
-        toHelpBtn();
+        setNavigationButtons();
     }
 
     private void loadData() {
@@ -60,6 +56,15 @@ public class MainActivity extends AppCompatActivity {
         loadChildQueue();
         loadCoinFlips();
         loadTasks();
+    }
+
+    private void setNavigationButtons() {
+        toConfigureBtn();
+        toCoinFlipBtn();
+        toTimeoutBtn();
+        toTaskManagerBtn();
+        toHelpBtn();
+        toTakeBreathBtn();
     }
 
     void toConfigureBtn() {
@@ -87,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void toHelpBtn() {
-        ImageView helpBtn = findViewById(R.id.helpImg);
+        Button helpBtn = findViewById(R.id.helpBtn);
         helpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,6 +107,14 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(v -> {
             Intent launchActivity = TaskManagerActivity.makeIntent(MainActivity.this);
             startActivity(launchActivity);
+        });
+    }
+
+    void toTakeBreathBtn() {
+        Button takeBreathBtn = findViewById(R.id.takeBreathBtn);
+        takeBreathBtn.setOnClickListener(v -> {
+            Intent launchTakeBreathActivity = TakeBreathActivity.makeIntent(MainActivity.this);
+            startActivity(launchTakeBreathActivity);
         });
     }
 

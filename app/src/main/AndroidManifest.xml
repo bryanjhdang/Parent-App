@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="cmpt276.as3.cmpt276hydrogenproject" >
+    package="cmpt276.as3.cmpt276hydrogenproject">
 
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -10,7 +10,10 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CMPT276HydrogenProject" >
+        android:theme="@style/Theme.CMPT276HydrogenProject">
+        <activity
+            android:name=".TakeBreathActivity"
+            android:exported="true" />
         <activity
             android:name=".EditChildActivity"
             android:exported="true" />
@@ -48,7 +51,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             android:launchMode="singleTask"
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
