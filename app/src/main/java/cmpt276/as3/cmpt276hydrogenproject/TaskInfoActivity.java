@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -14,8 +15,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.Objects;
 
@@ -50,6 +54,7 @@ public class TaskInfoActivity extends AppCompatActivity {
 
         setActionBar();
         setTaskInformation();
+        setSaveTaskInfoButton();
 
         saveButton.setVisibility(View.INVISIBLE);
         TextWatcher taskInputChangeWatcher = new TextWatcher() {
@@ -112,6 +117,34 @@ public class TaskInfoActivity extends AppCompatActivity {
         String nameMessage = "This task is assigned to: ";
         nameMessage += task.getChildName();
         nameOfAssignedChild.setText(nameMessage);
+    }
+
+    private void setSaveTaskInfoButton() {
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String taskName = taskNameInput.getText().toString();
+                if (isValidTaskName(taskName)) {
+                    task.setTaskName(taskName);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Invalid task name!",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private boolean isValidTaskName(String name) {
+        if (name.length() == 0) {
+            return false;
+        }
+
+        for (int i = 0; i < name.length(); i++) {
+            if (name.charAt(i) != ' ') {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static Intent makeIntent(Context context) {
