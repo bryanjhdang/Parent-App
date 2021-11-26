@@ -14,7 +14,7 @@
         <activity
             android:name=".TaskInfoActivity"
             android:parentActivityName=".TaskManagerActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".EditChildActivity"
             android:exported="true" />
