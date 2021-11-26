@@ -45,6 +45,7 @@
     <string name="edit">Edit Task</string>
     <string name="editTaskNameMsg">Tap the task header above to edit!</string>
     <string name="completeTask">Complete Task</string>
+    <string name="deleteTask">Delete Task</string>
     <string-array name="choices">
         <item>Heads</item>
         <item>Tails</item>

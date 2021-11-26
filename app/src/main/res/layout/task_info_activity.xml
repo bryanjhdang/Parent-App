@@ -11,7 +11,7 @@
         android:id="@+id/saveTaskChanges"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="36dp"
         android:layout_marginEnd="16dp"
         android:backgroundTint="@color/twitter_blue"
         android:clickable="true"
@@ -24,13 +24,25 @@
         android:id="@+id/completeTaskButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="36dp"
         android:backgroundTint="@color/light_green"
         android:clickable="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_check_24"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/deleteTaskButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/holo_red_light"
+        android:clickable="true"
+        app:layout_constraintEnd_toStartOf="@+id/taskChildPicture"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/completeLabel"
+        app:srcCompat="@drawable/ic_baseline_delete_24"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
@@ -57,9 +69,24 @@
         android:textSize="11sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.123"
+        app:layout_constraintHorizontal_bias="0.104"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/completeTaskButton" />
+
+    <TextView
+        android:id="@+id/deleteLabel"
+        android:layout_width="56dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="60dp"
+        android:text="@string/deleteTask"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.104"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/deleteTaskButton" />
 
     <EditText
         android:id="@+id/taskHeading"
