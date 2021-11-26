@@ -22,6 +22,8 @@ import java.util.Objects;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
+
 /**
  * activity that allows user to set timer or choose from a selection
  * of preset times with buttons on the screen.
@@ -126,11 +128,16 @@ public class TimeoutActivity extends AppCompatActivity {
 
     private void startTimer() {
         endOfTime = System.currentTimeMillis() + leftTimeInMilli;
+        MaterialProgressBar materialProgressBar = findViewById(R.id.timerCountdownBar);
+        materialProgressBar.setVisibility(MaterialProgressBar.VISIBLE);
 
         backgroundTimerCountDown = new CountDownTimer(leftTimeInMilli, COUNTDOWN_INTERVAL) {
             @Override
             public void onTick(long millisUntilFinished) {
                 leftTimeInMilli = millisUntilFinished;
+                double timeRemainingPercent = (double)leftTimeInMilli/(double)startTimeInMilli;
+                timeRemainingPercent *= 100;
+                materialProgressBar.setProgress((int) timeRemainingPercent);
                 updateDisplayTimer();
             }
 
