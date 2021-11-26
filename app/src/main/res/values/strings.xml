@@ -40,6 +40,10 @@
     <string name="tempName">Temp name</string>
     <string name="defaultTextview">TextView</string>
     <string name="tasksLabel">Tasks</string>
+    <string name="taskHistory">Task Assignment History</string>
+    <string name="confirm">Confirm</string>
+    <string name="edit">Edit Task</string>
+    <string name="editTaskNameMsg">Tap the task header above to edit!</string>
     <string-array name="choices">
         <item>Heads</item>
         <item>Tails</item>
