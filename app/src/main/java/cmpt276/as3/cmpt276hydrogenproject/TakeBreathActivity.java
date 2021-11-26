@@ -17,8 +17,6 @@ public class TakeBreathActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_breath);
         setActionBar();
-
-
     }
 
     public static Intent makeIntent(Context context) {
