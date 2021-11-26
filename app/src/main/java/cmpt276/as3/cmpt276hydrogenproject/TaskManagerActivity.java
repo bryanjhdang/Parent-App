@@ -37,6 +37,9 @@ public class TaskManagerActivity extends AppCompatActivity {
     SharedPreferences sp;
     private final TaskManager taskManager = TaskManager.getInstance();
 
+    private final String TITLE_MSG = "actionBarTitle";
+    private final String TASK_INDEX_MSG = "taskIndex";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,10 +140,6 @@ public class TaskManagerActivity extends AppCompatActivity {
         }
     }
 
-    public static Intent makeIntent(Context context) {
-        return new Intent(context, TaskManagerActivity.class);
-    }
-
     private void setActionBar() {
         Objects.requireNonNull(getSupportActionBar()).setTitle("Task Manager");
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
@@ -155,80 +154,10 @@ public class TaskManagerActivity extends AppCompatActivity {
     }
 
     private void expandTaskInfo(int index) {
-        ImageView image = new ImageView(this);
-        Task currentTask = taskManager.getTaskAt(index);
-        Child currentTaskChild = currentTask.getCurrentChild();
-        if (currentTaskChild == null) {
-            image.setImageResource(R.drawable.icon);
-        } else {
-            Bitmap childProfilePic = ChildManager.decodeToBase64(currentTaskChild.getStringProfilePicture());
-            image.setImageBitmap(childProfilePic);
-        }
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(TaskManagerActivity.this);
-        builder.setTitle("Task: " + currentTask.getTaskName());
-        if (currentTask.getCurrentChild() != null) {
-            builder.setMessage("This task is assigned to: " + currentTask.getChildName());
-        } else {
-            builder.setMessage("There are no children to assign tasks to!");
-        }
-
-        image.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        image.setLayoutParams(new ViewGroup.LayoutParams(300, 300));
-        builder.setView(image);
-
-        builder.setPositiveButton("Finished!", ((dialogInterface, i) -> {
-            if (currentTask.getCurrentChild() != null) {
-                currentTask.taskCompleted();
-                saveTasks();
-            } else {
-                Toast.makeText(getApplicationContext(),
-                        "There are no children to finish this task!", Toast.LENGTH_SHORT)
-                        .show();
-            }
-            showTaskList();
-        }));
-
-        builder.setNeutralButton("Edit", ((dialogInterface, i) -> {
-            editTaskDialog(index);
-        }));
-
-        builder.setNegativeButton("Cancel", null);
-
-        AlertDialog alert = builder.create();
-        alert.show();
-    }
-
-    private void editTaskDialog(int index) {
-        EditText input = new EditText(TaskManagerActivity.this);
-        Task currentTask = taskManager.getTaskAt(index);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(TaskManagerActivity.this);
-        builder.setTitle("Edit task:");
-        builder.setView(input);
-        builder.setPositiveButton("Save", ((dialogInterface, i) -> {
-            String taskName = input.getText().toString();
-
-            if (isValidTaskName(taskName)) {
-                currentTask.setTaskName(taskName);
-                Toast.makeText(getApplicationContext(), "Edited task!", Toast.LENGTH_SHORT)
-                        .show();
-                showTaskList();
-            } else {
-                Toast.makeText(getApplicationContext(), "Invalid task name!",
-                        Toast.LENGTH_SHORT).show();
-            }
-        }));
-
-        builder.setNeutralButton("Delete", ((dialogInterface, i) -> {
-            taskManager.deleteTaskAt(index);
-            showTaskList();
-        }));
-
-        builder.setNegativeButton("Cancel", null);
-
-        AlertDialog alert = builder.create();
-        alert.show();
+        Intent launchTaskInfoActivity = TaskInfoActivity.makeIntent(TaskManagerActivity.this);
+        launchTaskInfoActivity.putExtra(TITLE_MSG, "Manage Task Settings");
+        launchTaskInfoActivity.putExtra(TASK_INDEX_MSG, index);
+        startActivity(launchTaskInfoActivity);
     }
 
     private void saveTasks() {
@@ -237,5 +166,9 @@ public class TaskManagerActivity extends AppCompatActivity {
         String jsonString = myGson.toJson(taskManager.getTaskList());
         editor.putString("taskList", jsonString);
         editor.apply();
+    }
+
+    public static Intent makeIntent(Context context) {
+        return new Intent(context, TaskManagerActivity.class);
     }
 }
