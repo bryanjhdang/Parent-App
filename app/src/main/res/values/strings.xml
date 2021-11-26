@@ -2,7 +2,7 @@
     <string name="app_name">CMPT276 Hydrogen Project</string>
     <string name="coinFlipBtnText">Flip a coin</string>
     <string name="timeoutBtnText">Timeout timer</string>
-    <string name="configureBtnText">Configure my children</string>
+    <string name="configureBtnText">Configure children</string>
     <string name="tasksBtnText">Task Manager</string>
     <string name="coinFlipTitle">Flip a Coin</string>
     <string name="heads">Heads</string>
@@ -40,6 +40,8 @@
     <string name="tempName">Temp name</string>
     <string name="defaultTextview">TextView</string>
     <string name="tasksLabel">Tasks</string>
+    <string name="take_a_breath">Take A Breath</string>
+    <string name="help">Help</string>
     <string name="taskHistory">Task Assignment History</string>
     <string name="confirm">Confirm</string>
     <string name="edit">Edit Task</string>
