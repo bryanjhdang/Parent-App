@@ -1,7 +1,9 @@
 package cmpt276.as3.cmpt276hydrogenproject;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -54,11 +56,12 @@ public class TaskInfoActivity extends AppCompatActivity {
         taskNameInput = findViewById(R.id.taskName);
 
         setActionBar();
+        setTaskTextWatcher();
         setTaskInformation();
-        setSaveTaskInfoButton();
-        setCompleteTaskButton();
-        setDeleteTaskButton();
+        setTaskButtons();
+    }
 
+    private void setTaskTextWatcher() {
         saveButton.setVisibility(View.INVISIBLE);
         TextWatcher taskInputChangeWatcher = new TextWatcher() {
             @Override
@@ -89,6 +92,12 @@ public class TaskInfoActivity extends AppCompatActivity {
         taskNameInput.addTextChangedListener(taskInputChangeWatcher);
     }
 
+    private void setTaskButtons() {
+        setSaveTaskInfoButton();
+        setCompleteTaskButton();
+        setDeleteTaskButton();
+    }
+
     private void initializeIntentInfo() {
         Intent intent = getIntent();
         actionBarTitle = intent.getStringExtra(TITLE_MSG);
@@ -104,14 +113,12 @@ public class TaskInfoActivity extends AppCompatActivity {
     }
 
     private void setTaskInformation() {
-        //TODO: create checks for null children/tasks in each of the functions below
         setChangeTaskNameInput();
         setNameOfAssignedChild();
     }
     private void setChangeTaskNameInput() {
-        //taskNameInput = findViewById(R.id.taskHeading);
         taskNameInput.setText(task.getTaskName());
-        if(task.getCurrentChild() != null) {
+        if (task.getCurrentChild() != null) {
             Bitmap assignedChildProfilePic = ChildManager.decodeToBase64(task.getCurrentChild().getStringProfilePicture());
             assignedChildPicture.setImageBitmap(assignedChildProfilePic);
         }
@@ -140,7 +147,6 @@ public class TaskInfoActivity extends AppCompatActivity {
                             "Task Changes Saved!",
                             Toast.LENGTH_SHORT)
                             .show();
-                    finish();
                 } else {
                     Toast.makeText(getApplicationContext(),
                             "Invalid task name!",
@@ -171,10 +177,24 @@ public class TaskInfoActivity extends AppCompatActivity {
         deleteTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                taskManager.deleteTaskAt(taskIndex);
-                finish();
+                createDeleteDialog();
             }
         });
+    }
+
+    private void createDeleteDialog() {
+        TextView tv = new TextView(TaskInfoActivity.this);
+        String dialogLabel = "Are you sure you want to delete this task?";
+        AlertDialog.Builder builder = new AlertDialog.Builder(TaskInfoActivity.this);
+        builder.setTitle(dialogLabel);
+        builder.setPositiveButton("Yes", ((dialogInterface, i) -> {
+            taskManager.deleteTaskAt(taskIndex);
+            finish();
+        }));
+        builder.setNegativeButton("No", null);
+
+        AlertDialog deleteDialog = builder.create();
+        deleteDialog.show();
     }
 
     private boolean isValidTaskName(String name) {
