@@ -34,8 +34,7 @@ public class TaskInfoActivity extends AppCompatActivity {
     private TaskManager taskManager = TaskManager.getInstance();
 
     private final String TITLE_MSG = "actionBarTitle";
-    private final String TASK_INDEX_MSG = "taskIndex";
-    private final String EDIT_CHILD = "Manage Task Settings";
+    private final String TASK_INDEX_MSG = "taskIndex";;
 
     private ImageView assignedChildPicture;
     private EditText taskNameInput;
