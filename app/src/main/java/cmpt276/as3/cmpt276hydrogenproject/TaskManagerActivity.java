@@ -37,6 +37,9 @@ public class TaskManagerActivity extends AppCompatActivity {
     SharedPreferences sp;
     private final TaskManager taskManager = TaskManager.getInstance();
 
+    private final String TITLE_MSG = "actionBarTitle";
+    private final String TASK_INDEX_MSG = "taskIndex";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -151,52 +154,59 @@ public class TaskManagerActivity extends AppCompatActivity {
         ListView list = findViewById(R.id.taskListView);
         list.setOnItemClickListener((adapterView, view, index, id) -> {
             expandTaskInfo(index);
+            Toast.makeText(getApplicationContext(), "cok", Toast.LENGTH_SHORT)
+                    .show();
         });
     }
 
     private void expandTaskInfo(int index) {
-        ImageView image = new ImageView(this);
-        Task currentTask = taskManager.getTaskAt(index);
-        Child currentTaskChild = currentTask.getCurrentChild();
-        if (currentTaskChild == null) {
-            image.setImageResource(R.drawable.icon);
-        } else {
-            Bitmap childProfilePic = ChildManager.decodeToBase64(currentTaskChild.getStringProfilePicture());
-            image.setImageBitmap(childProfilePic);
-        }
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(TaskManagerActivity.this);
-        builder.setTitle("Task: " + currentTask.getTaskName());
-        if (currentTask.getCurrentChild() != null) {
-            builder.setMessage("This task is assigned to: " + currentTask.getChildName());
-        } else {
-            builder.setMessage("There are no children to assign tasks to!");
-        }
-
-        image.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        image.setLayoutParams(new ViewGroup.LayoutParams(300, 300));
-        builder.setView(image);
-
-        builder.setPositiveButton("Finished!", ((dialogInterface, i) -> {
-            if (currentTask.getCurrentChild() != null) {
-                currentTask.taskCompleted();
-                saveTasks();
-            } else {
-                Toast.makeText(getApplicationContext(),
-                        "There are no children to finish this task!", Toast.LENGTH_SHORT)
-                        .show();
-            }
-            showTaskList();
-        }));
-
-        builder.setNeutralButton("Edit", ((dialogInterface, i) -> {
-            editTaskDialog(index);
-        }));
-
-        builder.setNegativeButton("Cancel", null);
-
-        AlertDialog alert = builder.create();
-        alert.show();
+//        ImageView image = new ImageView(this);
+//        Task currentTask = taskManager.getTaskAt(index);
+//        Child currentTaskChild = currentTask.getCurrentChild();
+//        if (currentTaskChild == null) {
+//            image.setImageResource(R.drawable.icon);
+//        } else {
+//            Bitmap childProfilePic = ChildManager.decodeToBase64(currentTaskChild.getStringProfilePicture());
+//            image.setImageBitmap(childProfilePic);
+//        }
+//
+//        AlertDialog.Builder builder = new AlertDialog.Builder(TaskManagerActivity.this);
+//        builder.setTitle("Task: " + currentTask.getTaskName());
+//        if (currentTask.getCurrentChild() != null) {
+//            builder.setMessage("This task is assigned to: " + currentTask.getChildName());
+//        } else {
+//            builder.setMessage("There are no children to assign tasks to!");
+//        }
+//
+//        image.setScaleType(ImageView.ScaleType.FIT_CENTER);
+//        image.setLayoutParams(new ViewGroup.LayoutParams(300, 300));
+//        builder.setView(image);
+//
+//        builder.setPositiveButton("Finished!", ((dialogInterface, i) -> {
+//            if (currentTask.getCurrentChild() != null) {
+//                currentTask.taskCompleted();
+//                saveTasks();
+//            } else {
+//                Toast.makeText(getApplicationContext(),
+//                        "There are no children to finish this task!", Toast.LENGTH_SHORT)
+//                        .show();
+//            }
+//            showTaskList();
+//        }));
+//
+//        builder.setNeutralButton("Edit", ((dialogInterface, i) -> {
+//            editTaskDialog(index);
+//        }));
+//
+//        builder.setNegativeButton("Cancel", null);
+//
+//        AlertDialog alert = builder.create();
+//        alert.show();
+        Intent launchTaskInfoActivity = TaskInfoActivity.makeIntent(TaskManagerActivity.this);
+        //TODO: implement shared preferences
+        launchTaskInfoActivity.putExtra(TITLE_MSG, "Manage Task Settings");
+        launchTaskInfoActivity.putExtra(TASK_INDEX_MSG, index);
+        startActivity(launchTaskInfoActivity);
     }
 
     private void editTaskDialog(int index) {
