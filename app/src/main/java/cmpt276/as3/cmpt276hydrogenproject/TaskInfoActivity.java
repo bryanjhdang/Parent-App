@@ -108,15 +108,22 @@ public class TaskInfoActivity extends AppCompatActivity {
     private void setChangeTaskNameInput() {
         //taskNameInput = findViewById(R.id.taskHeading);
         taskNameInput.setText(task.getTaskName());
-        Bitmap assignedChildProfilePic = ChildManager.decodeToBase64(task.getCurrentChild().getStringProfilePicture());
-        assignedChildPicture.setImageBitmap(assignedChildProfilePic);
+        if(task.getCurrentChild() != null) {
+            Bitmap assignedChildProfilePic = ChildManager.decodeToBase64(task.getCurrentChild().getStringProfilePicture());
+            assignedChildPicture.setImageBitmap(assignedChildProfilePic);
+        }
     }
 
     private void setNameOfAssignedChild() {
         TextView nameOfAssignedChild = findViewById(R.id.taskAssignedName);
-        String nameMessage = "This task is assigned to: ";
-        nameMessage += task.getChildName();
-        nameOfAssignedChild.setText(nameMessage);
+        if (task.getCurrentChild() != null) {
+            String nameMessage = "This task is assigned to: ";
+            nameMessage += task.getChildName();
+            nameOfAssignedChild.setText(nameMessage);
+        } else {
+            String noChildMessage = "There are no kids to assign this task to!";
+            nameOfAssignedChild.setText(noChildMessage);
+        }
     }
 
     private void setSaveTaskInfoButton() {
@@ -126,9 +133,16 @@ public class TaskInfoActivity extends AppCompatActivity {
                 String taskName = taskNameInput.getText().toString();
                 if (isValidTaskName(taskName)) {
                     task.setTaskName(taskName);
+                    Toast.makeText(getApplicationContext(),
+                            "Task Changes Saved!",
+                            Toast.LENGTH_SHORT)
+                            .show();
+                    finish();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Invalid task name!",
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),
+                            "Invalid task name!",
+                            Toast.LENGTH_SHORT)
+                            .show();
                 }
             }
         });
