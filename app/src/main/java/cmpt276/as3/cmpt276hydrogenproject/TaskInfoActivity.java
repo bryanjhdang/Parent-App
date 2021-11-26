@@ -7,9 +7,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
 
@@ -29,6 +35,8 @@ public class TaskInfoActivity extends AppCompatActivity {
     private final String EDIT_CHILD = "Manage Task Settings";
 
     private ImageView assignedChildPicture;
+    private EditText taskNameInput;
+    private FloatingActionButton saveButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +45,40 @@ public class TaskInfoActivity extends AppCompatActivity {
         initializeIntentInfo();
 
         assignedChildPicture = findViewById(R.id.taskChildPicture);
+        saveButton = findViewById(R.id.saveTaskChanges);
+        taskNameInput = findViewById(R.id.taskHeading);
 
         setActionBar();
         setTaskInformation();
+
+        saveButton.setVisibility(View.INVISIBLE);
+        TextWatcher taskInputChangeWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                saveButton.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String input = taskNameInput.getText().toString();
+                if (input.equals(task.getTaskName())) {
+                    saveButton.setVisibility(View.INVISIBLE);
+                } else {
+                    saveButton.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String input = taskNameInput.getText().toString();
+                if (input.equals(task.getTaskName())) {
+                    saveButton.setVisibility(View.INVISIBLE);
+                } else {
+                    saveButton.setVisibility(View.VISIBLE);
+                }
+            }
+        };
+        taskNameInput.addTextChangedListener(taskInputChangeWatcher);
     }
 
     private void initializeIntentInfo() {
@@ -62,7 +101,7 @@ public class TaskInfoActivity extends AppCompatActivity {
         setNameOfAssignedChild();
     }
     private void setChangeTaskNameInput() {
-        EditText taskNameInput = findViewById(R.id.taskHeading);
+        //taskNameInput = findViewById(R.id.taskHeading);
         taskNameInput.setText(task.getTaskName());
         Bitmap assignedChildProfilePic = ChildManager.decodeToBase64(task.getCurrentChild().getStringProfilePicture());
         assignedChildPicture.setImageBitmap(assignedChildProfilePic);
