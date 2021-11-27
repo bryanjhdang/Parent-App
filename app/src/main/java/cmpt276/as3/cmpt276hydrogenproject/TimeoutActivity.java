@@ -49,6 +49,7 @@ public class TimeoutActivity extends AppCompatActivity {
     private TextView displayTimerField;
     private EditText editTextInput;
     private CountDownTimer backgroundTimerCountDown;
+    private MaterialProgressBar materialProgressBar;
 
     private long startTimeInMilli;
     private long endOfTime;
@@ -64,6 +65,7 @@ public class TimeoutActivity extends AppCompatActivity {
         setContentView(R.layout.timeout_activity);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         setActionBar();
+        materialProgressBar = findViewById(R.id.timerCountdownBar);
 
         displayTimerField = findViewById(R.id.textDisplayTimer);
         editTextInput = findViewById(R.id.minuteTextInput);
@@ -128,17 +130,24 @@ public class TimeoutActivity extends AppCompatActivity {
 
     private void startTimer() {
         endOfTime = System.currentTimeMillis() + leftTimeInMilli;
-        MaterialProgressBar materialProgressBar = findViewById(R.id.timerCountdownBar);
         materialProgressBar.setVisibility(MaterialProgressBar.VISIBLE);
 
         backgroundTimerCountDown = new CountDownTimer(leftTimeInMilli, COUNTDOWN_INTERVAL) {
             @Override
             public void onTick(long millisUntilFinished) {
                 leftTimeInMilli = millisUntilFinished;
+                tickVisualTimer();
+                updateDisplayTimer();
+            }
+
+            private void tickVisualTimer() {
                 double timeRemainingPercent = (double)leftTimeInMilli/(double)startTimeInMilli;
                 timeRemainingPercent *= 100;
-                materialProgressBar.setProgress((int) timeRemainingPercent);
-                updateDisplayTimer();
+                if (leftTimeInMilli == 0) {
+                    materialProgressBar.setVisibility(MaterialProgressBar.INVISIBLE);
+                } else {
+                    materialProgressBar.setProgress((int) timeRemainingPercent, true);
+                }
             }
 
             @Override
@@ -158,6 +167,7 @@ public class TimeoutActivity extends AppCompatActivity {
         if (backgroundTimerCountDown != null) {
             pauseTimer();
         }
+        materialProgressBar.setVisibility(MaterialProgressBar.INVISIBLE);
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(0);
         leftTimeInMilli = startTimeInMilli;
