@@ -62,6 +62,7 @@ public class TakeBreathActivity extends AppCompatActivity {
         setContentView(R.layout.activity_take_breath);
         setActionBar();
 
+        initializeBreathCount();
         setBreathCountArrows();
 
         testButtonHold();
@@ -80,6 +81,14 @@ public class TakeBreathActivity extends AppCompatActivity {
 
     private void hideActionBar() {
         Objects.requireNonNull(getSupportActionBar()).hide();
+    }
+
+    private void initializeBreathCount() {
+        TextView breathText = findViewById(R.id.breathTxt);
+        TextView breathCount = findViewById(R.id.breathCount);
+
+        breathText.setText("Let's take 1 breath(s)!");
+        breathCount.setText("1");
     }
 
     private void setBreathCountArrows() {
@@ -129,7 +138,7 @@ public class TakeBreathActivity extends AppCompatActivity {
         TextView breathCount = findViewById(R.id.breathCount);
 
         String breathCountStr = breathCount.getText().toString();
-        breathText.setText("Let's take " + breathCountStr + " breaths!");
+        breathText.setText("Let's take " + breathCountStr + " breath(s)!");
     }
 
     private long timeElapsed = 0L;
@@ -179,16 +188,6 @@ public class TakeBreathActivity extends AppCompatActivity {
         void handleClickOn() {
             super.handleClickOn();
         }
-
-        @Override
-        void handleHold() {
-            super.handleHold();
-        }
-
-        @Override
-        void handleClickOff() {
-            super.handleClickOff();
-        }
     }
 
     private class InhaleState extends State {
@@ -206,8 +205,28 @@ public class TakeBreathActivity extends AppCompatActivity {
         }
 
         @Override
-        void handleClickOn() {
-            super.handleClickOn();
+        void handleHold() {
+            super.handleHold();
+        }
+
+        @Override
+        void handleClickOff() {
+            super.handleClickOff();
+        }
+    }
+
+    private class ExhaleState extends State {
+        Handler timerHandler = new Handler();
+        Runnable timerRunnable = () -> setState(inhaleState);
+
+        @Override
+        void handleEnter() {
+            super.handleEnter();
+        }
+
+        @Override
+        void handleExit() {
+            super.handleExit();
         }
 
         @Override
@@ -221,11 +240,5 @@ public class TakeBreathActivity extends AppCompatActivity {
         }
     }
 
-    private class ExhaleState extends State {
-
-    }
-
-    private class IdleState extends State {
-
-    }
+    private class IdleState extends State {}
 }
