@@ -6,10 +6,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.ContactsContract;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Objects;
 
@@ -59,6 +63,8 @@ public class TakeBreathActivity extends AppCompatActivity {
         setActionBar();
 
         setBreathCountArrows();
+
+        testButtonHold();
     }
 
     public static Intent makeIntent(Context context) {
@@ -70,6 +76,10 @@ public class TakeBreathActivity extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
                 .getColor(R.color.darker_navy_blue)));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void hideActionBar() {
+        Objects.requireNonNull(getSupportActionBar()).hide();
     }
 
     private void setBreathCountArrows() {
@@ -122,15 +132,69 @@ public class TakeBreathActivity extends AppCompatActivity {
         breathText.setText("Let's take " + breathCountStr + " breaths!");
     }
 
+    private long timeElapsed = 0L;
+
+    private void testButtonHold() {
+        Button button = findViewById(R.id.breathButton);
+        button.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        timeElapsed = motionEvent.getDownTime();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        timeElapsed = motionEvent.getEventTime() - timeElapsed;
+                        timeElapsed /= 1000;
+                        String msg = "Button held for " + timeElapsed + " seconds!";
+                        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
+                                .show();
+                        timeElapsed = 0L;
+                        break;
+                    default:
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
     // ***********************************************************
     // State Pattern states
     // ***********************************************************
 
     private class MenuState extends State {
+        @Override
+        void handleEnter() {
+            TextView tv = findViewById(R.id.breathHelpTxt);
+            tv.setText("Currently in default");
+        }
 
+        @Override
+        void handleExit() {
+            Toast.makeText(getApplicationContext(), "left menu", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        void handleClickOn() {
+            super.handleClickOn();
+        }
+
+        @Override
+        void handleHold() {
+            super.handleHold();
+        }
+
+        @Override
+        void handleClickOff() {
+            super.handleClickOff();
+        }
     }
 
     private class InhaleState extends State {
+        Handler timerHandler = new Handler();
+        Runnable timerRunnable = () -> setState(inhaleState);
+
         @Override
         void handleEnter() {
             super.handleEnter();
