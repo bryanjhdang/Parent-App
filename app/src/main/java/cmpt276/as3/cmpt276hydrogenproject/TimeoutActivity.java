@@ -46,6 +46,9 @@ public class TimeoutActivity extends AppCompatActivity {
     private Button startTimerBtn;
     private Button setTimeBtn;
     private Button resetTimerBtn;
+
+    private Button dummyChangeRateBtn;
+
     private TextView displayTimerField;
     private EditText editTextInput;
     private CountDownTimer backgroundTimerCountDown;
@@ -56,7 +59,7 @@ public class TimeoutActivity extends AppCompatActivity {
     private boolean timerWorkingState;
     private boolean isFirstTime;
     private long leftTimeInMilli;
-    private double timeModifier = 2;
+    private double timeModifier = 4;
 
     AlarmManager alarmManager;
 
@@ -205,6 +208,7 @@ public class TimeoutActivity extends AppCompatActivity {
         materialProgressBar.setVisibility(MaterialProgressBar.INVISIBLE);
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(0);
+        alarmManager.cancel(pendingIntent);
         leftTimeInMilli = startTimeInMilli;
         updateDisplayTimer();
         updateLayoutVisibility();
@@ -295,6 +299,18 @@ public class TimeoutActivity extends AppCompatActivity {
         setPresetTimer(threeMinBtn, DEFAULT_SETTING_3);
         setPresetTimer(fiveMinBtn, DEFAULT_SETTING_4);
         setPresetTimer(tenMinBtn, DEFAULT_SETTING_5);
+
+        dummyChangeRateBtn = findViewById(R.id.dummyChangeRateBtn);
+        changeTimerRate(dummyChangeRateBtn, 1);
+    }
+
+    private void changeTimerRate(Button rateChangeBtn, double newRate) {
+        rateChangeBtn.setOnClickListener(v -> {
+            leftTimeInMilli*=timeModifier;
+            timeModifier = newRate;
+            backgroundTimerCountDown.cancel();
+            startTimer();
+        });
     }
 
     /**
