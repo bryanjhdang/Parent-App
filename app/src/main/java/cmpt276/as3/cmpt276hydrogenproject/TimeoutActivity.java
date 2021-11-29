@@ -85,7 +85,7 @@ public class TimeoutActivity extends AppCompatActivity {
                 //code was followed from demo from https://www.youtube.com/watch?v=nl-dheVpt8o
                 long timeWhenButtonClicked = System.currentTimeMillis();
                 alarmManager.set(AlarmManager.RTC_WAKEUP,
-                        timeWhenButtonClicked + leftTimeInMilli,
+                        (long) (timeWhenButtonClicked + leftTimeInMilli/timeModifier),
                         pendingIntent);
             }
         });
