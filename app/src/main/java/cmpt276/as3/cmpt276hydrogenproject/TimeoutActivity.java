@@ -141,12 +141,12 @@ public class TimeoutActivity extends AppCompatActivity {
             }
 
             private void tickVisualTimer() {
-                double timeRemainingPercent = (double)leftTimeInMilli/(double)startTimeInMilli;
-                timeRemainingPercent *= 100;
+                double timeRemainingPortion = (double)leftTimeInMilli/(double)startTimeInMilli;
+                timeRemainingPortion *= 1000000;
                 if (leftTimeInMilli == 0) {
                     materialProgressBar.setVisibility(MaterialProgressBar.INVISIBLE);
                 } else {
-                    materialProgressBar.setProgress((int) timeRemainingPercent, true);
+                    materialProgressBar.setProgress((int) timeRemainingPortion, true);
                 }
             }
 
