@@ -56,6 +56,7 @@ public class TimeoutActivity extends AppCompatActivity {
     private boolean timerWorkingState;
     private boolean isFirstTime;
     private long leftTimeInMilli;
+    private double timeModifier = 2;
 
     AlarmManager alarmManager;
 
@@ -99,8 +100,10 @@ public class TimeoutActivity extends AppCompatActivity {
             // Parse string input into long
             long inputInMilli = Long.parseLong(input) * CONVERT_MILLIS_TO_SECONDS;
             if (inputInMilli == 0) {
+                //TODO: debug timer
+                inputInMilli = 5000;
                 Toast.makeText(TimeoutActivity.this, "Invalid: Enter 1 minute or greater", Toast.LENGTH_SHORT).show();
-                return;
+                //return;
             }
             editTextInput.setText("");
             setTime(inputInMilli);
@@ -128,11 +131,40 @@ public class TimeoutActivity extends AppCompatActivity {
         startTimerBtn.setText(R.string.btnTextStart);
     }
 
+    private class customTimer extends CountDownTimer {
+        public customTimer(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+            leftTimeInMilli = millisUntilFinished;
+            tickVisualTimer();
+            updateDisplayTimer();
+        }
+
+        private void tickVisualTimer() {
+            double timeRemainingPercent = (double)leftTimeInMilli/(double)startTimeInMilli;
+            timeRemainingPercent *= 100;
+            if (leftTimeInMilli == 0) {
+                materialProgressBar.setVisibility(MaterialProgressBar.INVISIBLE);
+            } else {
+                materialProgressBar.setProgress((int) timeRemainingPercent, true);
+            }
+        }
+
+        @Override
+        public void onFinish() {
+            timerWorkingState = false;
+            updateLayoutVisibility();
+        }
+    }
+
     private void startTimer() {
         endOfTime = System.currentTimeMillis() + leftTimeInMilli;
         materialProgressBar.setVisibility(MaterialProgressBar.VISIBLE);
 
-        backgroundTimerCountDown = new CountDownTimer(leftTimeInMilli, COUNTDOWN_INTERVAL) {
+        backgroundTimerCountDown = new CountDownTimer((long) (leftTimeInMilli/timeModifier), (long) (COUNTDOWN_INTERVAL/timeModifier)) {
             @Override
             public void onTick(long millisUntilFinished) {
                 leftTimeInMilli = millisUntilFinished;
@@ -142,6 +174,7 @@ public class TimeoutActivity extends AppCompatActivity {
 
             private void tickVisualTimer() {
                 double timeRemainingPercent = (double)leftTimeInMilli/(double)startTimeInMilli;
+                timeRemainingPercent *= timeModifier;
                 timeRemainingPercent *= 100;
                 if (leftTimeInMilli == 0) {
                     materialProgressBar.setVisibility(MaterialProgressBar.INVISIBLE);
@@ -156,6 +189,8 @@ public class TimeoutActivity extends AppCompatActivity {
                 updateLayoutVisibility();
             }
         }.start();
+
+        //backgroundTimerCountDown = new customTimer(leftTimeInMilli, COUNTDOWN_INTERVAL);
 
         timerWorkingState = true;
         updateLayoutVisibility();
@@ -186,6 +221,12 @@ public class TimeoutActivity extends AppCompatActivity {
         int hours = (int) (leftTimeInMilli / COUNTDOWN_INTERVAL) / SECONDS_PER_HOUR;
         int minutes = (int) ((leftTimeInMilli / COUNTDOWN_INTERVAL) % SECONDS_PER_HOUR) / SECONDS_PER_MINUTE;
         int seconds = (int) (leftTimeInMilli / COUNTDOWN_INTERVAL) % SECONDS_PER_MINUTE;
+
+        if (timerWorkingState) {
+            hours = (int) (leftTimeInMilli*timeModifier / COUNTDOWN_INTERVAL) / SECONDS_PER_HOUR;
+            minutes = (int) ((leftTimeInMilli*timeModifier / COUNTDOWN_INTERVAL) % SECONDS_PER_HOUR) / SECONDS_PER_MINUTE;
+            seconds = (int) (leftTimeInMilli*timeModifier / COUNTDOWN_INTERVAL) % SECONDS_PER_MINUTE;
+        }
 
         String timeLeftFormat;
         if (!(hours < 1)) {
