@@ -12,8 +12,11 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,8 +24,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
 
+import cmpt276.as3.cmpt276hydrogenproject.model.Child;
 import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
 import cmpt276.as3.cmpt276hydrogenproject.model.Task;
+import cmpt276.as3.cmpt276hydrogenproject.model.TaskFinished;
 import cmpt276.as3.cmpt276hydrogenproject.model.TaskManager;
 
 public class TaskInfoActivity extends AppCompatActivity {
@@ -54,6 +59,7 @@ public class TaskInfoActivity extends AppCompatActivity {
         deleteTaskButton = findViewById(R.id.deleteTaskButton);
         taskNameInput = findViewById(R.id.taskName);
 
+        showFinishedTaskList();
         setActionBar();
         setTaskTextWatcher();
         setTaskInformation();
@@ -207,6 +213,45 @@ public class TaskInfoActivity extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    private void showFinishedTaskList() {
+        ListView finishedTaskListView = findViewById(R.id.taskCompletionHistory);
+        ArrayAdapter<TaskFinished> arrayAdapter = new FinishedTaskListAdapter();
+        finishedTaskListView.setAdapter(arrayAdapter);
+
+        TextView emptyMessage = findViewById(R.id.taskListEmptyText);
+        finishedTaskListView.setEmptyView(emptyMessage);
+        //saveTasks();
+        arrayAdapter.notifyDataSetChanged();
+    }
+
+    private class FinishedTaskListAdapter extends ArrayAdapter<TaskFinished> {
+        public FinishedTaskListAdapter() {
+            super(TaskInfoActivity.this, R.layout.finished_task_item, taskManager.getFinishedTaskList(taskIndex));
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View view = convertView;
+            if (view == null) {
+                view = getLayoutInflater().inflate(R.layout.finished_task_item, parent, false);
+            }
+
+            //Task task = taskManager.getTaskAt(position);
+            TaskFinished finishedTask = task.getFinishedTaskAt(position);
+            //Child currentChild = task.getCurrentChild();
+
+            ImageView imageView = view.findViewById(R.id.childPicImg);
+            if (finishedTask.getChildProfilePicture() != null) {
+                imageView.setImageBitmap(finishedTask.getChildProfilePicture());
+            }
+
+            TextView taskText = view.findViewById(R.id.finishedTaskTxt);
+            taskText.setText(finishedTask.toString());
+
+            return view;
+        }
     }
 
     public static Intent makeIntent(Context context) {

@@ -1,6 +1,12 @@
 package cmpt276.as3.cmpt276hydrogenproject.model;
 
+import android.graphics.Bitmap;
+
 import androidx.annotation.NonNull;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * stores a single task object, storing important features like
@@ -9,6 +15,8 @@ import androidx.annotation.NonNull;
 public class Task {
     private String taskName;
     private Child currentChild;
+    private ArrayList<TaskFinished> tasksFinished = new ArrayList<>();
+
     ChildManager childManager = ChildManager.getInstance();
 
     public Task(String taskName, Child currentChild) {
@@ -30,7 +38,17 @@ public class Task {
 
     public void taskCompleted() {
         childManager = ChildManager.getInstance();
+        addTaskToCompletionHistory();
         currentChild = childManager.getNextChildInCoinFlipQueue(currentChild);
+    }
+
+    public void addTaskToCompletionHistory() {
+        TaskFinished finishedTask;
+        Bitmap bitmap = ChildManager.decodeToBase64(currentChild.getStringProfilePicture());
+        finishedTask = new TaskFinished(bitmap,
+                currentChild.getName(),
+                LocalDateTime.now());
+        tasksFinished.add(finishedTask);
     }
 
     public String getTaskName() {
@@ -41,6 +59,13 @@ public class Task {
         return currentChild.getName();
     }
 
+    public ArrayList<TaskFinished> getTasksFinished() {
+        return tasksFinished;
+    }
+
+    public TaskFinished getFinishedTaskAt(int index) {
+        return tasksFinished.get(index);
+    }
     @NonNull
     @Override
     public String toString() {
