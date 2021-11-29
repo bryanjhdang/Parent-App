@@ -1,13 +1,13 @@
 package cmpt276.as3.cmpt276hydrogenproject;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.provider.ContactsContract;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -31,9 +31,9 @@ public class TakeBreathActivity extends AppCompatActivity {
 
         void handleEnter() {}
         void handleExit() {}
-        void handleClickOn() {}
         void handleHold() {}
-        void handleClickOff() {}
+        void handleRelease() {}
+        void handleClickOn() {}
     }
 
     public final State menuState = new MenuState();
@@ -65,7 +65,7 @@ public class TakeBreathActivity extends AppCompatActivity {
         initializeBreathCount();
         setBreathCountArrows();
 
-        testButtonHold();
+        testButtonHoldTimer();
     }
 
     public static Intent makeIntent(Context context) {
@@ -123,9 +123,12 @@ public class TakeBreathActivity extends AppCompatActivity {
         String breathCountStr = breathCount.getText().toString();
         int breathCountInt = Integer.parseInt(breathCountStr);
 
-        if (option == INCREASE_BREATHS && breathCountInt < 10) {
+        final int MAX_BREATHS = 10;
+        final int MIN_BREATHS = 1;
+
+        if (option == INCREASE_BREATHS && breathCountInt < MAX_BREATHS) {
             breathCountInt++;
-        } else if (option == DECREASE_BREATHS && breathCountInt > 1) {
+        } else if (option == DECREASE_BREATHS && breathCountInt > MIN_BREATHS) {
             breathCountInt--;
         }
 
@@ -138,27 +141,48 @@ public class TakeBreathActivity extends AppCompatActivity {
         TextView breathCount = findViewById(R.id.breathCount);
 
         String breathCountStr = breathCount.getText().toString();
-        breathText.setText("Let's take " + breathCountStr + " breath(s)!");
+        String msg = "Let's take " + breathCountStr + " breath(s)!";
+        breathText.setText(msg);
+    }
+
+    private void testButtonClick() {
+        Button button = findViewById(R.id.breathButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "clicked the button!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private long timeElapsed = 0L;
 
-    private void testButtonHold() {
+    @SuppressLint("ClickableViewAccessibility")
+    private void testButtonHoldTimer() {
         Button button = findViewById(R.id.breathButton);
         button.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch (motionEvent.getAction()) {
+                    // when holding down the button
                     case MotionEvent.ACTION_DOWN:
-                        timeElapsed = motionEvent.getDownTime();
+//                        timeElapsed = motionEvent.getDownTime();
+
+                        Toast.makeText(getApplicationContext(), "hello", Toast.LENGTH_SHORT).show();
+//                        currentState.handleHold();
                         break;
+
+                    // when letting go of the button
                     case MotionEvent.ACTION_UP:
-                        timeElapsed = motionEvent.getEventTime() - timeElapsed;
-                        timeElapsed /= 1000;
-                        String msg = "Button held for " + timeElapsed + " seconds!";
-                        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
-                                .show();
-                        timeElapsed = 0L;
+//                        timeElapsed = motionEvent.getEventTime() - timeElapsed;
+//                        timeElapsed /= 1000;
+//                        String msg = "Button held for " + timeElapsed + " seconds!";
+//                        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
+//                                .show();
+//                        timeElapsed = 0L;
+
+//                        currentState.handleClickOff();
+                        Toast.makeText(getApplicationContext(), "let go", Toast.LENGTH_SHORT).show();
                         break;
                     default:
                         break;
@@ -175,70 +199,91 @@ public class TakeBreathActivity extends AppCompatActivity {
     private class MenuState extends State {
         @Override
         void handleEnter() {
+            ConstraintLayout breathCountLayout = findViewById(R.id.breathCountLayout);
+            breathCountLayout.setVisibility(View.VISIBLE);
+
             TextView tv = findViewById(R.id.breathHelpTxt);
             tv.setText("Currently in default");
         }
 
         @Override
         void handleExit() {
+            ConstraintLayout breathCountLayout = findViewById(R.id.breathCountLayout);
+            breathCountLayout.setVisibility(View.INVISIBLE);
+
             Toast.makeText(getApplicationContext(), "left menu", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         void handleClickOn() {
-            super.handleClickOn();
+
+            setState(inhaleState);
         }
     }
 
     private class InhaleState extends State {
-        Handler timerHandler = new Handler();
-        Runnable timerRunnable = () -> setState(inhaleState);
-
         @Override
         void handleEnter() {
+            // what happens when entering inhale state?
+            // voice clip plays
+            // music plays
+            // animation starts
             super.handleEnter();
         }
 
         @Override
         void handleExit() {
+            // what happens when leaving inhale state?
+            // stop animation etc
             super.handleExit();
         }
 
         @Override
         void handleHold() {
+            // increase time held
+            // animation dynamically updating
+            // should only be able to initially click again after restarting inhale state
             super.handleHold();
         }
 
         @Override
-        void handleClickOff() {
-            super.handleClickOff();
+        void handleRelease() {
+            // if less than 3 seconds, reset back to start
+            // if after 3 seconds, move to exhale state
+            super.handleRelease();
         }
     }
 
     private class ExhaleState extends State {
-        Handler timerHandler = new Handler();
-        Runnable timerRunnable = () -> setState(inhaleState);
-
         @Override
         void handleEnter() {
+            // play voice clip
+            // start animation
             super.handleEnter();
         }
 
         @Override
         void handleExit() {
+            // get rid of animation
+            // change music?
             super.handleExit();
         }
 
         @Override
-        void handleHold() {
-            super.handleHold();
+        void handleClickOn() {
+            // should only register after three seconds
+            // send to menu if 0 breaths left (play voice clip), send to inhale if > 0 states
+            super.handleClickOn();
         }
 
         @Override
-        void handleClickOff() {
-            super.handleClickOff();
+        void handleRelease() {
+            // if less than 3 seconds, reset back to start
+            // if after 3 seconds, move to exhale state
+            super.handleRelease();
         }
     }
 
-    private class IdleState extends State {}
+    private class IdleState extends State {
+    }
 }
