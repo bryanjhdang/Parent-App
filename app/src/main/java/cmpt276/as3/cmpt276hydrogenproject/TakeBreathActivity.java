@@ -68,7 +68,7 @@ public class TakeBreathActivity extends AppCompatActivity {
 
         testButtonHoldTimer();
 
-        updateTimerText();
+
 
         setState(menuState);
     }
@@ -157,12 +157,9 @@ public class TakeBreathActivity extends AppCompatActivity {
 
 
     // TODO: Delete this function later; it's just for testing
-    private void updateTimerText() {
+    private void updateTimerText(long time) {
         TextView timerText = findViewById(R.id.secondsTesting);
-        String timeAsStr = String.valueOf((int)timeElapsed);
-
-        System.out.println(timeAsStr);
-
+        String timeAsStr = String.valueOf((int)time);
         timerText.setText(timeAsStr);
     }
 
@@ -175,23 +172,23 @@ public class TakeBreathActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch (motionEvent.getAction()) {
-                    // when holding down the button
                     case MotionEvent.ACTION_DOWN:
                         timeElapsed = motionEvent.getDownTime();
+
+                        long newTime = motionEvent.getEventTime() - timeElapsed;
+                        newTime /= 1000;
+                        updateTimerText(newTime);
+
                         currentState.handleHold();
                         break;
-
-                    // when letting go of the button
                     case MotionEvent.ACTION_UP:
+                        // Turn time elapsed into seconds
 //                        timeElapsed = motionEvent.getEventTime() - timeElapsed;
 //                        timeElapsed /= 1000;
-//                        String msg = "Button held for " + timeElapsed + " seconds!";
-//                        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
-//                                .show();
-//                        timeElapsed = 0L;
+
+//                        updateTimerText();
 
                         currentState.handleRelease();
-                        Toast.makeText(getApplicationContext(), "let go", Toast.LENGTH_SHORT).show();
                         break;
                     default:
                         break;
@@ -279,7 +276,11 @@ public class TakeBreathActivity extends AppCompatActivity {
 
     private class ExhaleState extends State {
         Handler timerHandler = new Handler();
-        Runnable timerRunnable = () -> moveToCorrectState();
+        Runnable timerRunnable = () -> setThreeSecondsPassed();
+        Runnable testRunnable = () -> setTenSecondsPassed();
+
+        boolean threeSecondsPassed;
+        boolean tenSecondsPassed;
 
         final int threeSeconds = 3000;
         final int tenSeconds = 10000;
@@ -291,7 +292,10 @@ public class TakeBreathActivity extends AppCompatActivity {
             TextView tv = findViewById(R.id.breathHelpTxt);
             tv.setText("exhale state");
 
+            threeSecondsPassed = false;
+
             timerHandler.postDelayed(timerRunnable, threeSeconds);
+            timerHandler.postDelayed(testRunnable, tenSeconds);
         }
 
         @Override
@@ -300,7 +304,6 @@ public class TakeBreathActivity extends AppCompatActivity {
             // change music?
 
             timerHandler.removeCallbacks(timerRunnable);
-            super.handleExit();
         }
 
 //            // should only register after three seconds
@@ -309,19 +312,28 @@ public class TakeBreathActivity extends AppCompatActivity {
 
         @Override
         void handleHold() {
+            if (threeSecondsPassed) {
+                setState(inhaleState);
+            }
 
-            setState(inhaleState);
+            if (tenSecondsPassed) {
+                // set text
+            }
         }
 
-        @Override
-        void handleRelease() {
-            // if less than 3 seconds, reset back to start
-            // if after 3 seconds, move to exhale state
-            super.handleRelease();
+
+        private void setThreeSecondsPassed() {
+            TextView tv = findViewById(R.id.breathHelpTxt);
+            tv.setText("three seconds have passed!");
+
+            threeSecondsPassed = true;
         }
 
-        private void moveToCorrectState() {
+        private void setTenSecondsPassed() {
+            TextView tv = findViewById(R.id.breathHelpTxt);
+            tv.setText("ten seconds have passed!");
 
+            tenSecondsPassed = true;
         }
     }
 
