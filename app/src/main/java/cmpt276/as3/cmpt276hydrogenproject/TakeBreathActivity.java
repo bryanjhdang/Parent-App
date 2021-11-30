@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -33,7 +34,7 @@ public class TakeBreathActivity extends AppCompatActivity {
         void handleExit() {}
         void handleHold() {}
         void handleRelease() {}
-        void handleClickOn() {}
+//        void handleClickOn() {}
     }
 
     public final State menuState = new MenuState();
@@ -66,6 +67,10 @@ public class TakeBreathActivity extends AppCompatActivity {
         setBreathCountArrows();
 
         testButtonHoldTimer();
+
+        updateTimerText();
+
+        setState(menuState);
     }
 
     public static Intent makeIntent(Context context) {
@@ -79,8 +84,12 @@ public class TakeBreathActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    private void hideActionBar() {
-        Objects.requireNonNull(getSupportActionBar()).hide();
+    private void canSeeActionBar(boolean canSee) {
+        if (canSee == true) {
+            Objects.requireNonNull(getSupportActionBar()).show();
+        } else {
+            Objects.requireNonNull(getSupportActionBar()).hide();
+        }
     }
 
     private void initializeBreathCount() {
@@ -145,14 +154,16 @@ public class TakeBreathActivity extends AppCompatActivity {
         breathText.setText(msg);
     }
 
-    private void testButtonClick() {
-        Button button = findViewById(R.id.breathButton);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "clicked the button!", Toast.LENGTH_SHORT).show();
-            }
-        });
+
+
+    // TODO: Delete this function later; it's just for testing
+    private void updateTimerText() {
+        TextView timerText = findViewById(R.id.secondsTesting);
+        String timeAsStr = String.valueOf((int)timeElapsed);
+
+        System.out.println(timeAsStr);
+
+        timerText.setText(timeAsStr);
     }
 
     private long timeElapsed = 0L;
@@ -166,10 +177,8 @@ public class TakeBreathActivity extends AppCompatActivity {
                 switch (motionEvent.getAction()) {
                     // when holding down the button
                     case MotionEvent.ACTION_DOWN:
-//                        timeElapsed = motionEvent.getDownTime();
-
-                        Toast.makeText(getApplicationContext(), "hello", Toast.LENGTH_SHORT).show();
-//                        currentState.handleHold();
+                        timeElapsed = motionEvent.getDownTime();
+                        currentState.handleHold();
                         break;
 
                     // when letting go of the button
@@ -181,7 +190,7 @@ public class TakeBreathActivity extends AppCompatActivity {
 //                                .show();
 //                        timeElapsed = 0L;
 
-//                        currentState.handleClickOff();
+                        currentState.handleRelease();
                         Toast.makeText(getApplicationContext(), "let go", Toast.LENGTH_SHORT).show();
                         break;
                     default:
@@ -192,6 +201,19 @@ public class TakeBreathActivity extends AppCompatActivity {
         });
     }
 
+    private void canSeeBreathCount(boolean canSee) {
+        ConstraintLayout breathCountLayout = findViewById(R.id.breathCountLayout);
+        TextView breathCountText = findViewById(R.id.breathTxt);
+
+        if (canSee == true) {
+            breathCountText.setVisibility(View.VISIBLE);
+            breathCountLayout.setVisibility(View.VISIBLE);
+        } else {
+            breathCountText.setVisibility(View.INVISIBLE);
+            breathCountLayout.setVisibility(View.INVISIBLE);
+        }
+    }
+
     // ***********************************************************
     // State Pattern states
     // ***********************************************************
@@ -199,43 +221,43 @@ public class TakeBreathActivity extends AppCompatActivity {
     private class MenuState extends State {
         @Override
         void handleEnter() {
-            ConstraintLayout breathCountLayout = findViewById(R.id.breathCountLayout);
-            breathCountLayout.setVisibility(View.VISIBLE);
+            canSeeActionBar(true);
+            canSeeBreathCount(true);
 
             TextView tv = findViewById(R.id.breathHelpTxt);
-            tv.setText("Currently in default");
+            tv.setText("menu state");
         }
 
         @Override
         void handleExit() {
-            ConstraintLayout breathCountLayout = findViewById(R.id.breathCountLayout);
-            breathCountLayout.setVisibility(View.INVISIBLE);
-
-            Toast.makeText(getApplicationContext(), "left menu", Toast.LENGTH_SHORT).show();
+            canSeeActionBar(false);
+            canSeeBreathCount(false);
         }
 
         @Override
-        void handleClickOn() {
-
+        void handleHold() {
             setState(inhaleState);
         }
     }
 
     private class InhaleState extends State {
+        long timeElapsed = 0L;
+
         @Override
         void handleEnter() {
             // what happens when entering inhale state?
             // voice clip plays
             // music plays
             // animation starts
-            super.handleEnter();
+            TextView tv = findViewById(R.id.breathHelpTxt);
+            tv.setText("inhale state");
         }
 
         @Override
         void handleExit() {
             // what happens when leaving inhale state?
             // stop animation etc
-            super.handleExit();
+
         }
 
         @Override
@@ -250,30 +272,45 @@ public class TakeBreathActivity extends AppCompatActivity {
         void handleRelease() {
             // if less than 3 seconds, reset back to start
             // if after 3 seconds, move to exhale state
-            super.handleRelease();
+
+            setState(exhaleState);
         }
     }
 
     private class ExhaleState extends State {
+        Handler timerHandler = new Handler();
+        Runnable timerRunnable = () -> moveToCorrectState();
+
+        final int threeSeconds = 3000;
+        final int tenSeconds = 10000;
+
         @Override
         void handleEnter() {
             // play voice clip
             // start animation
-            super.handleEnter();
+            TextView tv = findViewById(R.id.breathHelpTxt);
+            tv.setText("exhale state");
+
+            timerHandler.postDelayed(timerRunnable, threeSeconds);
         }
 
         @Override
         void handleExit() {
             // get rid of animation
             // change music?
+
+            timerHandler.removeCallbacks(timerRunnable);
             super.handleExit();
         }
 
+//            // should only register after three seconds
+//            // send to menu if 0 breaths left (play voice clip), send to inhale if > 0 states
+
+
         @Override
-        void handleClickOn() {
-            // should only register after three seconds
-            // send to menu if 0 breaths left (play voice clip), send to inhale if > 0 states
-            super.handleClickOn();
+        void handleHold() {
+
+            setState(inhaleState);
         }
 
         @Override
@@ -281,6 +318,10 @@ public class TakeBreathActivity extends AppCompatActivity {
             // if less than 3 seconds, reset back to start
             // if after 3 seconds, move to exhale state
             super.handleRelease();
+        }
+
+        private void moveToCorrectState() {
+
         }
     }
 

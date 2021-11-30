@@ -75,4 +75,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/secondsTesting"
+        android:layout_width="88dp"
+        android:layout_height="121dp"
+        android:text="0"
+        android:textColor="@color/white"
+        android:textSize="48sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="409dp"
+        android:layout_height="141dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="407dp">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
