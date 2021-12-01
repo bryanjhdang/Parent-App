@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 import androidx.annotation.NonNull;
 
+import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +62,10 @@ public class Task {
 
     public ArrayList<TaskFinished> getTasksFinished() {
         return tasksFinished;
+    }
+
+    public void setTasksFinished(ArrayList<TaskFinished> tasksFinished) {
+        this.tasksFinished = tasksFinished;
     }
 
     public TaskFinished getFinishedTaskAt(int index) {

@@ -29,6 +29,7 @@ import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
 import cmpt276.as3.cmpt276hydrogenproject.model.CoinFlip;
 import cmpt276.as3.cmpt276hydrogenproject.model.CoinFlipManager;
 import cmpt276.as3.cmpt276hydrogenproject.model.Task;
+import cmpt276.as3.cmpt276hydrogenproject.model.TaskFinished;
 import cmpt276.as3.cmpt276hydrogenproject.model.TaskManager;
 
 /**
@@ -166,7 +167,30 @@ public class MainActivity extends AppCompatActivity {
         if (!jsonString.equals("")) {
             Type listType = new TypeToken<ArrayList<Task>>() {
             }.getType();
-            taskManager.setTaskList(myGson.fromJson(jsonString, listType));
+            ArrayList<Task> taskList = myGson.fromJson(jsonString, listType);
+//            for(Task task : taskList) {
+//                Gson mySecondGson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class,
+//                        new TypeAdapter<LocalDateTime>() {
+//                            @Override
+//                            public void write(JsonWriter jsonWriter,
+//                                              LocalDateTime localDateTime) throws IOException {
+//                                jsonWriter.value(localDateTime.toString());
+//                            }
+//
+//                            @Override
+//                            public LocalDateTime read(JsonReader jsonReader) throws IOException {
+//                                return LocalDateTime.parse(jsonReader.nextString());
+//                            }
+//                        }).create();
+//                String historyGsonString = sp.getString("taskFinishHistory", "");
+//                if(historyGsonString != "") {
+//                    Type historyType = new TypeToken<ArrayList<TaskFinished>>() {
+//                    }.getType();
+//                    ArrayList<TaskFinished> taskFinishedList = mySecondGson.fromJson(historyGsonString, historyType);
+//                    task.setTasksFinished(taskFinishedList);
+//                }
+//            }
+            taskManager.setTaskList(taskList);
         }
     }
 }

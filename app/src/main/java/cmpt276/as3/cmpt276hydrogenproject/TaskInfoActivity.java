@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -21,7 +22,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import cmpt276.as3.cmpt276hydrogenproject.model.Child;
@@ -47,12 +55,15 @@ public class TaskInfoActivity extends AppCompatActivity {
     private FloatingActionButton completeTaskButton;
     private FloatingActionButton deleteTaskButton;
 
+    SharedPreferences sp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.task_info_activity);
         initializeIntentInfo();
 
+        sp = getSharedPreferences("Hydrogen", Context.MODE_PRIVATE);
         assignedChildPicture = findViewById(R.id.taskChildPicture);
         saveButton = findViewById(R.id.saveTaskChanges);
         completeTaskButton = findViewById(R.id.completeTaskButton);
@@ -222,7 +233,7 @@ public class TaskInfoActivity extends AppCompatActivity {
 
         TextView emptyMessage = findViewById(R.id.taskListEmptyText);
         finishedTaskListView.setEmptyView(emptyMessage);
-        //saveTasks();
+        //saveTaskHistory();
         arrayAdapter.notifyDataSetChanged();
     }
 
@@ -252,6 +263,26 @@ public class TaskInfoActivity extends AppCompatActivity {
 
             return view;
         }
+    }
+
+    private void saveTaskHistory() {
+        SharedPreferences.Editor editor = sp.edit();
+        Gson myGson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class,
+                new TypeAdapter<LocalDateTime>() {
+                    @Override
+                    public void write(JsonWriter jsonWriter,
+                                      LocalDateTime localDateTime) throws IOException {
+                        jsonWriter.value(localDateTime.toString());
+                    }
+
+                    @Override
+                    public LocalDateTime read(JsonReader jsonReader) throws IOException {
+                        return LocalDateTime.parse(jsonReader.nextString());
+                    }
+                }).create();
+        String jsonString = myGson.toJson(taskManager.getFinishedTaskList(taskIndex));
+        editor.putString("taskFinishHistory", jsonString);
+        editor.apply();
     }
 
     public static Intent makeIntent(Context context) {
