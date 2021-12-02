@@ -11,11 +11,13 @@ public class TaskFinished {
     private String childProfilePicture;
     private String childName;
     private LocalDateTime timeTaskCompleted;
+    private int id;
 
-    public TaskFinished(String stringifiedPicture, String childName) {
+    public TaskFinished(String stringifiedPicture, String childName, int id) {
         this.childProfilePicture = stringifiedPicture;
         this.childName = childName;
         this.timeTaskCompleted = LocalDateTime.now();
+        this.id = id;
     }
 
     public String getChildProfilePicture() {
@@ -24,6 +26,10 @@ public class TaskFinished {
 
     public void setChildProfilePicture(String childProfilePicture) {
         this.childProfilePicture = childProfilePicture;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getChildName() {

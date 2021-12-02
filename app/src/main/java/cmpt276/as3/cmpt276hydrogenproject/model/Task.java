@@ -47,7 +47,7 @@ public class Task {
         TaskFinished finishedTask;
         String childProfilePicture = currentChild.getStringProfilePicture();
         finishedTask = new TaskFinished(childProfilePicture,
-                currentChild.getName());
+                currentChild.getName(), currentChild.getChildID());
         tasksFinished.add(finishedTask);
     }
 
@@ -65,6 +65,15 @@ public class Task {
 
     public void setTasksFinished(ArrayList<TaskFinished> tasksFinished) {
         this.tasksFinished = tasksFinished;
+    }
+
+    public void updateChildInfo(int id, String newName, String newPicture) {
+        for (TaskFinished taskFinished : tasksFinished) {
+            if (id == taskFinished.getId()) {
+                taskFinished.setChildName(newName);
+                taskFinished.setChildProfilePicture(newPicture);
+            }
+        }
     }
 
     public TaskFinished getFinishedTaskAt(int index) {

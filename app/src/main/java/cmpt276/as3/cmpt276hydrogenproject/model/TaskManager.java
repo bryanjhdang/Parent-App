@@ -58,6 +58,12 @@ public class TaskManager {
         }
     }
 
+    public void updateTasksFinished(int id, String newName, String newPicture) {
+        for (Task task : TASK_LIST) {
+            task.updateChildInfo(id, newName, newPicture);
+        }
+    }
+
     public void deleteTaskAt(int index) {
         TASK_LIST.remove(index);
     }
