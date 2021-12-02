@@ -47,8 +47,7 @@ public class Task {
         TaskFinished finishedTask;
         Bitmap bitmap = ChildManager.decodeToBase64(currentChild.getStringProfilePicture());
         finishedTask = new TaskFinished(bitmap,
-                currentChild.getName(),
-                LocalDateTime.now());
+                currentChild.getName());
         tasksFinished.add(finishedTask);
     }
 

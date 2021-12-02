@@ -119,8 +119,21 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private Gson myGson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class,
+            new TypeAdapter<LocalDateTime>() {
+                @Override
+                public void write(JsonWriter jsonWriter,
+                                  LocalDateTime localDateTime) throws IOException {
+                    jsonWriter.value(localDateTime.toString());
+                }
+
+                @Override
+                public LocalDateTime read(JsonReader jsonReader) throws IOException {
+                    return LocalDateTime.parse(jsonReader.nextString());
+                }
+            }).create();
+
     void loadChildren() {
-        Gson myGson = new GsonBuilder().create();
         String jsonString = sp.getString("childList", "");
         if (!jsonString.equals("")) {
             Type listType = new TypeToken<ArrayList<Child>>() {
@@ -130,7 +143,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void loadChildQueue() {
-        Gson myGson = new GsonBuilder().create();
         String jsonString = sp.getString("childQueue", "");
         if (!jsonString.equals("")) {
             Type listType = new TypeToken<ArrayList<Child>>() {
@@ -140,19 +152,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void loadCoinFlips() {
-        Gson myGson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class,
-                new TypeAdapter<LocalDateTime>() {
-                    @Override
-                    public void write(JsonWriter jsonWriter,
-                                      LocalDateTime localDateTime) throws IOException {
-                        jsonWriter.value(localDateTime.toString());
-                    }
-
-                    @Override
-                    public LocalDateTime read(JsonReader jsonReader) throws IOException {
-                        return LocalDateTime.parse(jsonReader.nextString());
-                    }
-                }).create();
         String jsonString = sp.getString("coinFlipList", "");
         if (!jsonString.equals("")) {
             Type listType = new TypeToken<ArrayList<CoinFlip>>() {
@@ -162,35 +161,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void loadTasks() {
-        Gson myGson = new GsonBuilder().create();
         String jsonString = sp.getString("taskList", "");
         if (!jsonString.equals("")) {
-            Type listType = new TypeToken<ArrayList<Task>>() {
-            }.getType();
-            ArrayList<Task> taskList = myGson.fromJson(jsonString, listType);
-//            for(Task task : taskList) {
-//                Gson mySecondGson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class,
-//                        new TypeAdapter<LocalDateTime>() {
-//                            @Override
-//                            public void write(JsonWriter jsonWriter,
-//                                              LocalDateTime localDateTime) throws IOException {
-//                                jsonWriter.value(localDateTime.toString());
-//                            }
-//
-//                            @Override
-//                            public LocalDateTime read(JsonReader jsonReader) throws IOException {
-//                                return LocalDateTime.parse(jsonReader.nextString());
-//                            }
-//                        }).create();
-//                String historyGsonString = sp.getString("taskFinishHistory", "");
-//                if(historyGsonString != "") {
-//                    Type historyType = new TypeToken<ArrayList<TaskFinished>>() {
-//                    }.getType();
-//                    ArrayList<TaskFinished> taskFinishedList = mySecondGson.fromJson(historyGsonString, historyType);
-//                    task.setTasksFinished(taskFinishedList);
-//                }
-//            }
-            taskManager.setTaskList(taskList);
+            Type listType = new TypeToken<ArrayList<Task>>() {}.getType();
+            taskManager.setTaskList(myGson.fromJson(jsonString, listType));
         }
     }
 }

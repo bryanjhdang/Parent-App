@@ -3,16 +3,17 @@ package cmpt276.as3.cmpt276hydrogenproject.model;
 import android.graphics.Bitmap;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class TaskFinished {
     private Bitmap childProfilePicture;
     private String childName;
     private LocalDateTime timeTaskCompleted;
 
-    public TaskFinished(Bitmap bm, String childName, LocalDateTime timeTaskCompleted) {
+    public TaskFinished(Bitmap bm, String childName) {
         this.childProfilePicture = bm;
         this.childName = childName;
-        this.timeTaskCompleted = timeTaskCompleted;
+        this.timeTaskCompleted = LocalDateTime.now();
     }
 
     public Bitmap getChildProfilePicture() {
@@ -41,7 +42,18 @@ public class TaskFinished {
 
     @Override
     public String toString() {
-        return childName + "completed this task at:" +
-                timeTaskCompleted;
+        String string = "";
+//        if (timeTaskCompleted == null) {
+//            string += "TIME NULL";
+//        }
+//        if (childName == null) {
+//            string += "NAME NULL";
+//        }
+//        string += "  ";
+//        return string;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        string += childName + " did this task on ";
+        string += formatter.format(timeTaskCompleted);
+        return string;
     }
 }

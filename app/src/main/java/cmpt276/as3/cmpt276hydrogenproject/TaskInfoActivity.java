@@ -12,6 +12,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -233,7 +234,6 @@ public class TaskInfoActivity extends AppCompatActivity {
 
         TextView emptyMessage = findViewById(R.id.taskListEmptyText);
         finishedTaskListView.setEmptyView(emptyMessage);
-        //saveTaskHistory();
         arrayAdapter.notifyDataSetChanged();
     }
 
@@ -250,8 +250,10 @@ public class TaskInfoActivity extends AppCompatActivity {
             }
 
             //Task task = taskManager.getTaskAt(position);
+
             TaskFinished finishedTask = task.getFinishedTaskAt(position);
             //Child currentChild = task.getCurrentChild();
+
 
             ImageView imageView = view.findViewById(R.id.childPicImg);
             if (finishedTask.getChildProfilePicture() != null) {
@@ -263,26 +265,6 @@ public class TaskInfoActivity extends AppCompatActivity {
 
             return view;
         }
-    }
-
-    private void saveTaskHistory() {
-        SharedPreferences.Editor editor = sp.edit();
-        Gson myGson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class,
-                new TypeAdapter<LocalDateTime>() {
-                    @Override
-                    public void write(JsonWriter jsonWriter,
-                                      LocalDateTime localDateTime) throws IOException {
-                        jsonWriter.value(localDateTime.toString());
-                    }
-
-                    @Override
-                    public LocalDateTime read(JsonReader jsonReader) throws IOException {
-                        return LocalDateTime.parse(jsonReader.nextString());
-                    }
-                }).create();
-        String jsonString = myGson.toJson(taskManager.getFinishedTaskList(taskIndex));
-        editor.putString("taskFinishHistory", jsonString);
-        editor.apply();
     }
 
     public static Intent makeIntent(Context context) {
