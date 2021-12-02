@@ -1,5 +1,7 @@
 package cmpt276.as3.cmpt276hydrogenproject;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -28,6 +30,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -71,7 +75,7 @@ public class TaskInfoActivity extends AppCompatActivity {
         deleteTaskButton = findViewById(R.id.deleteTaskButton);
         taskNameInput = findViewById(R.id.taskName);
 
-        showFinishedTaskList();
+        showTaskFinishedList();
         setActionBar();
         setTaskTextWatcher();
         setTaskInformation();
@@ -227,41 +231,37 @@ public class TaskInfoActivity extends AppCompatActivity {
         return false;
     }
 
-    private void showFinishedTaskList() {
-        ListView finishedTaskListView = findViewById(R.id.taskCompletionHistory);
-        ArrayAdapter<TaskFinished> arrayAdapter = new FinishedTaskListAdapter();
-        finishedTaskListView.setAdapter(arrayAdapter);
-
-        TextView emptyMessage = findViewById(R.id.taskListEmptyText);
-        finishedTaskListView.setEmptyView(emptyMessage);
+    private void showTaskFinishedList() {
+        ListView taskFinishedView = findViewById(R.id.taskCompletionHistory);
+        ArrayAdapter<TaskFinished> arrayAdapter = new TaskFinishedAdapter();
+        taskFinishedView.setAdapter(arrayAdapter);
+        TextView emptyMessage = findViewById(R.id.taskHistoryHeader);
+        taskFinishedView.setEmptyView(emptyMessage);
         arrayAdapter.notifyDataSetChanged();
     }
 
-    private class FinishedTaskListAdapter extends ArrayAdapter<TaskFinished> {
-        public FinishedTaskListAdapter() {
-            super(TaskInfoActivity.this, R.layout.finished_task_item, taskManager.getFinishedTaskList(taskIndex));
+    private class TaskFinishedAdapter extends ArrayAdapter<TaskFinished> {
+        public TaskFinishedAdapter() {
+            super(TaskInfoActivity.this, R.layout.finished_task_item, task.getTasksFinished());
         }
 
+        @NonNull
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             View view = convertView;
             if (view == null) {
                 view = getLayoutInflater().inflate(R.layout.finished_task_item, parent, false);
             }
 
-            //Task task = taskManager.getTaskAt(position);
-
-            TaskFinished finishedTask = task.getFinishedTaskAt(position);
-            //Child currentChild = task.getCurrentChild();
-
-
-            ImageView imageView = view.findViewById(R.id.childPicImg);
-            if (finishedTask.getChildProfilePicture() != null) {
-                imageView.setImageBitmap(finishedTask.getChildProfilePicture());
+            TaskFinished taskFinished = task.getFinishedTaskAt(position);
+            TextView textView = view.findViewById(R.id.finishedTaskTxt);
+            if (textView != null) {
+                textView.setText(taskFinished.toString());
             }
 
-            TextView taskText = view.findViewById(R.id.finishedTaskTxt);
-            taskText.setText(finishedTask.toString());
+//            ImageView childImg = view.findViewById(R.id.childPicImg);
+//            Bitmap childBtmp = taskFinished.getChildProfilePicture();
+//            childImg.setImageBitmap(childBtmp);
 
             return view;
         }
