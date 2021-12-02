@@ -50,6 +50,7 @@ public class TaskInfoActivity extends AppCompatActivity {
     private int taskIndex;
 
     private TaskManager taskManager = TaskManager.getInstance();
+    private ChildManager childManager = ChildManager.getInstance();
 
     private final String TITLE_MSG = "actionBarTitle";
     private final String TASK_INDEX_MSG = "taskIndex";
@@ -137,6 +138,7 @@ public class TaskInfoActivity extends AppCompatActivity {
         setChangeTaskNameInput();
         setNameOfAssignedChild();
     }
+
     private void setChangeTaskNameInput() {
         taskNameInput.setText(task.getTaskName());
         if (task.getCurrentChild() != null) {
@@ -254,6 +256,7 @@ public class TaskInfoActivity extends AppCompatActivity {
             }
 
             TaskFinished taskFinished = task.getFinishedTaskAt(position);
+
             TextView textView = view.findViewById(R.id.finishedTaskTxt);
             if (textView != null) {
                 textView.setText(taskFinished.toString());

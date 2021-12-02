@@ -41,6 +41,7 @@ import cmpt276.as3.cmpt276hydrogenproject.model.TaskManager;
 public class TaskManagerActivity extends AppCompatActivity {
     SharedPreferences sp;
     private final TaskManager taskManager = TaskManager.getInstance();
+    private final ChildManager childManager = ChildManager.getInstance();
 
     private final String TITLE_MSG = "actionBarTitle";
     private final String TASK_INDEX_MSG = "taskIndex";
@@ -52,6 +53,8 @@ public class TaskManagerActivity extends AppCompatActivity {
         setActionBar();
         sp = getSharedPreferences("Hydrogen", Context.MODE_PRIVATE);
 
+        updateChildObjects();
+        updateTasksFinishedInfo();
         showTaskList();
         addTaskButton();
         registerClickCallback();
@@ -103,6 +106,24 @@ public class TaskManagerActivity extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    private void updateChildObjects() {
+        for (Child child : childManager.getChildrenList()) {
+            for (Task task : taskManager.getTaskList()) {
+                if (task.getCurrentChild().getChildID() == child.getChildID()) {
+                    task.setCurrentChild(child);
+                }
+            }
+        }
+    }
+
+    private void updateTasksFinishedInfo() {
+        for (Child child : childManager.getChildrenList()) {
+            taskManager.updateTasksFinished(child.getChildID(),
+                    child.getName(),
+                    child.getStringProfilePicture());
+        }
     }
 
     void showTaskList() {
