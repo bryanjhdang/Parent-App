@@ -45,8 +45,8 @@ public class Task {
 
     public void addTaskToCompletionHistory() {
         TaskFinished finishedTask;
-        Bitmap bitmap = ChildManager.decodeToBase64(currentChild.getStringProfilePicture());
-        finishedTask = new TaskFinished(bitmap,
+        String childProfilePicture = currentChild.getStringProfilePicture();
+        finishedTask = new TaskFinished(childProfilePicture,
                 currentChild.getName());
         tasksFinished.add(finishedTask);
     }

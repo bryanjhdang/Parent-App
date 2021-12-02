@@ -2,25 +2,27 @@ package cmpt276.as3.cmpt276hydrogenproject.model;
 
 import android.graphics.Bitmap;
 
+import androidx.annotation.NonNull;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class TaskFinished {
-    private Bitmap childProfilePicture;
+    private String childProfilePicture;
     private String childName;
     private LocalDateTime timeTaskCompleted;
 
-    public TaskFinished(Bitmap bm, String childName) {
-        this.childProfilePicture = bm;
+    public TaskFinished(String stringifiedPicture, String childName) {
+        this.childProfilePicture = stringifiedPicture;
         this.childName = childName;
         this.timeTaskCompleted = LocalDateTime.now();
     }
 
-    public Bitmap getChildProfilePicture() {
+    public String getChildProfilePicture() {
         return childProfilePicture;
     }
 
-    public void setChildProfilePicture(Bitmap childProfilePicture) {
+    public void setChildProfilePicture(String childProfilePicture) {
         this.childProfilePicture = childProfilePicture;
     }
 
@@ -40,6 +42,7 @@ public class TaskFinished {
         this.timeTaskCompleted = timeTaskCompleted;
     }
 
+    @NonNull
     @Override
     public String toString() {
         String string = "";
@@ -52,7 +55,7 @@ public class TaskFinished {
 //        string += "  ";
 //        return string;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        string += childName + " did this task on ";
+        string += childName + " did this task on: \n";
         string += formatter.format(timeTaskCompleted);
         return string;
     }

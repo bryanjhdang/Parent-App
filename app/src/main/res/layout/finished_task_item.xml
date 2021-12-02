@@ -6,7 +6,7 @@
 
     <ImageView
         android:id="@+id/rectangularTaskFinishBG"
-        android:layout_width="360dp"
+        android:layout_width="324dp"
         android:layout_height="73dp"
         android:layout_marginStart="8dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -17,15 +17,17 @@
 
     <TextView
         android:id="@+id/finishedTaskTxt"
-        android:layout_width="284dp"
-        android:layout_height="58dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="212dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="4dp"
+        android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/childPicImg"
         app:layout_constraintStart_toEndOf="@+id/childPicImg"
-        app:layout_constraintTop_toTopOf="@+id/childPicImg" />
+        app:layout_constraintTop_toTopOf="@+id/childPicImg"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/childPicImg"

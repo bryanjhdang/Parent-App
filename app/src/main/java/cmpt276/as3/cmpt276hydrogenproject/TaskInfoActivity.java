@@ -52,7 +52,7 @@ public class TaskInfoActivity extends AppCompatActivity {
     private TaskManager taskManager = TaskManager.getInstance();
 
     private final String TITLE_MSG = "actionBarTitle";
-    private final String TASK_INDEX_MSG = "taskIndex";;
+    private final String TASK_INDEX_MSG = "taskIndex";
 
     private ImageView assignedChildPicture;
     private EditText taskNameInput;
@@ -259,9 +259,9 @@ public class TaskInfoActivity extends AppCompatActivity {
                 textView.setText(taskFinished.toString());
             }
 
-//            ImageView childImg = view.findViewById(R.id.childPicImg);
-//            Bitmap childBtmp = taskFinished.getChildProfilePicture();
-//            childImg.setImageBitmap(childBtmp);
+            ImageView childImg = view.findViewById(R.id.childPicImg);
+            Bitmap childBtmp = ChildManager.decodeToBase64(taskFinished.getChildProfilePicture());
+            childImg.setImageBitmap(childBtmp);
 
             return view;
         }
