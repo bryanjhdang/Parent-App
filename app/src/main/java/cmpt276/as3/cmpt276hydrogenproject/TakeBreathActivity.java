@@ -6,15 +6,20 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.Objects;
 
@@ -41,6 +46,7 @@ public class TakeBreathActivity extends AppCompatActivity {
     public final State inhaleState = new InhaleState();
     public final State exhaleState = new ExhaleState();
     private State currentState = new IdleState();
+    SharedPreferences sp;
 
     public void setState(State newState) {
         currentState.handleExit();
@@ -57,11 +63,15 @@ public class TakeBreathActivity extends AppCompatActivity {
     private final int INCREASE_BREATHS = 1;
     private final int DECREASE_BREATHS = 2;
 
+    private int breathCountInt = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_breath);
         setActionBar();
+
+        sp = getSharedPreferences("Hydrogen", Context.MODE_PRIVATE);
 
         initializeBreathCount();
         setBreathCountArrows();
@@ -95,9 +105,10 @@ public class TakeBreathActivity extends AppCompatActivity {
     private void initializeBreathCount() {
         TextView breathText = findViewById(R.id.breathTxt);
         TextView breathCount = findViewById(R.id.breathCount);
+        loadBreaths();
 
-        breathText.setText("Let's take 1 breath(s)!");
-        breathCount.setText("1");
+        breathText.setText("Let's take " + breathCountInt + " breath(s)!");
+        breathCount.setText("" + breathCountInt);
     }
 
     private void setBreathCountArrows() {
@@ -130,7 +141,7 @@ public class TakeBreathActivity extends AppCompatActivity {
     private void calculateNewBreathAmount(int option) {
         TextView breathCount = findViewById(R.id.breathCount);
         String breathCountStr = breathCount.getText().toString();
-        int breathCountInt = Integer.parseInt(breathCountStr);
+        breathCountInt = Integer.parseInt(breathCountStr);
 
         final int MAX_BREATHS = 10;
         final int MIN_BREATHS = 1;
@@ -140,6 +151,8 @@ public class TakeBreathActivity extends AppCompatActivity {
         } else if (option == DECREASE_BREATHS && breathCountInt > MIN_BREATHS) {
             breathCountInt--;
         }
+
+        saveBreaths();
 
         String newBreathCountStr = Integer.toString(breathCountInt);
         breathCount.setText(newBreathCountStr);
@@ -370,5 +383,15 @@ public class TakeBreathActivity extends AppCompatActivity {
     }
 
     private class IdleState extends State {
+    }
+
+    private void saveBreaths() {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putInt("breathCount", breathCountInt);
+        editor.apply();
+    }
+
+    private void loadBreaths() {
+        breathCountInt = sp.getInt("breathCount", 1);
     }
 }
