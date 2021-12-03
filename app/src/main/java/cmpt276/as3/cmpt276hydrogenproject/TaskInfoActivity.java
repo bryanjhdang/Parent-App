@@ -1,28 +1,46 @@
 package cmpt276.as3.cmpt276hydrogenproject;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 
+import org.w3c.dom.Text;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
+import cmpt276.as3.cmpt276hydrogenproject.model.Child;
 import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
 import cmpt276.as3.cmpt276hydrogenproject.model.Task;
+import cmpt276.as3.cmpt276hydrogenproject.model.TaskFinished;
 import cmpt276.as3.cmpt276hydrogenproject.model.TaskManager;
 
 public class TaskInfoActivity extends AppCompatActivity {
@@ -32,9 +50,10 @@ public class TaskInfoActivity extends AppCompatActivity {
     private int taskIndex;
 
     private TaskManager taskManager = TaskManager.getInstance();
+    private ChildManager childManager = ChildManager.getInstance();
 
     private final String TITLE_MSG = "actionBarTitle";
-    private final String TASK_INDEX_MSG = "taskIndex";;
+    private final String TASK_INDEX_MSG = "taskIndex";
 
     private ImageView assignedChildPicture;
     private EditText taskNameInput;
@@ -42,18 +61,22 @@ public class TaskInfoActivity extends AppCompatActivity {
     private FloatingActionButton completeTaskButton;
     private FloatingActionButton deleteTaskButton;
 
+    SharedPreferences sp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.task_info_activity);
         initializeIntentInfo();
 
+        sp = getSharedPreferences("Hydrogen", Context.MODE_PRIVATE);
         assignedChildPicture = findViewById(R.id.taskChildPicture);
         saveButton = findViewById(R.id.saveTaskChanges);
         completeTaskButton = findViewById(R.id.completeTaskButton);
         deleteTaskButton = findViewById(R.id.deleteTaskButton);
         taskNameInput = findViewById(R.id.taskName);
 
+        showTaskFinishedList();
         setActionBar();
         setTaskTextWatcher();
         setTaskInformation();
@@ -115,6 +138,7 @@ public class TaskInfoActivity extends AppCompatActivity {
         setChangeTaskNameInput();
         setNameOfAssignedChild();
     }
+
     private void setChangeTaskNameInput() {
         taskNameInput.setText(task.getTaskName());
         if (task.getCurrentChild() != null) {
@@ -207,6 +231,43 @@ public class TaskInfoActivity extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    private void showTaskFinishedList() {
+        ListView taskFinishedView = findViewById(R.id.taskCompletionHistory);
+        ArrayAdapter<TaskFinished> arrayAdapter = new TaskFinishedAdapter();
+        taskFinishedView.setAdapter(arrayAdapter);
+        TextView emptyMessage = findViewById(R.id.taskHistoryHeader);
+        taskFinishedView.setEmptyView(emptyMessage);
+        arrayAdapter.notifyDataSetChanged();
+    }
+
+    private class TaskFinishedAdapter extends ArrayAdapter<TaskFinished> {
+        public TaskFinishedAdapter() {
+            super(TaskInfoActivity.this, R.layout.finished_task_item, task.getTasksFinished());
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            View view = convertView;
+            if (view == null) {
+                view = getLayoutInflater().inflate(R.layout.finished_task_item, parent, false);
+            }
+
+            TaskFinished taskFinished = task.getFinishedTaskAt(position);
+
+            TextView textView = view.findViewById(R.id.finishedTaskTxt);
+            if (textView != null) {
+                textView.setText(taskFinished.toString());
+            }
+
+            ImageView childImg = view.findViewById(R.id.childPicImg);
+            Bitmap childBtmp = ChildManager.decodeToBase64(taskFinished.getChildProfilePicture());
+            childImg.setImageBitmap(childBtmp);
+
+            return view;
+        }
     }
 
     public static Intent makeIntent(Context context) {

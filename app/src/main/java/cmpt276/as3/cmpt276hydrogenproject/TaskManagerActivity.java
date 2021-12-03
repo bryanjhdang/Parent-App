@@ -21,7 +21,12 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import cmpt276.as3.cmpt276hydrogenproject.model.Child;
@@ -36,6 +41,7 @@ import cmpt276.as3.cmpt276hydrogenproject.model.TaskManager;
 public class TaskManagerActivity extends AppCompatActivity {
     SharedPreferences sp;
     private final TaskManager taskManager = TaskManager.getInstance();
+    private final ChildManager childManager = ChildManager.getInstance();
 
     private final String TITLE_MSG = "actionBarTitle";
     private final String TASK_INDEX_MSG = "taskIndex";
@@ -47,6 +53,8 @@ public class TaskManagerActivity extends AppCompatActivity {
         setActionBar();
         sp = getSharedPreferences("Hydrogen", Context.MODE_PRIVATE);
 
+        updateChildObjects();
+        updateTasksFinishedInfo();
         showTaskList();
         addTaskButton();
         registerClickCallback();
@@ -98,6 +106,24 @@ public class TaskManagerActivity extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    private void updateChildObjects() {
+        for (Child child : childManager.getChildrenList()) {
+            for (Task task : taskManager.getTaskList()) {
+                if (task.getCurrentChild().getChildID() == child.getChildID()) {
+                    task.setCurrentChild(child);
+                }
+            }
+        }
+    }
+
+    private void updateTasksFinishedInfo() {
+        for (Child child : childManager.getChildrenList()) {
+            taskManager.updateTasksFinished(child.getChildID(),
+                    child.getName(),
+                    child.getStringProfilePicture());
+        }
     }
 
     void showTaskList() {
@@ -162,7 +188,19 @@ public class TaskManagerActivity extends AppCompatActivity {
 
     private void saveTasks() {
         SharedPreferences.Editor editor = sp.edit();
-        Gson myGson = new GsonBuilder().create();
+        Gson myGson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class,
+                new TypeAdapter<LocalDateTime>() {
+                    @Override
+                    public void write(JsonWriter jsonWriter,
+                                      LocalDateTime localDateTime) throws IOException {
+                        jsonWriter.value(localDateTime.toString());
+                    }
+
+                    @Override
+                    public LocalDateTime read(JsonReader jsonReader) throws IOException {
+                        return LocalDateTime.parse(jsonReader.nextString());
+                    }
+                }).create();
         String jsonString = myGson.toJson(taskManager.getTaskList());
         editor.putString("taskList", jsonString);
         editor.apply();

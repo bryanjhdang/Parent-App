@@ -29,6 +29,7 @@ import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
 import cmpt276.as3.cmpt276hydrogenproject.model.CoinFlip;
 import cmpt276.as3.cmpt276hydrogenproject.model.CoinFlipManager;
 import cmpt276.as3.cmpt276hydrogenproject.model.Task;
+import cmpt276.as3.cmpt276hydrogenproject.model.TaskFinished;
 import cmpt276.as3.cmpt276hydrogenproject.model.TaskManager;
 
 /**
@@ -118,8 +119,21 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private Gson myGson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class,
+            new TypeAdapter<LocalDateTime>() {
+                @Override
+                public void write(JsonWriter jsonWriter,
+                                  LocalDateTime localDateTime) throws IOException {
+                    jsonWriter.value(localDateTime.toString());
+                }
+
+                @Override
+                public LocalDateTime read(JsonReader jsonReader) throws IOException {
+                    return LocalDateTime.parse(jsonReader.nextString());
+                }
+            }).create();
+
     void loadChildren() {
-        Gson myGson = new GsonBuilder().create();
         String jsonString = sp.getString("childList", "");
         if (!jsonString.equals("")) {
             Type listType = new TypeToken<ArrayList<Child>>() {
@@ -129,7 +143,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void loadChildQueue() {
-        Gson myGson = new GsonBuilder().create();
         String jsonString = sp.getString("childQueue", "");
         if (!jsonString.equals("")) {
             Type listType = new TypeToken<ArrayList<Child>>() {
@@ -139,19 +152,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void loadCoinFlips() {
-        Gson myGson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class,
-                new TypeAdapter<LocalDateTime>() {
-                    @Override
-                    public void write(JsonWriter jsonWriter,
-                                      LocalDateTime localDateTime) throws IOException {
-                        jsonWriter.value(localDateTime.toString());
-                    }
-
-                    @Override
-                    public LocalDateTime read(JsonReader jsonReader) throws IOException {
-                        return LocalDateTime.parse(jsonReader.nextString());
-                    }
-                }).create();
         String jsonString = sp.getString("coinFlipList", "");
         if (!jsonString.equals("")) {
             Type listType = new TypeToken<ArrayList<CoinFlip>>() {
@@ -161,11 +161,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void loadTasks() {
-        Gson myGson = new GsonBuilder().create();
         String jsonString = sp.getString("taskList", "");
         if (!jsonString.equals("")) {
-            Type listType = new TypeToken<ArrayList<Task>>() {
-            }.getType();
+            Type listType = new TypeToken<ArrayList<Task>>() {}.getType();
             taskManager.setTaskList(myGson.fromJson(jsonString, listType));
         }
     }
