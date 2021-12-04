@@ -22,26 +22,26 @@
         android:id="@+id/textDisplayTimer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="@string/initialZeroValueTimer"
         android:textColor="@color/white"
         android:textSize="64sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/timerCountdownBar"
+        app:layout_constraintEnd_toEndOf="@+id/timerCountdownBar"
+        app:layout_constraintStart_toStartOf="@+id/timerCountdownBar"
+        app:layout_constraintTop_toTopOf="@+id/timerCountdownBar" />
 
     <Button
         android:id="@+id/btnStartTimer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="40dp"
         android:backgroundTint="@color/twitter_blue"
         android:text="@string/btnTextStart"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textDisplayTimer" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btnResetTimer"
