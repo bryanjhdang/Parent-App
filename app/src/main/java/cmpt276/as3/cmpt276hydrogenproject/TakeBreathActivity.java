@@ -259,6 +259,9 @@ public class TakeBreathActivity extends AppCompatActivity {
             TextView tv = findViewById(R.id.breathHelpTxt);
             tv.setText("inhale state");
 
+            threeSecondsPassed = false;
+            tenSecondsPassed = false;
+
             timerHandler.postDelayed(timerRunnable, threeSeconds);
             timerHandler.postDelayed(testRunnable, tenSeconds);
             runnableInUse = true;
@@ -332,6 +335,7 @@ public class TakeBreathActivity extends AppCompatActivity {
             tv.setText("exhale state");
 
             threeSecondsPassed = false;
+            tenSecondsPassed = false;
 
             timerHandler.postDelayed(timerRunnable, threeSeconds);
             timerHandler.postDelayed(testRunnable, tenSeconds);
