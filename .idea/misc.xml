@@ -12,8 +12,9 @@
         <entry key="..\:/SFU/200 level courses/CMPT 276/Project/Hydrogen/app/src/main/res/layout/help_list.xml" value="0.12447916666666667" />
         <entry key="..\:/SFU/200 level courses/CMPT 276/Project/Hydrogen/app/src/main/res/layout/main_activity.xml" value="0.13020833333333334" />
         <entry key="..\:/SFU/200 level courses/CMPT 276/Project/Hydrogen/app/src/main/res/layout/task_manager_activity.xml" value="0.12447916666666667" />
-        <entry key="..\:/SFU/200 level courses/CMPT 276/Project/Hydrogen/app/src/main/res/layout/timeout_activity.xml" value="0.264" />
+        <entry key="..\:/SFU/200 level courses/CMPT 276/Project/Hydrogen/app/src/main/res/layout/timeout_activity.xml" value="0.13020833333333334" />
         <entry key="..\:/Users/Bryan/Desktop/School/Y2-FALL/CMPT276/assignments/Project/app/src/main/res/layout/activity_edit_child.xml" value="0.22" />
+        <entry key="..\:/Users/Bryan/Desktop/School/Y2-FALL/CMPT276/assignments/Project/app/src/main/res/layout/activity_take_breath.xml" value="0.1585144927536232" />
         <entry key="..\:/Users/Bryan/Desktop/School/Y2-FALL/CMPT276/assignments/Project/app/src/main/res/layout/activity_take_breath.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/Bryan/Desktop/School/Y2-FALL/CMPT276/assignments/Project/app/src/main/res/layout/add_coinflip_activity.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/Bryan/Desktop/School/Y2-FALL/CMPT276/assignments/Project/app/src/main/res/layout/child_item.xml" value="0.16666666666666666" />
@@ -27,6 +28,7 @@
         <entry key="..\:/Users/Bryan/Desktop/School/Y2-FALL/CMPT276/assignments/Project/app/src/main/res/layout/help_list.xml" value="0.14402173913043478" />
         <entry key="..\:/Users/Bryan/Desktop/School/Y2-FALL/CMPT276/assignments/Project/app/src/main/res/layout/main_activity.xml" value="0.6" />
         <entry key="..\:/Users/Bryan/Desktop/School/Y2-FALL/CMPT276/assignments/Project/app/src/main/res/layout/task_info_activity.xml" value="0.15443840579710144" />
+        <entry key="..\:/Users/Bryan/Desktop/School/Y2-FALL/CMPT276/assignments/Project/app/src/main/res/layout/main_activity.xml" value="0.14666666666666667" />
         <entry key="..\:/Users/Bryan/Desktop/School/Y2-FALL/CMPT276/assignments/Project/app/src/main/res/layout/task_item.xml" value="0.4466666666666667" />
         <entry key="..\:/Users/Bryan/Desktop/School/Y2-FALL/CMPT276/assignments/Project/app/src/main/res/layout/task_manager_activity.xml" value="0.33462657613967023" />
         <entry key="..\:/Users/Bryan/Desktop/School/Y2-FALL/CMPT276/assignments/Project/app/src/main/res/layout/timeout_activity.xml" value="0.3333333333333333" />
@@ -38,6 +40,7 @@
         <entry key="..\:/Users/gamer/StudioProjects/ParentApp/app/src/main/res/layout/coinflip_activity.xml" value="0.35833333333333334" />
         <entry key="..\:/Users/gamer/StudioProjects/ParentApp/app/src/main/res/layout/coinflip_list.xml" value="0.35833333333333334" />
         <entry key="..\:/Users/gamer/StudioProjects/ParentApp/app/src/main/res/layout/configure_activity.xml" value="0.35833333333333334" />
+        <entry key="..\:/Users/gamer/StudioProjects/ParentApp/app/src/main/res/layout/finished_task_item.xml" value="0.19166666666666668" />
         <entry key="..\:/Users/gamer/StudioProjects/ParentApp/app/src/main/res/layout/help_activity.xml" value="0.23759791122715404" />
         <entry key="..\:/Users/gamer/StudioProjects/ParentApp/app/src/main/res/layout/help_list.xml" value="0.1762917933130699" />
         <entry key="..\:/Users/gamer/StudioProjects/ParentApp/app/src/main/res/layout/main_activity.xml" value="0.35833333333333334" />
@@ -51,7 +54,9 @@
         <entry key="app/src/main/res/layout/coinflip_activity.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/coinflip_list.xml" value="0.25416666666666665" />
         <entry key="app/src/main/res/layout/configure_activity.xml" value="0.2796296296296296" />
+        <entry key="app/src/main/res/layout/finished_task_item.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/main_activity.xml" value="0.13072916666666667" />
+        <entry key="app/src/main/res/layout/task_info_activity.xml" value="0.19068155339101506" />
         <entry key="app/src/main/res/menu/add_coin_flip.xml" value="0.3098958333333333" />
       </map>
     </option>
