@@ -78,11 +78,11 @@
 
     <TextView
         android:id="@+id/secondsTesting"
-        android:layout_width="88dp"
-        android:layout_height="121dp"
+        android:layout_width="157dp"
+        android:layout_height="30dp"
         android:text="0"
         android:textColor="@color/white"
-        android:textSize="48sp"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

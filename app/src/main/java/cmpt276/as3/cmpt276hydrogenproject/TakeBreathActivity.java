@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -78,8 +79,6 @@ public class TakeBreathActivity extends AppCompatActivity {
 
         testButtonHoldTimer();
 
-
-
         setState(menuState);
     }
 
@@ -92,14 +91,6 @@ public class TakeBreathActivity extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources()
                 .getColor(R.color.darker_navy_blue)));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-    private void canSeeActionBar(boolean canSee) {
-        if (canSee == true) {
-            Objects.requireNonNull(getSupportActionBar()).show();
-        } else {
-            Objects.requireNonNull(getSupportActionBar()).hide();
-        }
     }
 
     private void initializeBreathCount() {
@@ -223,7 +214,6 @@ public class TakeBreathActivity extends AppCompatActivity {
     private class MenuState extends State {
         @Override
         void handleEnter() {
-            canSeeActionBar(true);
             canSeeBreathCount(true);
 
             TextView tv = findViewById(R.id.breathHelpTxt);
@@ -232,7 +222,6 @@ public class TakeBreathActivity extends AppCompatActivity {
 
         @Override
         void handleExit() {
-            canSeeActionBar(false);
             canSeeBreathCount(false);
         }
 
@@ -261,6 +250,7 @@ public class TakeBreathActivity extends AppCompatActivity {
 
             threeSecondsPassed = false;
             tenSecondsPassed = false;
+
 
             timerHandler.postDelayed(timerRunnable, threeSeconds);
             timerHandler.postDelayed(testRunnable, tenSeconds);
@@ -316,29 +306,57 @@ public class TakeBreathActivity extends AppCompatActivity {
         }
     }
 
-    private class ExhaleState extends State {
-        Handler timerHandler = new Handler();
-        Runnable timerRunnable = () -> setThreeSecondsPassed();
-        Runnable testRunnable = () -> setTenSecondsPassed();
 
+// countdown timer test
+//        TextView timerText = findViewById(R.id.secondsTesting);
+//        new CountDownTimer(30000, 1000) {
+//
+//            public void onTick(long millisUntilFinished) {
+//                timerText.setText("seconds remaining: " + millisUntilFinished / 1000);
+//            }
+//
+//            public void onFinish() {
+//                timerText.setText("done!");
+//            }
+//        }.start();
+
+    private class ExhaleState extends State {
         boolean threeSecondsPassed;
         boolean tenSecondsPassed;
 
         final int threeSeconds = 3000;
         final int tenSeconds = 10000;
+        final int countDownInterval = 1000;
 
         @Override
         void handleEnter() {
             // play voice clip
             // start animation
+
+            TextView timerText = findViewById(R.id.secondsTesting);
+            new CountDownTimer(tenSeconds, countDownInterval) {
+
+                public void onTick(long millisUntilFinished) {
+                    timerText.setText("seconds: " + ((millisUntilFinished / countDownInterval) + 1));
+
+                    if (millisUntilFinished <= tenSeconds - threeSeconds) {
+                        threeSecondsPassed = true;
+                        Toast.makeText(getApplicationContext(), "three seconds passed", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                public void onFinish() {
+                    timerText.setText("ten seconds are up!");
+                    tenSecondsPassed = true;
+                }
+            }.start();
+
             TextView tv = findViewById(R.id.breathHelpTxt);
             tv.setText("exhale state");
 
             threeSecondsPassed = false;
             tenSecondsPassed = false;
 
-            timerHandler.postDelayed(timerRunnable, threeSeconds);
-            timerHandler.postDelayed(testRunnable, tenSeconds);
         }
 
         @Override
@@ -346,8 +364,6 @@ public class TakeBreathActivity extends AppCompatActivity {
             // get rid of animation
             // change music?
 
-            timerHandler.removeCallbacks(timerRunnable);
-            timerHandler.removeCallbacks(testRunnable);
         }
 
 //            // should only register after three seconds
@@ -363,27 +379,16 @@ public class TakeBreathActivity extends AppCompatActivity {
             } else if (threeSecondsPassed && breathsLeft == 0) {
                 setState(menuState);
             }
-
-            if (tenSecondsPassed) {
-                // set text to warn
-                // should stop increasing circle
-            }
         }
 
-
-        private void setThreeSecondsPassed() {
-            TextView tv = findViewById(R.id.breathHelpTxt);
-            tv.setText("three seconds exhale!");
-
-            threeSecondsPassed = true;
+        private boolean threeSecondsPassed() {
+            return true;
         }
 
-        private void setTenSecondsPassed() {
-            TextView tv = findViewById(R.id.breathHelpTxt);
-            tv.setText("ten seconds exhale!");
-
-            tenSecondsPassed = true;
+        private boolean tenSecondsPassed() {
+            return true;
         }
+
     }
 
     private class IdleState extends State {
