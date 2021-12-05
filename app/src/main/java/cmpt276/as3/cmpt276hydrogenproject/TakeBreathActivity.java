@@ -36,7 +36,6 @@ public class TakeBreathActivity extends AppCompatActivity {
         void handleExit() {}
         void handleHold() {}
         void handleRelease() {}
-//        void handleClickOn() {}
     }
 
     public final State menuState = new MenuState();
@@ -61,6 +60,8 @@ public class TakeBreathActivity extends AppCompatActivity {
     private final int DECREASE_BREATHS = 2;
 
     private int breathCountInt = 1;
+    private int breathsRemaining;
+
 
     // TODO: Remove this later because it's for debugging
     TextView timerText;
@@ -102,6 +103,8 @@ public class TakeBreathActivity extends AppCompatActivity {
 
         breathText.setText("Let's take " + breathCountInt + " breath(s)!");
         breathCount.setText("" + breathCountInt);
+
+        breathsRemaining = breathCountInt;
     }
 
     private void setBreathCountArrows() {
@@ -145,6 +148,8 @@ public class TakeBreathActivity extends AppCompatActivity {
             breathCountInt--;
         }
 
+        breathsRemaining = breathCountInt;
+
         saveBreaths();
 
         String newBreathCountStr = Integer.toString(breathCountInt);
@@ -159,8 +164,6 @@ public class TakeBreathActivity extends AppCompatActivity {
         String msg = "Let's take " + breathCountStr + " breath(s)!";
         breathText.setText(msg);
     }
-
-
 
     // TODO: Delete this function later; it's just for testing
     private void updateTimerText(long time) {
@@ -202,15 +205,6 @@ public class TakeBreathActivity extends AppCompatActivity {
             breathCountText.setVisibility(View.INVISIBLE);
             breathCountLayout.setVisibility(View.INVISIBLE);
         }
-    }
-
-    private int getRemainingBreaths() {
-        TextView breaths = findViewById(R.id.breathCount);
-        return (Integer.parseInt(breaths.getText().toString()));
-    }
-
-    private void updateRemainingBreaths() {
-
     }
 
     // ***********************************************************
@@ -269,7 +263,6 @@ public class TakeBreathActivity extends AppCompatActivity {
             }
         };
 
-
         @Override
         void handleEnter() {
             Button breathButton = findViewById(R.id.breathButton);
@@ -316,7 +309,6 @@ public class TakeBreathActivity extends AppCompatActivity {
                         .show();
             }
         }
-
     }
 
     private class ExhaleState extends State {
@@ -333,11 +325,11 @@ public class TakeBreathActivity extends AppCompatActivity {
                     threeSecondsPassed = true;
 
                     Button breathButton = findViewById(R.id.breathButton);
-                    if (getRemainingBreaths() == 0) {
+                    breathsRemaining--;
+                    if (breathsRemaining <= 0) {
                         breathButton.setText("Good job");
                     } else {
                         breathButton.setText("In");
-                        updateRemainingBreaths();
                     }
                 }
             }
@@ -375,11 +367,9 @@ public class TakeBreathActivity extends AppCompatActivity {
 
         @Override
         void handleHold() {
-            int breathsLeft = getRemainingBreaths();
-
-            if (threeSecondsPassed && breathsLeft > 0) {
+            if (threeSecondsPassed && breathsRemaining > 0) {
                 setState(inhaleState);
-            } else if (threeSecondsPassed && breathsLeft == 0) {
+            } else if (threeSecondsPassed && breathsRemaining <= 0) {
                 setState(menuState);
             }
         }
