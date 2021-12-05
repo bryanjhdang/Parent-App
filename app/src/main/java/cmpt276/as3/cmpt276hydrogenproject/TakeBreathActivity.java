@@ -26,7 +26,8 @@ public class TakeBreathActivity extends AppCompatActivity {
     final int TEN_SECONDS = 10000;
     final int COUNTDOWN_INTERVAL = 1000;
     final int ANIMATION_INTERVAL = 100;
-    final double ANIM_RATE_OF_CHANGE = 1.01;
+    final double INHALE_RATE_OF_CHANGE = 1.0122;
+    final double EXHALE_RATE_OF_CHANGE = 1.01;
 
     private TextView exhaleCircle;
     private TextView inhaleCircle;
@@ -55,7 +56,6 @@ public class TakeBreathActivity extends AppCompatActivity {
         void handleExit() {}
         void handleHold() {}
         void handleRelease() {}
-        void initializeCircle() {}
     }
 
     public void setState(State newState) {
@@ -68,24 +68,18 @@ public class TakeBreathActivity extends AppCompatActivity {
     // Android Code implementation
     // ***********************************************************
 
-    // TODO: Remove this later because it's for debugging
-    TextView timerText;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sp = getSharedPreferences("Hydrogen", Context.MODE_PRIVATE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_breath);
+
         setActionBar();
         initializeBreathCount();
         setBreathCountArrows();
         setButtonControl();
         exhaleCircle = findViewById(R.id.exhaleCircleBG);
         inhaleCircle = findViewById(R.id.inhaleCircleBG);
-
-
-        // TODO: Remove this later because it's for debugging
-        timerText = (TextView) findViewById(R.id.secondsTesting);
 
         setState(menuState);
     }
@@ -226,13 +220,20 @@ public class TakeBreathActivity extends AppCompatActivity {
             setState(inhaleState);
         }
 
-        @Override
-        void initializeCircle() {
+        private void initializeCircle() {
             inhaleCircle.setVisibility(View.VISIBLE);
             exhaleCircle.setVisibility(View.INVISIBLE);
 
             Button breathButton = findViewById(R.id.breathButton);
-            breathButton.setText("In");
+            breathButton.setText("Begin");
+
+            int INHALE_INITIAL_WIDTH = 267;
+            int EXHALE_INITIAL_HEIGHT = 267;
+
+            ViewGroup.LayoutParams params = inhaleCircle.getLayoutParams();
+            params.width = INHALE_INITIAL_WIDTH;
+            params.height = EXHALE_INITIAL_HEIGHT;
+            inhaleCircle.setLayoutParams(params);
         }
     }
 
@@ -244,9 +245,6 @@ public class TakeBreathActivity extends AppCompatActivity {
         CountDownTimer countDownTimer = new CountDownTimer(TEN_SECONDS, COUNTDOWN_INTERVAL) {
             @Override
             public void onTick(long millisUntilFinished) {
-                // TODO: Remove, for debugging purposes
-                timerText.setText("seconds: " + ((millisUntilFinished / COUNTDOWN_INTERVAL) + 1));
-
                 if (millisUntilFinished <= TEN_SECONDS - THREE_SECONDS) {
                     threeSecondsPassed = true;
                     Button breathButton = findViewById(R.id.breathButton);
@@ -256,9 +254,6 @@ public class TakeBreathActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                // TODO: Remove, for debugging purposes
-                timerText.setText("ten seconds are up!");
-
                 tenSecondsPassed = true;
             }
         };
@@ -267,8 +262,8 @@ public class TakeBreathActivity extends AppCompatActivity {
             @Override
             public void onTick(long l) {
                 ViewGroup.LayoutParams params = inhaleCircle.getLayoutParams();
-                params.width *= ANIM_RATE_OF_CHANGE;
-                params.height *= ANIM_RATE_OF_CHANGE;
+                params.width *= INHALE_RATE_OF_CHANGE;
+                params.height *= INHALE_RATE_OF_CHANGE;
                 inhaleCircle.setLayoutParams(params);
             }
 
@@ -318,16 +313,10 @@ public class TakeBreathActivity extends AppCompatActivity {
                 initializeCircle();
                 countDownTimer.cancel();
                 animationTimer.cancel();
-
-                // TODO: Remove, for debugging purposes
-                String msg = "Let go too early!";
-                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
-                        .show();
             }
         }
 
-        @Override
-        void initializeCircle() {
+        private void initializeCircle() {
             inhaleCircle.setVisibility(View.VISIBLE);
             exhaleCircle.setVisibility(View.INVISIBLE);
 
@@ -344,18 +333,20 @@ public class TakeBreathActivity extends AppCompatActivity {
     private class ExhaleState extends State {
         boolean threeSecondsPassed;
         boolean tenSecondsPassed;
+        boolean breathHasBeenDecreased;
 
         CountDownTimer countDownTimer = new CountDownTimer(TEN_SECONDS, COUNTDOWN_INTERVAL) {
             @Override
             public void onTick(long millisUntilFinished) {
-                // TODO: Remove, for debugging purposes
-                timerText.setText("seconds: " + ((millisUntilFinished / COUNTDOWN_INTERVAL) + 1));
-
                 if (millisUntilFinished <= TEN_SECONDS - THREE_SECONDS) {
                     threeSecondsPassed = true;
 
+                    if (!breathHasBeenDecreased) {
+                        breathsRemaining--;
+                        breathHasBeenDecreased = true;
+                    }
+
                     Button breathButton = findViewById(R.id.breathButton);
-                    breathsRemaining--;
                     if (breathsRemaining <= 0) {
                         breathButton.setText("Good job");
                     } else {
@@ -366,9 +357,6 @@ public class TakeBreathActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                // TODO: Remove, for debugging purposes
-                timerText.setText("ten seconds are up!");
-
                 tenSecondsPassed = true;
             }
         };
@@ -377,8 +365,8 @@ public class TakeBreathActivity extends AppCompatActivity {
             @Override
             public void onTick(long l) {
                 ViewGroup.LayoutParams params = exhaleCircle.getLayoutParams();
-                params.width /= ANIM_RATE_OF_CHANGE;
-                params.height /= ANIM_RATE_OF_CHANGE;
+                params.width /= EXHALE_RATE_OF_CHANGE;
+                params.height /= EXHALE_RATE_OF_CHANGE;
                 exhaleCircle.setLayoutParams(params);
             }
 
@@ -390,13 +378,13 @@ public class TakeBreathActivity extends AppCompatActivity {
         @Override
         void handleEnter() {
             // TODO: play voice clip
-            // TODO: start animation
 
             Button breathButton = findViewById(R.id.breathButton);
             breathButton.setText("Out");
             TextView breathHelp = findViewById(R.id.breathHelpTxt);
             breathHelp.setText("Breath out");
 
+            breathHasBeenDecreased = false;
             threeSecondsPassed = false;
             tenSecondsPassed = false;
             countDownTimer.start();
@@ -413,6 +401,7 @@ public class TakeBreathActivity extends AppCompatActivity {
 
         @Override
         void handleHold() {
+            Toast.makeText(getApplicationContext(), breathsRemaining + "", Toast.LENGTH_SHORT).show();
             if (threeSecondsPassed && breathsRemaining > 0) {
                 setState(inhaleState);
             } else if (threeSecondsPassed && breathsRemaining <= 0) {
@@ -420,8 +409,7 @@ public class TakeBreathActivity extends AppCompatActivity {
             }
         }
 
-        @Override
-        void initializeCircle() {
+        private void initializeCircle() {
             inhaleCircle.setVisibility(View.INVISIBLE);
             exhaleCircle.setVisibility(View.VISIBLE);
 

@@ -61,6 +61,7 @@
         android:background="@color/transparent"
         android:text="button"
         android:textColor="@color/white"
+        android:textSize="13sp"
         app:cornerRadius="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
