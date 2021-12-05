@@ -91,8 +91,6 @@ public class TimeoutActivity extends AppCompatActivity {
             }
         });
 
-        //dummy
-
         setTimeBtn.setOnClickListener(v -> {
             String input = editTextInput.getText().toString();
             // Check for no value in the field
