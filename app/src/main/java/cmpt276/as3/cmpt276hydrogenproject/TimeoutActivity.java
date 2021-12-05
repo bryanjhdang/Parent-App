@@ -12,6 +12,7 @@ import android.os.CountDownTimer;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.content.SharedPreferences;
@@ -70,6 +71,7 @@ public class TimeoutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timeout_activity);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         setActionBar();
         materialProgressBar = findViewById(R.id.timerCountdownBar);

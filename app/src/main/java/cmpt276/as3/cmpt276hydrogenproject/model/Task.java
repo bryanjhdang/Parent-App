@@ -1,6 +1,13 @@
 package cmpt276.as3.cmpt276hydrogenproject.model;
 
+import android.graphics.Bitmap;
+
 import androidx.annotation.NonNull;
+
+import java.lang.reflect.Array;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * stores a single task object, storing important features like
@@ -9,6 +16,8 @@ import androidx.annotation.NonNull;
 public class Task {
     private String taskName;
     private Child currentChild;
+    private ArrayList<TaskFinished> tasksFinished = new ArrayList<>();
+
     ChildManager childManager = ChildManager.getInstance();
 
     public Task(String taskName, Child currentChild) {
@@ -30,7 +39,16 @@ public class Task {
 
     public void taskCompleted() {
         childManager = ChildManager.getInstance();
+        addTaskToCompletionHistory();
         currentChild = childManager.getNextChildInCoinFlipQueue(currentChild);
+    }
+
+    public void addTaskToCompletionHistory() {
+        TaskFinished finishedTask;
+        String childProfilePicture = currentChild.getStringProfilePicture();
+        finishedTask = new TaskFinished(childProfilePicture,
+                currentChild.getName(), currentChild.getChildID());
+        tasksFinished.add(finishedTask);
     }
 
     public String getTaskName() {
@@ -41,6 +59,26 @@ public class Task {
         return currentChild.getName();
     }
 
+    public ArrayList<TaskFinished> getTasksFinished() {
+        return tasksFinished;
+    }
+
+    public void setTasksFinished(ArrayList<TaskFinished> tasksFinished) {
+        this.tasksFinished = tasksFinished;
+    }
+
+    public void updateChildInfo(int id, String newName, String newPicture) {
+        for (TaskFinished taskFinished : tasksFinished) {
+            if (id == taskFinished.getId()) {
+                taskFinished.setChildName(newName);
+                taskFinished.setChildProfilePicture(newPicture);
+            }
+        }
+    }
+
+    public TaskFinished getFinishedTaskAt(int index) {
+        return tasksFinished.get(index);
+    }
     @NonNull
     @Override
     public String toString() {
