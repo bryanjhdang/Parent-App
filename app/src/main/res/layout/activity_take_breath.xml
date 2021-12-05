@@ -58,7 +58,9 @@
         android:id="@+id/breathButton"
         android:layout_width="80dp"
         android:layout_height="80dp"
+        android:background="@color/transparent"
         android:text="button"
+        android:textColor="@color/white"
         app:cornerRadius="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -93,4 +95,26 @@
         tools:layout_editor_absoluteY="407dp">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/exhaleCircleBG"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/exhale_circle"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/breathButton"
+        app:layout_constraintEnd_toEndOf="@+id/breathButton"
+        app:layout_constraintStart_toStartOf="@+id/breathButton"
+        app:layout_constraintTop_toTopOf="@+id/breathButton" />
+
+    <TextView
+        android:id="@+id/inhaleCircleBG"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/inhale_circle"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/breathButton"
+        app:layout_constraintEnd_toEndOf="@+id/breathButton"
+        app:layout_constraintStart_toStartOf="@+id/breathButton"
+        app:layout_constraintTop_toTopOf="@+id/breathButton" />
 </androidx.constraintlayout.widget.ConstraintLayout>

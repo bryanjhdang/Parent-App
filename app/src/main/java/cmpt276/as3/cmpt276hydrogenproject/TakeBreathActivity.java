@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,6 +25,13 @@ public class TakeBreathActivity extends AppCompatActivity {
     final int THREE_SECONDS = 3000;
     final int TEN_SECONDS = 10000;
     final int COUNTDOWN_INTERVAL = 1000;
+    final int ANIMATION_INTERVAL = 100;
+    final double ANIM_RATE_OF_CHANGE = 1.01;
+
+    private TextView exhaleCircle;
+    private TextView inhaleCircle;
+    int INHALE_INITIAL_WIDTH = 267;
+    int EXHALE_INITIAL_HEIGHT = 267;
 
     public final State menuState = new MenuState();
     public final State inhaleState = new InhaleState();
@@ -47,6 +55,7 @@ public class TakeBreathActivity extends AppCompatActivity {
         void handleExit() {}
         void handleHold() {}
         void handleRelease() {}
+        void initializeCircle() {}
     }
 
     public void setState(State newState) {
@@ -64,15 +73,16 @@ public class TakeBreathActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        sp = getSharedPreferences("Hydrogen", Context.MODE_PRIVATE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_breath);
         setActionBar();
-
-        sp = getSharedPreferences("Hydrogen", Context.MODE_PRIVATE);
-
         initializeBreathCount();
         setBreathCountArrows();
         setButtonControl();
+        exhaleCircle = findViewById(R.id.exhaleCircleBG);
+        inhaleCircle = findViewById(R.id.inhaleCircleBG);
+
 
         // TODO: Remove this later because it's for debugging
         timerText = (TextView) findViewById(R.id.secondsTesting);
@@ -200,8 +210,10 @@ public class TakeBreathActivity extends AppCompatActivity {
         @Override
         void handleEnter() {
             canSeeBreathCount(true);
-            TextView tv = findViewById(R.id.breathHelpTxt);
-            tv.setText("menu state");
+            TextView breathHelp = findViewById(R.id.breathHelpTxt);
+            breathHelp.setText("Hold button and start inhaling!");
+
+            initializeCircle();
         }
 
         @Override
@@ -212,6 +224,15 @@ public class TakeBreathActivity extends AppCompatActivity {
         @Override
         void handleHold() {
             setState(inhaleState);
+        }
+
+        @Override
+        void initializeCircle() {
+            inhaleCircle.setVisibility(View.VISIBLE);
+            exhaleCircle.setVisibility(View.INVISIBLE);
+
+            Button breathButton = findViewById(R.id.breathButton);
+            breathButton.setText("In");
         }
     }
 
@@ -242,6 +263,21 @@ public class TakeBreathActivity extends AppCompatActivity {
             }
         };
 
+        CountDownTimer animationTimer = new CountDownTimer(TEN_SECONDS, ANIMATION_INTERVAL) {
+            @Override
+            public void onTick(long l) {
+                ViewGroup.LayoutParams params = inhaleCircle.getLayoutParams();
+                params.width *= ANIM_RATE_OF_CHANGE;
+                params.height *= ANIM_RATE_OF_CHANGE;
+                inhaleCircle.setLayoutParams(params);
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        };
+
         @Override
         void handleEnter() {
             Button breathButton = findViewById(R.id.breathButton);
@@ -253,22 +289,23 @@ public class TakeBreathActivity extends AppCompatActivity {
             tenSecondsPassed = false;
             isRunning = true;
             countDownTimer.start();
+
+            initializeCircle();
+            animationTimer.start();
         }
 
         @Override
         void handleExit() {
             countDownTimer.cancel();
+            animationTimer.cancel();
         }
 
         @Override
         void handleHold() {
-            // increase time held
-            // animation dynamically updating
-            // should only be able to initially click again after restarting inhale state
-
             if (!isRunning) {
                 isRunning = true;
                 countDownTimer.start();
+                animationTimer.start();
             }
         }
 
@@ -278,13 +315,29 @@ public class TakeBreathActivity extends AppCompatActivity {
                 setState(exhaleState);
             } else {
                 isRunning = false;
+                initializeCircle();
                 countDownTimer.cancel();
+                animationTimer.cancel();
 
                 // TODO: Remove, for debugging purposes
                 String msg = "Let go too early!";
                 Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
                         .show();
             }
+        }
+
+        @Override
+        void initializeCircle() {
+            inhaleCircle.setVisibility(View.VISIBLE);
+            exhaleCircle.setVisibility(View.INVISIBLE);
+
+            int INHALE_INITIAL_WIDTH = 267;
+            int EXHALE_INITIAL_HEIGHT = 267;
+
+            ViewGroup.LayoutParams params = inhaleCircle.getLayoutParams();
+            params.width = INHALE_INITIAL_WIDTH;
+            params.height = EXHALE_INITIAL_HEIGHT;
+            inhaleCircle.setLayoutParams(params);
         }
     }
 
@@ -320,6 +373,20 @@ public class TakeBreathActivity extends AppCompatActivity {
             }
         };
 
+        CountDownTimer animationTimer = new CountDownTimer(TEN_SECONDS, ANIMATION_INTERVAL) {
+            @Override
+            public void onTick(long l) {
+                ViewGroup.LayoutParams params = exhaleCircle.getLayoutParams();
+                params.width /= ANIM_RATE_OF_CHANGE;
+                params.height /= ANIM_RATE_OF_CHANGE;
+                exhaleCircle.setLayoutParams(params);
+            }
+
+            @Override
+            public void onFinish() {
+            }
+        };
+
         @Override
         void handleEnter() {
             // TODO: play voice clip
@@ -333,11 +400,15 @@ public class TakeBreathActivity extends AppCompatActivity {
             threeSecondsPassed = false;
             tenSecondsPassed = false;
             countDownTimer.start();
+
+            initializeCircle();
+            animationTimer.start();
         }
 
         @Override
         void handleExit() {
             countDownTimer.cancel();
+            animationTimer.cancel();
         }
 
         @Override
@@ -347,6 +418,20 @@ public class TakeBreathActivity extends AppCompatActivity {
             } else if (threeSecondsPassed && breathsRemaining <= 0) {
                 setState(menuState);
             }
+        }
+
+        @Override
+        void initializeCircle() {
+            inhaleCircle.setVisibility(View.INVISIBLE);
+            exhaleCircle.setVisibility(View.VISIBLE);
+
+            int INITIAL_WIDTH = 800;
+            int INITIAL_HEIGHT = 800;
+
+            ViewGroup.LayoutParams params = exhaleCircle.getLayoutParams();
+            params.width = INITIAL_WIDTH;
+            params.height = INITIAL_HEIGHT;
+            exhaleCircle.setLayoutParams(params);
         }
     }
 
