@@ -7,4 +7,90 @@
     android:background="@color/twitter_navy_blue"
     tools:context=".TakeBreathActivity">
 
+    <TextView
+        android:id="@+id/breathTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Let's take n breaths!"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.78" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/breathCountLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/breathTxt">
+
+        <ImageView
+            android:id="@+id/leftArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tint="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/ic_baseline_arrow_left_24" />
+
+        <ImageView
+            android:id="@+id/rightArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tint="@color/white"
+            app:layout_constraintStart_toEndOf="@+id/breathCount"
+            app:srcCompat="@drawable/ic_baseline_arrow_right_24" />
+
+        <TextView
+            android:id="@+id/breathCount"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@+id/leftArrow" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/breathButton"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:text="button"
+        app:cornerRadius="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/breathHelpTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="helpMsg"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/secondsTesting"
+        android:layout_width="157dp"
+        android:layout_height="30dp"
+        android:text="0"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="409dp"
+        android:layout_height="141dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="407dp">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
