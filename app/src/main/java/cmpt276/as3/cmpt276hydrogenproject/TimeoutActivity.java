@@ -408,28 +408,27 @@ public class TimeoutActivity extends AppCompatActivity {
                 leftTimeInMilli*=timeModifier;
                 timeModifier = 0.25;
                 break;
+            case R.id.percent50:
+                leftTimeInMilli*=timeModifier;
+                timeModifier = 0.50;
+                break;
             case R.id.percent75:
-                Toast.makeText(this, "Item 75 selected", Toast.LENGTH_SHORT).show();
                 leftTimeInMilli*=timeModifier;
                 timeModifier = 0.75;
                 break;
             case R.id.percent100:
-                Toast.makeText(this, "Item 100 selected", Toast.LENGTH_SHORT).show();
                 leftTimeInMilli*=timeModifier;
                 timeModifier = 1;
                 break;
             case R.id.percent200:
-                Toast.makeText(this, "Item 200 selected", Toast.LENGTH_SHORT).show();
                 leftTimeInMilli*=timeModifier;
                 timeModifier = 2;
                 break;
             case R.id.percent300:
-                Toast.makeText(this, "Item 300 selected", Toast.LENGTH_SHORT).show();
                 leftTimeInMilli*=timeModifier;
                 timeModifier = 3;
                 break;
             case R.id.percent400:
-                Toast.makeText(this, "Item 400 selected", Toast.LENGTH_SHORT).show();
                 leftTimeInMilli*=timeModifier;
                 timeModifier = 4;
                 break;
