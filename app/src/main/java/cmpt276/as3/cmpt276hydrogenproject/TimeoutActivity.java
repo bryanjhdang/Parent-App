@@ -88,7 +88,9 @@ public class TimeoutActivity extends AppCompatActivity {
                 pauseTimer();
                 stopNotification();
             } else {
-                timeModifier = 1;
+                if (!hasBeenPaused) {
+                    timeModifier = 1;
+                }
                 startTimer();
             }
         });
