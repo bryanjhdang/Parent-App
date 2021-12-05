@@ -11,16 +11,12 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.util.Objects;
 
@@ -66,6 +62,9 @@ public class TakeBreathActivity extends AppCompatActivity {
 
     private int breathCountInt = 1;
 
+    // TODO: Remove this later because it's for debugging
+    TextView timerText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +77,9 @@ public class TakeBreathActivity extends AppCompatActivity {
         setBreathCountArrows();
 
         testButtonHoldTimer();
+
+        // TODO: Remove this later because it's for debugging
+        timerText = (TextView) findViewById(R.id.secondsTesting);
 
         setState(menuState);
     }
@@ -113,7 +115,7 @@ public class TakeBreathActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 calculateNewBreathAmount(DECREASE_BREATHS);
-                updateBreathAmountText();
+                updateBreathChoice();
             }
         });
     }
@@ -124,7 +126,7 @@ public class TakeBreathActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 calculateNewBreathAmount(INCREASE_BREATHS);
-                updateBreathAmountText();
+                updateBreathChoice();
             }
         });
     }
@@ -149,7 +151,7 @@ public class TakeBreathActivity extends AppCompatActivity {
         breathCount.setText(newBreathCountStr);
     }
 
-    private void updateBreathAmountText() {
+    private void updateBreathChoice() {
         TextView breathText = findViewById(R.id.breathTxt);
         TextView breathCount = findViewById(R.id.breathCount);
 
@@ -207,9 +209,17 @@ public class TakeBreathActivity extends AppCompatActivity {
         return (Integer.parseInt(breaths.getText().toString()));
     }
 
+    private void updateRemainingBreaths() {
+
+    }
+
     // ***********************************************************
     // State Pattern states
     // ***********************************************************
+
+    final int THREE_SECONDS = 3000;
+    final int TEN_SECONDS = 10000;
+    final int COUNTDOWN_INTERVAL = 1000;
 
     private class MenuState extends State {
         @Override
@@ -232,35 +242,52 @@ public class TakeBreathActivity extends AppCompatActivity {
     }
 
     private class InhaleState extends State {
-        Handler timerHandler = new Handler();
-        Runnable timerRunnable = () -> setThreeSecondsPassed();
-        Runnable testRunnable = () -> setTenSecondsPassed();
-
-        boolean runnableInUse;
+        boolean isRunning;
         boolean threeSecondsPassed;
         boolean tenSecondsPassed;
 
-        final int threeSeconds = 3000;
-        final int tenSeconds = 10000;
+        CountDownTimer countDownTimer = new CountDownTimer(TEN_SECONDS, COUNTDOWN_INTERVAL) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                // TODO: Remove, for debugging purposes
+                timerText.setText("seconds: " + ((millisUntilFinished / COUNTDOWN_INTERVAL) + 1));
+
+                if (millisUntilFinished <= TEN_SECONDS - THREE_SECONDS) {
+                    threeSecondsPassed = true;
+
+                    Button breathButton = findViewById(R.id.breathButton);
+                    breathButton.setText("Out");
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                // TODO: Remove, for debugging purposes
+                timerText.setText("ten seconds are up!");
+
+                tenSecondsPassed = true;
+            }
+        };
+
 
         @Override
         void handleEnter() {
-            TextView tv = findViewById(R.id.breathHelpTxt);
-            tv.setText("inhale state");
+            Button breathButton = findViewById(R.id.breathButton);
+            breathButton.setText("In");
+
+            TextView breathHelp = findViewById(R.id.breathHelpTxt);
+            breathHelp.setText("Breath in");
 
             threeSecondsPassed = false;
             tenSecondsPassed = false;
 
-
-            timerHandler.postDelayed(timerRunnable, threeSeconds);
-            timerHandler.postDelayed(testRunnable, tenSeconds);
-            runnableInUse = true;
+            isRunning = true;
+            countDownTimer.start();
         }
 
         @Override
         void handleExit() {
-            timerHandler.removeCallbacks(timerRunnable);
-            timerHandler.removeCallbacks(testRunnable);
+            countDownTimer.cancel();
         }
 
         @Override
@@ -269,9 +296,9 @@ public class TakeBreathActivity extends AppCompatActivity {
             // animation dynamically updating
             // should only be able to initially click again after restarting inhale state
 
-            if (runnableInUse == false) {
-                timerHandler.postDelayed(timerRunnable, threeSeconds);
-                timerHandler.postDelayed(testRunnable, tenSeconds);
+            if (!isRunning) {
+                isRunning = true;
+                countDownTimer.start();
             }
         }
 
@@ -280,95 +307,71 @@ public class TakeBreathActivity extends AppCompatActivity {
             if (threeSecondsPassed) {
                 setState(exhaleState);
             } else {
-                // Reset the timer
-                timerHandler.removeCallbacks(timerRunnable);
-                timerHandler.removeCallbacks(testRunnable);
-                runnableInUse = false;
+                isRunning = false;
+                countDownTimer.cancel();
+
+                // TODO: Remove, for debugging purposes
+                String msg = "Let go too early!";
+                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
+                        .show();
             }
-
-            if (tenSecondsPassed) {
-                // set text to warn user
-            }
         }
 
-        private void setThreeSecondsPassed() {
-            TextView tv = findViewById(R.id.breathHelpTxt);
-            tv.setText("three seconds inhaled!");
-
-            threeSecondsPassed = true;
-        }
-
-        private void setTenSecondsPassed() {
-            TextView tv = findViewById(R.id.breathHelpTxt);
-            tv.setText("ten seconds inhaled!");
-
-            tenSecondsPassed = true;
-        }
     }
-
-
-// countdown timer test
-//        TextView timerText = findViewById(R.id.secondsTesting);
-//        new CountDownTimer(30000, 1000) {
-//
-//            public void onTick(long millisUntilFinished) {
-//                timerText.setText("seconds remaining: " + millisUntilFinished / 1000);
-//            }
-//
-//            public void onFinish() {
-//                timerText.setText("done!");
-//            }
-//        }.start();
 
     private class ExhaleState extends State {
         boolean threeSecondsPassed;
         boolean tenSecondsPassed;
 
-        final int threeSeconds = 3000;
-        final int tenSeconds = 10000;
-        final int countDownInterval = 1000;
+        CountDownTimer countDownTimer = new CountDownTimer(TEN_SECONDS, COUNTDOWN_INTERVAL) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                // TODO: Remove, for debugging purposes
+                timerText.setText("seconds: " + ((millisUntilFinished / COUNTDOWN_INTERVAL) + 1));
+
+                if (millisUntilFinished <= TEN_SECONDS - THREE_SECONDS) {
+                    threeSecondsPassed = true;
+
+                    Button breathButton = findViewById(R.id.breathButton);
+                    if (getRemainingBreaths() == 0) {
+                        breathButton.setText("Good job");
+                    } else {
+                        breathButton.setText("In");
+                        updateRemainingBreaths();
+                    }
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                // TODO: Remove, for debugging purposes
+                timerText.setText("ten seconds are up!");
+
+                tenSecondsPassed = true;
+            }
+        };
 
         @Override
         void handleEnter() {
-            // play voice clip
-            // start animation
+            // TODO: play voice clip
+            // TODO: start animation
 
-            TextView timerText = findViewById(R.id.secondsTesting);
-            new CountDownTimer(tenSeconds, countDownInterval) {
+            Button breathButton = findViewById(R.id.breathButton);
+            breathButton.setText("Out");
 
-                public void onTick(long millisUntilFinished) {
-                    timerText.setText("seconds: " + ((millisUntilFinished / countDownInterval) + 1));
-
-                    if (millisUntilFinished <= tenSeconds - threeSeconds) {
-                        threeSecondsPassed = true;
-                        Toast.makeText(getApplicationContext(), "three seconds passed", Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                public void onFinish() {
-                    timerText.setText("ten seconds are up!");
-                    tenSecondsPassed = true;
-                }
-            }.start();
-
-            TextView tv = findViewById(R.id.breathHelpTxt);
-            tv.setText("exhale state");
+            TextView breathHelp = findViewById(R.id.breathHelpTxt);
+            breathHelp.setText("Breath out");
 
             threeSecondsPassed = false;
             tenSecondsPassed = false;
 
+            countDownTimer.start();
         }
 
         @Override
         void handleExit() {
-            // get rid of animation
-            // change music?
-
+            countDownTimer.cancel();
         }
-
-//            // should only register after three seconds
-//            // send to menu if 0 breaths left (play voice clip), send to inhale if > 0 states
-
 
         @Override
         void handleHold() {
@@ -380,15 +383,6 @@ public class TakeBreathActivity extends AppCompatActivity {
                 setState(menuState);
             }
         }
-
-        private boolean threeSecondsPassed() {
-            return true;
-        }
-
-        private boolean tenSecondsPassed() {
-            return true;
-        }
-
     }
 
     private class IdleState extends State {
