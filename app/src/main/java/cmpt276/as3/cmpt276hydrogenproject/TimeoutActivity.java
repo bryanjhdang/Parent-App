@@ -81,18 +81,13 @@ public class TimeoutActivity extends AppCompatActivity {
         resetTimerBtn = findViewById(R.id.btnResetTimer);
 
         startTimerBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(TimeoutActivity.this, NotificationBroadcast.class);
-            @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(TimeoutActivity.this, 0, intent, 0);
+
             if (timerWorkingState) {
                 pauseTimer();
-                alarmManager.cancel(pendingIntent);
+                stopNotification();
             } else {
+                timeModifier = 1;
                 startTimer();
-                //code was followed from demo from https://www.youtube.com/watch?v=nl-dheVpt8o
-                long timeWhenButtonClicked = System.currentTimeMillis();
-                alarmManager.set(AlarmManager.RTC_WAKEUP,
-                        (long) (timeWhenButtonClicked + leftTimeInMilli/timeModifier),
-                        pendingIntent);
             }
         });
 
@@ -118,6 +113,22 @@ public class TimeoutActivity extends AppCompatActivity {
         resetTimerBtn.setOnClickListener(v -> resetTimer());
 
         setAllPresetTimers();
+    }
+
+    private void activateNotification() {
+        Intent intent = new Intent(TimeoutActivity.this, NotificationBroadcast.class);
+        @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(TimeoutActivity.this, 0, intent, 0);
+        //code was followed from demo from https://www.youtube.com/watch?v=nl-dheVpt8o
+        long timeWhenButtonClicked = System.currentTimeMillis();
+        alarmManager.set(AlarmManager.RTC_WAKEUP,
+                (long) (timeWhenButtonClicked + leftTimeInMilli/timeModifier),
+                pendingIntent);
+    }
+
+    private void stopNotification() {
+        Intent intent = new Intent(TimeoutActivity.this, NotificationBroadcast.class);
+        @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(TimeoutActivity.this, 0, intent, 0);
+        alarmManager.cancel(pendingIntent);
     }
 
     public static Intent makeIntent(Context context) {
@@ -170,6 +181,7 @@ public class TimeoutActivity extends AppCompatActivity {
         endOfTime = System.currentTimeMillis() + leftTimeInMilli;
         materialProgressBar.setVisibility(MaterialProgressBar.VISIBLE);
         isPaused = false;
+        activateNotification();
 
         backgroundTimerCountDown = new CountDownTimer((long) (leftTimeInMilli/timeModifier), (long) (COUNTDOWN_INTERVAL/timeModifier)) {
             @Override
