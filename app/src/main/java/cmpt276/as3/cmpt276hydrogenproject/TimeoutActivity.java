@@ -411,7 +411,7 @@ public class TimeoutActivity extends AppCompatActivity {
             case R.id.percent75:
                 Toast.makeText(this, "Item 75 selected", Toast.LENGTH_SHORT).show();
                 leftTimeInMilli*=timeModifier;
-                timeModifier = 0.50;
+                timeModifier = 0.75;
                 break;
             case R.id.percent100:
                 Toast.makeText(this, "Item 100 selected", Toast.LENGTH_SHORT).show();
@@ -436,7 +436,7 @@ public class TimeoutActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-        //RESTART TIMER
+        setRateDisplay();
         changeRateTimer();
         return true;
     }
@@ -449,5 +449,12 @@ public class TimeoutActivity extends AppCompatActivity {
             leftTimeInMilli /= timeModifier;
         }
         startTimer();
+    }
+
+    private void setRateDisplay() {
+        TextView rateDisplay = findViewById(R.id.timeModifierDisplay);
+        double rateDouble = timeModifier*100;
+        int percentRate = (int) rateDouble;
+        rateDisplay.setText("Timer rate " + percentRate + "% ");
     }
 }
