@@ -10,7 +10,6 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -22,27 +21,33 @@ import java.util.Objects;
 
 public class TakeBreathActivity extends AppCompatActivity {
 
-    // ***********************************************************
-    // State Pattern's base states
-    // ***********************************************************
-
-    private abstract class State {
-//        private TakeBreathActivity context;
-//        public State(TakeBreathActivity context) {
-//            this.context = context;
-//        }
-
-        void handleEnter() {}
-        void handleExit() {}
-        void handleHold() {}
-        void handleRelease() {}
-    }
+    final int THREE_SECONDS = 3000;
+    final int TEN_SECONDS = 10000;
+    final int COUNTDOWN_INTERVAL = 1000;
 
     public final State menuState = new MenuState();
     public final State inhaleState = new InhaleState();
     public final State exhaleState = new ExhaleState();
     private State currentState = new IdleState();
     SharedPreferences sp;
+
+    private final String actionBarTitle = "Take A Breath";
+
+    private final int INCREASE_BREATHS = 1;
+    private final int DECREASE_BREATHS = 2;
+    private int breathCountInt = 1;
+    private int breathsRemaining;
+
+    // ***********************************************************
+    // State Pattern's base states
+    // ***********************************************************
+
+    private abstract class State {
+        void handleEnter() {}
+        void handleExit() {}
+        void handleHold() {}
+        void handleRelease() {}
+    }
 
     public void setState(State newState) {
         currentState.handleExit();
@@ -53,15 +58,6 @@ public class TakeBreathActivity extends AppCompatActivity {
     // ***********************************************************
     // Android Code implementation
     // ***********************************************************
-
-    private final String actionBarTitle = "Take A Breath";
-
-    private final int INCREASE_BREATHS = 1;
-    private final int DECREASE_BREATHS = 2;
-
-    private int breathCountInt = 1;
-    private int breathsRemaining;
-
 
     // TODO: Remove this later because it's for debugging
     TextView timerText;
@@ -76,8 +72,7 @@ public class TakeBreathActivity extends AppCompatActivity {
 
         initializeBreathCount();
         setBreathCountArrows();
-
-        testButtonHoldTimer();
+        setButtonControl();
 
         // TODO: Remove this later because it's for debugging
         timerText = (TextView) findViewById(R.id.secondsTesting);
@@ -149,9 +144,7 @@ public class TakeBreathActivity extends AppCompatActivity {
         }
 
         breathsRemaining = breathCountInt;
-
         saveBreaths();
-
         String newBreathCountStr = Integer.toString(breathCountInt);
         breathCount.setText(newBreathCountStr);
     }
@@ -165,16 +158,8 @@ public class TakeBreathActivity extends AppCompatActivity {
         breathText.setText(msg);
     }
 
-    // TODO: Delete this function later; it's just for testing
-    private void updateTimerText(long time) {
-        TextView timerText = findViewById(R.id.secondsTesting);
-        String timeAsStr = String.valueOf((int)time);
-        timerText.setText(timeAsStr);
-    }
-
-
     @SuppressLint("ClickableViewAccessibility")
-    private void testButtonHoldTimer() {
+    private void setButtonControl() {
         Button button = findViewById(R.id.breathButton);
         button.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -211,15 +196,10 @@ public class TakeBreathActivity extends AppCompatActivity {
     // State Pattern states
     // ***********************************************************
 
-    final int THREE_SECONDS = 3000;
-    final int TEN_SECONDS = 10000;
-    final int COUNTDOWN_INTERVAL = 1000;
-
     private class MenuState extends State {
         @Override
         void handleEnter() {
             canSeeBreathCount(true);
-
             TextView tv = findViewById(R.id.breathHelpTxt);
             tv.setText("menu state");
         }
@@ -248,7 +228,6 @@ public class TakeBreathActivity extends AppCompatActivity {
 
                 if (millisUntilFinished <= TEN_SECONDS - THREE_SECONDS) {
                     threeSecondsPassed = true;
-
                     Button breathButton = findViewById(R.id.breathButton);
                     breathButton.setText("Out");
                 }
@@ -267,13 +246,11 @@ public class TakeBreathActivity extends AppCompatActivity {
         void handleEnter() {
             Button breathButton = findViewById(R.id.breathButton);
             breathButton.setText("In");
-
             TextView breathHelp = findViewById(R.id.breathHelpTxt);
             breathHelp.setText("Breath in");
 
             threeSecondsPassed = false;
             tenSecondsPassed = false;
-
             isRunning = true;
             countDownTimer.start();
         }
@@ -350,13 +327,11 @@ public class TakeBreathActivity extends AppCompatActivity {
 
             Button breathButton = findViewById(R.id.breathButton);
             breathButton.setText("Out");
-
             TextView breathHelp = findViewById(R.id.breathHelpTxt);
             breathHelp.setText("Breath out");
 
             threeSecondsPassed = false;
             tenSecondsPassed = false;
-
             countDownTimer.start();
         }
 
