@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 import java.util.Locale;
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
@@ -46,9 +49,6 @@ public class TimeoutActivity extends AppCompatActivity {
     private Button startTimerBtn;
     private Button setTimeBtn;
     private Button resetTimerBtn;
-
-    private Button dummyChangeRateBtn;
-
     private TextView displayTimerField;
     private EditText editTextInput;
     private CountDownTimer backgroundTimerCountDown;
@@ -57,6 +57,7 @@ public class TimeoutActivity extends AppCompatActivity {
     private long startTimeInMilli;
     private long endOfTime;
     private boolean timerWorkingState;
+    private boolean PlayAfterPause;
     private boolean isFirstTime;
     private long leftTimeInMilli;
     private double timeModifier = 4;
@@ -226,6 +227,7 @@ public class TimeoutActivity extends AppCompatActivity {
         int minutes = (int) ((leftTimeInMilli / COUNTDOWN_INTERVAL) % SECONDS_PER_HOUR) / SECONDS_PER_MINUTE;
         int seconds = (int) (leftTimeInMilli / COUNTDOWN_INTERVAL) % SECONDS_PER_MINUTE;
 
+
         if (timerWorkingState) {
             hours = (int) (leftTimeInMilli*timeModifier / COUNTDOWN_INTERVAL) / SECONDS_PER_HOUR;
             minutes = (int) ((leftTimeInMilli*timeModifier / COUNTDOWN_INTERVAL) % SECONDS_PER_HOUR) / SECONDS_PER_MINUTE;
@@ -299,18 +301,6 @@ public class TimeoutActivity extends AppCompatActivity {
         setPresetTimer(threeMinBtn, DEFAULT_SETTING_3);
         setPresetTimer(fiveMinBtn, DEFAULT_SETTING_4);
         setPresetTimer(tenMinBtn, DEFAULT_SETTING_5);
-
-        dummyChangeRateBtn = findViewById(R.id.dummyChangeRateBtn);
-        changeTimerRate(dummyChangeRateBtn, 1);
-    }
-
-    private void changeTimerRate(Button rateChangeBtn, double newRate) {
-        rateChangeBtn.setOnClickListener(v -> {
-            leftTimeInMilli*=timeModifier;
-            timeModifier = newRate;
-            backgroundTimerCountDown.cancel();
-            startTimer();
-        });
     }
 
     /**
@@ -376,5 +366,46 @@ public class TimeoutActivity extends AppCompatActivity {
                 startTimer();
             }
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.timeout_rate,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                if(timerWorkingState) {
+                    moveTaskToBack(true);
+                }else {
+                    finish();
+                }
+                return true;
+            case R.id.percent25:
+                Toast.makeText(this, "Item 25 selected", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.percent75:
+                Toast.makeText(this, "Item 75 selected", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.percent100:
+                Toast.makeText(this, "Item 100 selected", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.percent200:
+                Toast.makeText(this, "Item 200 selected", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.percent300:
+                Toast.makeText(this, "Item 300 selected", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.percent400:
+                Toast.makeText(this, "Item 400 selected", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+        return true;
     }
 }
