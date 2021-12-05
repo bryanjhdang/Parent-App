@@ -156,6 +156,7 @@
     <me.zhanghai.android.materialprogressbar.MaterialProgressBar
         android:minWidth="300dp"
         android:minHeight="300dp"
+        android:max="1000000"
         android:id="@+id/timerCountdownBar"
         style="@style/Widget.MaterialProgressBar.ProgressBar"
         android:layout_width="wrap_content"
@@ -164,15 +165,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnResetTimer" />
-
-    <Button
-        android:id="@+id/dummyChangeRateBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="32dp"
-        android:text="Button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

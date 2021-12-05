@@ -57,10 +57,12 @@ public class TimeoutActivity extends AppCompatActivity {
     private long startTimeInMilli;
     private long endOfTime;
     private boolean timerWorkingState;
-    private boolean PlayAfterPause;
     private boolean isFirstTime;
     private long leftTimeInMilli;
-    private double timeModifier = 4;
+    private double timeModifier = 1;
+
+    private boolean hasBeenPaused = false;
+    private boolean isPaused = false;
 
     AlarmManager alarmManager;
 
@@ -167,6 +169,7 @@ public class TimeoutActivity extends AppCompatActivity {
     private void startTimer() {
         endOfTime = System.currentTimeMillis() + leftTimeInMilli;
         materialProgressBar.setVisibility(MaterialProgressBar.VISIBLE);
+        isPaused = false;
 
         backgroundTimerCountDown = new CountDownTimer((long) (leftTimeInMilli/timeModifier), (long) (COUNTDOWN_INTERVAL/timeModifier)) {
             @Override
@@ -179,7 +182,7 @@ public class TimeoutActivity extends AppCompatActivity {
             private void tickVisualTimer() {
                 double timeRemainingPercent = (double)leftTimeInMilli/(double)startTimeInMilli;
                 timeRemainingPercent *= timeModifier;
-                timeRemainingPercent *= 100;
+                timeRemainingPercent *= 1000000;
                 if (leftTimeInMilli == 0) {
                     materialProgressBar.setVisibility(MaterialProgressBar.INVISIBLE);
                 } else {
@@ -190,6 +193,7 @@ public class TimeoutActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 timerWorkingState = false;
+                hasBeenPaused = false;
                 updateLayoutVisibility();
             }
         }.start();
@@ -202,6 +206,7 @@ public class TimeoutActivity extends AppCompatActivity {
 
     private void resetTimer() {
         Intent intent = new Intent(TimeoutActivity.this, NotificationBroadcast.class);
+        hasBeenPaused = false;
         @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(TimeoutActivity.this, 0, intent, 0);
         if (backgroundTimerCountDown != null) {
             pauseTimer();
@@ -217,6 +222,9 @@ public class TimeoutActivity extends AppCompatActivity {
     }
 
     private void pauseTimer() {
+        hasBeenPaused = true;
+        isPaused = true;
+        leftTimeInMilli*=timeModifier;
         backgroundTimerCountDown.cancel();
         timerWorkingState = false;
         updateLayoutVisibility();
@@ -385,27 +393,49 @@ public class TimeoutActivity extends AppCompatActivity {
                 }
                 return true;
             case R.id.percent25:
-                Toast.makeText(this, "Item 25 selected", Toast.LENGTH_SHORT).show();
+                leftTimeInMilli*=timeModifier;
+                timeModifier = 0.25;
                 break;
             case R.id.percent75:
                 Toast.makeText(this, "Item 75 selected", Toast.LENGTH_SHORT).show();
+                leftTimeInMilli*=timeModifier;
+                timeModifier = 0.50;
                 break;
             case R.id.percent100:
                 Toast.makeText(this, "Item 100 selected", Toast.LENGTH_SHORT).show();
+                leftTimeInMilli*=timeModifier;
+                timeModifier = 1;
                 break;
             case R.id.percent200:
                 Toast.makeText(this, "Item 200 selected", Toast.LENGTH_SHORT).show();
+                leftTimeInMilli*=timeModifier;
+                timeModifier = 2;
                 break;
             case R.id.percent300:
                 Toast.makeText(this, "Item 300 selected", Toast.LENGTH_SHORT).show();
+                leftTimeInMilli*=timeModifier;
+                timeModifier = 3;
                 break;
             case R.id.percent400:
                 Toast.makeText(this, "Item 400 selected", Toast.LENGTH_SHORT).show();
+                leftTimeInMilli*=timeModifier;
+                timeModifier = 4;
                 break;
             default:
                 return super.onOptionsItemSelected(item);
-
         }
+        //RESTART TIMER
+        changeRateTimer();
         return true;
+    }
+
+    private void changeRateTimer() {
+        if (backgroundTimerCountDown != null) {
+            backgroundTimerCountDown.cancel();
+        }
+        if (isPaused) {
+            leftTimeInMilli /= timeModifier;
+        }
+        startTimer();
     }
 }
