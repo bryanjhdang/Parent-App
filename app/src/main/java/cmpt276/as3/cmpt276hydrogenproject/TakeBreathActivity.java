@@ -401,7 +401,6 @@ public class TakeBreathActivity extends AppCompatActivity {
 
         @Override
         void handleHold() {
-            Toast.makeText(getApplicationContext(), breathsRemaining + "", Toast.LENGTH_SHORT).show();
             if (threeSecondsPassed && breathsRemaining > 0) {
                 setState(inhaleState);
             } else if (threeSecondsPassed && breathsRemaining <= 0) {
