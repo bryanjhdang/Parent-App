@@ -4,13 +4,17 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/SFU/200 level courses/CMPT 276/Project/Hydrogen/app/src/main/res/layout/activity_main.xml" value="0.16893115942028986" />
+        <entry key="..\:/SFU/200 level courses/CMPT 276/Project/Hydrogen/app/src/main/res/layout/activity_take_breath.xml" value="0.4" />
         <entry key="..\:/SFU/200 level courses/CMPT 276/Project/Hydrogen/app/src/main/res/layout/child_item.xml" value="0.12447916666666667" />
         <entry key="..\:/SFU/200 level courses/CMPT 276/Project/Hydrogen/app/src/main/res/layout/coinflip_activity.xml" value="0.13020833333333334" />
         <entry key="..\:/SFU/200 level courses/CMPT 276/Project/Hydrogen/app/src/main/res/layout/coinflip_spinner_item.xml" value="0.12447916666666667" />
         <entry key="..\:/SFU/200 level courses/CMPT 276/Project/Hydrogen/app/src/main/res/layout/configure_activity.xml" value="0.13020833333333334" />
+        <entry key="..\:/SFU/200 level courses/CMPT 276/Project/Hydrogen/app/src/main/res/layout/finished_task_item.xml" value="0.190625" />
         <entry key="..\:/SFU/200 level courses/CMPT 276/Project/Hydrogen/app/src/main/res/layout/help_activity.xml" value="0.12447916666666667" />
         <entry key="..\:/SFU/200 level courses/CMPT 276/Project/Hydrogen/app/src/main/res/layout/help_list.xml" value="0.12447916666666667" />
         <entry key="..\:/SFU/200 level courses/CMPT 276/Project/Hydrogen/app/src/main/res/layout/main_activity.xml" value="0.13020833333333334" />
+        <entry key="..\:/SFU/200 level courses/CMPT 276/Project/Hydrogen/app/src/main/res/layout/task_info_activity.xml" value="0.190625" />
+        <entry key="..\:/SFU/200 level courses/CMPT 276/Project/Hydrogen/app/src/main/res/layout/task_item.xml" value="0.190625" />
         <entry key="..\:/SFU/200 level courses/CMPT 276/Project/Hydrogen/app/src/main/res/layout/task_manager_activity.xml" value="0.12447916666666667" />
         <entry key="..\:/SFU/200 level courses/CMPT 276/Project/Hydrogen/app/src/main/res/layout/timeout_activity.xml" value="0.536" />
         <entry key="..\:/SFU/200 level courses/CMPT 276/Project/Hydrogen/app/src/main/res/menu/add_coin_flip.xml" value="0.36666666666666664" />

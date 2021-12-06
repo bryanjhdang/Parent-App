@@ -1,11 +1,5 @@
 package cmpt276.as3.cmpt276hydrogenproject;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,7 +8,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -24,20 +17,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
 
-import org.w3c.dom.Text;
-
-import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
-import cmpt276.as3.cmpt276hydrogenproject.model.Child;
 import cmpt276.as3.cmpt276hydrogenproject.model.ChildManager;
 import cmpt276.as3.cmpt276hydrogenproject.model.Task;
 import cmpt276.as3.cmpt276hydrogenproject.model.TaskFinished;
@@ -53,8 +41,7 @@ public class TaskInfoActivity extends AppCompatActivity {
     private Task task;
     private int taskIndex;
 
-    private TaskManager taskManager = TaskManager.getInstance();
-    private ChildManager childManager = ChildManager.getInstance();
+    private final TaskManager taskManager = TaskManager.getInstance();
 
     private final String TITLE_MSG = "actionBarTitle";
     private final String TASK_INDEX_MSG = "taskIndex";
@@ -210,7 +197,6 @@ public class TaskInfoActivity extends AppCompatActivity {
     }
 
     private void createDeleteDialog() {
-        TextView tv = new TextView(TaskInfoActivity.this);
         String dialogLabel = "Are you sure you want to delete this task?";
         AlertDialog.Builder builder = new AlertDialog.Builder(TaskInfoActivity.this);
         builder.setTitle(dialogLabel);

@@ -48,6 +48,13 @@
     <string name="editTaskNameMsg">Tap the task header above to edit!</string>
     <string name="completeTask">Complete Task</string>
     <string name="deleteTask">Delete Task</string>
+    <string name="defaultBreathCount">1</string>
+    <string name="breathPlaceholder">Let\'s take n breaths!</string>
+    <string name="helpMsgPlaceholder">helpMsg</string>
+    <string name="buttonTextPlaceholder">Button</string>
+    <string name="taskNamePlaceholder">TextView</string>
+    <string name="taskAssignedPlaceholder">TextView</string>
+    <string name="timerRateDefault">Timer rate 100%</string>
     <string-array name="choices">
         <item>Heads</item>
         <item>Tails</item>

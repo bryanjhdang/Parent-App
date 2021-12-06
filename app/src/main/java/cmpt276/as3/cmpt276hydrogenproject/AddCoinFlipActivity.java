@@ -182,9 +182,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
             stringifiedOutput += "tails!";
         }
         builder.setTitle(stringifiedOutput);
-        builder.setPositiveButton("OK", ((dialogInterface, i) -> {
-            finish();
-        }));
+        builder.setPositiveButton("OK", ((dialogInterface, i) -> finish()));
         dialog = builder.create();
         dialog.show();
 
