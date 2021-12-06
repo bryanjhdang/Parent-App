@@ -16,32 +16,33 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.288"
         app:srcCompat="@drawable/night_background" />
 
     <TextView
         android:id="@+id/textDisplayTimer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="@string/initialZeroValueTimer"
         android:textColor="@color/white"
         android:textSize="64sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/timerCountdownBar"
+        app:layout_constraintEnd_toEndOf="@+id/timerCountdownBar"
+        app:layout_constraintStart_toStartOf="@+id/timerCountdownBar"
+        app:layout_constraintTop_toTopOf="@+id/timerCountdownBar" />
 
     <Button
         android:id="@+id/btnStartTimer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="40dp"
         android:backgroundTint="@color/twitter_blue"
         android:text="@string/btnTextStart"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textDisplayTimer" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btnResetTimer"
@@ -62,14 +63,12 @@
         android:id="@+id/threeMinBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="40dp"
         android:backgroundTint="@color/twitter_blue"
         android:text="@string/threeMinutes"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/twoMinBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toEndOf="@+id/twoMinBtn" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/fiveMinBtn"
@@ -79,61 +78,53 @@
         android:text="@string/fiveMinutes"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/minuteTextInput"
-        app:layout_constraintEnd_toStartOf="@+id/twoMinBtn"
-        app:layout_constraintHorizontal_bias="0.509"
-        app:layout_constraintStart_toEndOf="@+id/oneMinBtn"
-        app:layout_constraintTop_toBottomOf="@+id/nightSkyBackground"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintEnd_toStartOf="@+id/tenMinBtn"
+        app:layout_constraintHorizontal_bias="0.818"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/tenMinBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="92dp"
         android:backgroundTint="@color/twitter_blue"
         android:text="@string/tenMinutes"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/fiveMinBtn"
-        app:layout_constraintEnd_toStartOf="@+id/threeMinBtn"
-        app:layout_constraintHorizontal_bias="0.509"
-        app:layout_constraintStart_toEndOf="@+id/twoMinBtn"
-        app:layout_constraintTop_toTopOf="@+id/fiveMinBtn"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintBottom_toTopOf="@+id/btnSetTimer"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/twoMinBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:backgroundTint="@color/twitter_blue"
         android:text="@string/twoMinutes"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/fiveMinBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/threeMinBtn"
+        app:layout_constraintStart_toEndOf="@+id/oneMinBtn"
+        app:layout_constraintTop_toTopOf="@+id/oneMinBtn" />
 
     <Button
         android:id="@+id/oneMinBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="52dp"
         android:backgroundTint="@color/twitter_blue"
         android:text="@string/oneMinute"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/twoMinBtn"
-        app:layout_constraintEnd_toStartOf="@+id/twoMinBtn"
-        app:layout_constraintHorizontal_bias="0.486"
+        app:layout_constraintBottom_toTopOf="@+id/fiveMinBtn"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnSetTimer"
         android:layout_width="70dp"
         android:layout_height="48dp"
-        android:layout_marginStart="20dp"
         android:backgroundTint="@color/twitter_blue"
         android:text="@string/set"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/minuteTextInput"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.125"
         app:layout_constraintStart_toEndOf="@+id/minuteTextInput" />
 
     <EditText
@@ -141,7 +132,7 @@
         android:layout_width="141dp"
         android:layout_height="48dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="96dp"
         android:autofillHints="1"
         android:backgroundTint="@color/white"
         android:hint="@string/inputMinutesDisplay"
@@ -149,8 +140,6 @@
         android:maxLength="4"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/threeMinBtn"
-        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent" />
 
     <me.zhanghai.android.materialprogressbar.MaterialProgressBar
