@@ -87,7 +87,6 @@ public class TimeoutActivity extends AppCompatActivity {
                 pauseTimer();
                 stopNotification();
             } else {
-                timeModifier = 1;
                 setRateDisplay();
                 startTimer();
             }
@@ -198,6 +197,8 @@ public class TimeoutActivity extends AppCompatActivity {
     private void resetTimer() {
         Intent intent = new Intent(TimeoutActivity.this, NotificationBroadcast.class);
         hasBeenPaused = false;
+        timeModifier = 1;
+        setRateDisplay();
         @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(TimeoutActivity.this, 0, intent, 0);
         if (backgroundTimerCountDown != null) {
             pauseTimer();
