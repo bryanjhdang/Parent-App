@@ -203,10 +203,12 @@ public class TakeBreathActivity extends AppCompatActivity {
     private class MenuState extends State {
         @Override
         void handleEnter() {
-            canSeeBreathCount(true);
+            Objects.requireNonNull(getSupportActionBar()).setTitle(actionBarTitle);
             TextView breathHelp = findViewById(R.id.breathHelpTxt);
-            breathHelp.setText("Hold button and start inhaling!");
+            breathHelp.setText("");
 
+            canSeeBreathCount(true);
+            breathsRemaining = breathCountInt;
             initializeCircle();
         }
 
@@ -226,9 +228,6 @@ public class TakeBreathActivity extends AppCompatActivity {
 
             Button breathButton = findViewById(R.id.breathButton);
             breathButton.setText("Begin");
-
-            int INHALE_INITIAL_WIDTH = 267;
-            int EXHALE_INITIAL_HEIGHT = 267;
 
             ViewGroup.LayoutParams params = inhaleCircle.getLayoutParams();
             params.width = INHALE_INITIAL_WIDTH;
@@ -275,10 +274,11 @@ public class TakeBreathActivity extends AppCompatActivity {
 
         @Override
         void handleEnter() {
+            Objects.requireNonNull(getSupportActionBar()).setTitle(actionBarTitle + " (" + breathsRemaining + ")");
             Button breathButton = findViewById(R.id.breathButton);
             breathButton.setText("In");
             TextView breathHelp = findViewById(R.id.breathHelpTxt);
-            breathHelp.setText("Breath in");
+            breathHelp.setText("Breath in and hold button");
 
             threeSecondsPassed = false;
             tenSecondsPassed = false;
@@ -320,9 +320,6 @@ public class TakeBreathActivity extends AppCompatActivity {
             inhaleCircle.setVisibility(View.VISIBLE);
             exhaleCircle.setVisibility(View.INVISIBLE);
 
-            int INHALE_INITIAL_WIDTH = 267;
-            int EXHALE_INITIAL_HEIGHT = 267;
-
             ViewGroup.LayoutParams params = inhaleCircle.getLayoutParams();
             params.width = INHALE_INITIAL_WIDTH;
             params.height = EXHALE_INITIAL_HEIGHT;
@@ -344,6 +341,7 @@ public class TakeBreathActivity extends AppCompatActivity {
                     if (!breathHasBeenDecreased) {
                         breathsRemaining--;
                         breathHasBeenDecreased = true;
+                        Objects.requireNonNull(getSupportActionBar()).setTitle(actionBarTitle + " (" + breathsRemaining + ")");
                     }
 
                     Button breathButton = findViewById(R.id.breathButton);
