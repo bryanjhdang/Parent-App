@@ -21,6 +21,10 @@ import android.widget.Toast;
 
 import java.util.Objects;
 
+/**
+ * Activity that allows the user to do deep breathing, along with options indicating how many breaths to do.
+ * Holding on the button will start periods of inhale / exhale states for as long as the user chose.
+ */
 public class TakeBreathActivity extends AppCompatActivity {
 
     final int THREE_SECONDS = 3000;
@@ -95,10 +99,9 @@ public class TakeBreathActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onUserLeaveHint() {
-        inhaleMusic.pause();
-        exhaleMusic.pause();
-        recreate();
+    protected void onResume() {
+        setState(menuState);
+        super.onResume();
     }
 
     @Override
