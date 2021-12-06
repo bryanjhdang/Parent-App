@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.MotionEvent;
@@ -41,11 +42,13 @@ public class TakeBreathActivity extends AppCompatActivity {
     SharedPreferences sp;
 
     private final String actionBarTitle = "Take A Breath";
-
     private final int INCREASE_BREATHS = 1;
     private final int DECREASE_BREATHS = 2;
     private int breathCountInt = 1;
     private int breathsRemaining;
+
+    private MediaPlayer inhaleMusic;
+    private MediaPlayer exhaleMusic;
 
     // ***********************************************************
     // State Pattern's base states
@@ -81,11 +84,28 @@ public class TakeBreathActivity extends AppCompatActivity {
         exhaleCircle = findViewById(R.id.exhaleCircleBG);
         inhaleCircle = findViewById(R.id.inhaleCircleBG);
 
+        inhaleMusic = MediaPlayer.create(this, R.raw.inhale_wii_play);
+        exhaleMusic = MediaPlayer.create(this, R.raw.exhale_wii_fit);
+
         setState(menuState);
     }
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, TakeBreathActivity.class);
+    }
+
+    @Override
+    protected void onUserLeaveHint() {
+        inhaleMusic.pause();
+        exhaleMusic.pause();
+        recreate();
+    }
+
+    @Override
+    protected void onStop() {
+        inhaleMusic.pause();
+        exhaleMusic.pause();
+        super.onStop();
     }
 
     private void setActionBar() {
@@ -239,7 +259,6 @@ public class TakeBreathActivity extends AppCompatActivity {
     private class InhaleState extends State {
         boolean isRunning;
         boolean threeSecondsPassed;
-        boolean tenSecondsPassed;
 
         CountDownTimer countDownTimer = new CountDownTimer(TEN_SECONDS, COUNTDOWN_INTERVAL) {
             @Override
@@ -253,7 +272,7 @@ public class TakeBreathActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                tenSecondsPassed = true;
+                inhaleMusic.pause();
             }
         };
 
@@ -268,7 +287,6 @@ public class TakeBreathActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-
             }
         };
 
@@ -281,18 +299,19 @@ public class TakeBreathActivity extends AppCompatActivity {
             breathHelp.setText("Breath in and hold button");
 
             threeSecondsPassed = false;
-            tenSecondsPassed = false;
             isRunning = true;
             countDownTimer.start();
 
             initializeCircle();
             animationTimer.start();
+            inhaleMusic.start();
         }
 
         @Override
         void handleExit() {
             countDownTimer.cancel();
             animationTimer.cancel();
+            resetMusic();
         }
 
         @Override
@@ -301,6 +320,7 @@ public class TakeBreathActivity extends AppCompatActivity {
                 isRunning = true;
                 countDownTimer.start();
                 animationTimer.start();
+                inhaleMusic.start();
             }
         }
 
@@ -313,6 +333,7 @@ public class TakeBreathActivity extends AppCompatActivity {
                 initializeCircle();
                 countDownTimer.cancel();
                 animationTimer.cancel();
+                resetMusic();
             }
         }
 
@@ -325,11 +346,15 @@ public class TakeBreathActivity extends AppCompatActivity {
             params.height = EXHALE_INITIAL_HEIGHT;
             inhaleCircle.setLayoutParams(params);
         }
+
+        private void resetMusic() {
+            inhaleMusic.pause();
+            inhaleMusic.seekTo(0);
+        }
     }
 
     private class ExhaleState extends State {
         boolean threeSecondsPassed;
-        boolean tenSecondsPassed;
         boolean breathHasBeenDecreased;
 
         CountDownTimer countDownTimer = new CountDownTimer(TEN_SECONDS, COUNTDOWN_INTERVAL) {
@@ -355,7 +380,7 @@ public class TakeBreathActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                tenSecondsPassed = true;
+                exhaleMusic.pause();
             }
         };
 
@@ -375,8 +400,6 @@ public class TakeBreathActivity extends AppCompatActivity {
 
         @Override
         void handleEnter() {
-            // TODO: play voice clip
-
             Button breathButton = findViewById(R.id.breathButton);
             breathButton.setText("Out");
             TextView breathHelp = findViewById(R.id.breathHelpTxt);
@@ -384,17 +407,18 @@ public class TakeBreathActivity extends AppCompatActivity {
 
             breathHasBeenDecreased = false;
             threeSecondsPassed = false;
-            tenSecondsPassed = false;
             countDownTimer.start();
 
             initializeCircle();
             animationTimer.start();
+            exhaleMusic.start();
         }
 
         @Override
         void handleExit() {
             countDownTimer.cancel();
             animationTimer.cancel();
+            resetMusic();
         }
 
         @Override
@@ -417,6 +441,11 @@ public class TakeBreathActivity extends AppCompatActivity {
             params.width = INITIAL_WIDTH;
             params.height = INITIAL_HEIGHT;
             exhaleCircle.setLayoutParams(params);
+        }
+
+        private void resetMusic() {
+            exhaleMusic.pause();
+            exhaleMusic.seekTo(0);
         }
     }
 
