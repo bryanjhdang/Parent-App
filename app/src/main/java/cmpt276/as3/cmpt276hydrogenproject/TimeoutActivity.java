@@ -88,6 +88,7 @@ public class TimeoutActivity extends AppCompatActivity {
                 stopNotification();
             } else {
                 timeModifier = 1;
+                setRateDisplay();
                 startTimer();
             }
         });
