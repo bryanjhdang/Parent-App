@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +36,7 @@ public class TakeBreathActivity extends AppCompatActivity {
     final double INHALE_RATE_OF_CHANGE = 1.0122;
     final double EXHALE_RATE_OF_CHANGE = 1.01;
 
+    private TextView breathButton;
     private TextView exhaleCircle;
     private TextView inhaleCircle;
     int INHALE_INITIAL_WIDTH = 267;
@@ -75,6 +78,7 @@ public class TakeBreathActivity extends AppCompatActivity {
     // Android Code implementation
     // ***********************************************************
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sp = getSharedPreferences("Hydrogen", Context.MODE_PRIVATE);
@@ -87,6 +91,7 @@ public class TakeBreathActivity extends AppCompatActivity {
         setButtonControl();
         exhaleCircle = findViewById(R.id.exhaleCircleBG);
         inhaleCircle = findViewById(R.id.inhaleCircleBG);
+        breathButton = findViewById(R.id.breathButton);
 
         inhaleMusic = MediaPlayer.create(this, R.raw.inhale_wii_play);
         exhaleMusic = MediaPlayer.create(this, R.raw.exhale_wii_fit);
@@ -187,7 +192,7 @@ public class TakeBreathActivity extends AppCompatActivity {
 
     @SuppressLint("ClickableViewAccessibility")
     private void setButtonControl() {
-        Button button = findViewById(R.id.breathButton);
+        TextView button = findViewById(R.id.breathButton);
         button.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -249,13 +254,18 @@ public class TakeBreathActivity extends AppCompatActivity {
             inhaleCircle.setVisibility(View.VISIBLE);
             exhaleCircle.setVisibility(View.INVISIBLE);
 
-            Button breathButton = findViewById(R.id.breathButton);
+            TextView breathButton = findViewById(R.id.breathButton);
             breathButton.setText("Begin");
 
             ViewGroup.LayoutParams params = inhaleCircle.getLayoutParams();
             params.width = INHALE_INITIAL_WIDTH;
             params.height = EXHALE_INITIAL_HEIGHT;
             inhaleCircle.setLayoutParams(params);
+
+            ViewGroup.LayoutParams breathBtnParams = breathButton.getLayoutParams();
+            breathBtnParams.width = INHALE_INITIAL_WIDTH;
+            breathBtnParams.height = EXHALE_INITIAL_HEIGHT;
+            breathButton.setLayoutParams(breathBtnParams);
         }
     }
 
@@ -268,7 +278,7 @@ public class TakeBreathActivity extends AppCompatActivity {
             public void onTick(long millisUntilFinished) {
                 if (millisUntilFinished <= TEN_SECONDS - THREE_SECONDS) {
                     threeSecondsPassed = true;
-                    Button breathButton = findViewById(R.id.breathButton);
+                    TextView breathButton = findViewById(R.id.breathButton);
                     breathButton.setText("Out");
                 }
             }
@@ -286,6 +296,11 @@ public class TakeBreathActivity extends AppCompatActivity {
                 params.width *= INHALE_RATE_OF_CHANGE;
                 params.height *= INHALE_RATE_OF_CHANGE;
                 inhaleCircle.setLayoutParams(params);
+
+                ViewGroup.LayoutParams breathBtnParams = breathButton.getLayoutParams();
+                breathBtnParams.width *= INHALE_RATE_OF_CHANGE;
+                breathBtnParams.height *= INHALE_RATE_OF_CHANGE;
+                breathButton.setLayoutParams(breathBtnParams);
             }
 
             @Override
@@ -296,7 +311,7 @@ public class TakeBreathActivity extends AppCompatActivity {
         @Override
         void handleEnter() {
             Objects.requireNonNull(getSupportActionBar()).setTitle(actionBarTitle + " (" + breathsRemaining + ")");
-            Button breathButton = findViewById(R.id.breathButton);
+            TextView breathButton = findViewById(R.id.breathButton);
             breathButton.setText("In");
             TextView breathHelp = findViewById(R.id.breathHelpTxt);
             breathHelp.setText("Breath in and hold button");
@@ -348,6 +363,11 @@ public class TakeBreathActivity extends AppCompatActivity {
             params.width = INHALE_INITIAL_WIDTH;
             params.height = EXHALE_INITIAL_HEIGHT;
             inhaleCircle.setLayoutParams(params);
+
+            ViewGroup.LayoutParams breathBtnParams = breathButton.getLayoutParams();
+            breathBtnParams.width = INHALE_INITIAL_WIDTH;
+            breathBtnParams.height = EXHALE_INITIAL_HEIGHT;
+            breathButton.setLayoutParams(breathBtnParams);
         }
 
         private void resetMusic() {
@@ -372,9 +392,9 @@ public class TakeBreathActivity extends AppCompatActivity {
                         Objects.requireNonNull(getSupportActionBar()).setTitle(actionBarTitle + " (" + breathsRemaining + ")");
                     }
 
-                    Button breathButton = findViewById(R.id.breathButton);
+                    TextView breathButton = findViewById(R.id.breathButton);
                     if (breathsRemaining <= 0) {
-                        breathButton.setText("Good job");
+                        breathButton.setText("Good\nJob");
                     } else {
                         breathButton.setText("In");
                     }
@@ -394,6 +414,11 @@ public class TakeBreathActivity extends AppCompatActivity {
                 params.width /= EXHALE_RATE_OF_CHANGE;
                 params.height /= EXHALE_RATE_OF_CHANGE;
                 exhaleCircle.setLayoutParams(params);
+
+                ViewGroup.LayoutParams breathBtnParams = breathButton.getLayoutParams();
+                breathBtnParams.width /= EXHALE_RATE_OF_CHANGE;
+                breathBtnParams.height /= EXHALE_RATE_OF_CHANGE;
+                breathButton.setLayoutParams(breathBtnParams);
             }
 
             @Override
@@ -403,7 +428,7 @@ public class TakeBreathActivity extends AppCompatActivity {
 
         @Override
         void handleEnter() {
-            Button breathButton = findViewById(R.id.breathButton);
+            TextView breathButton = findViewById(R.id.breathButton);
             breathButton.setText("Out");
             TextView breathHelp = findViewById(R.id.breathHelpTxt);
             breathHelp.setText("Breath out");
@@ -437,13 +462,18 @@ public class TakeBreathActivity extends AppCompatActivity {
             inhaleCircle.setVisibility(View.INVISIBLE);
             exhaleCircle.setVisibility(View.VISIBLE);
 
-            int INITIAL_WIDTH = 800;
-            int INITIAL_HEIGHT = 800;
+            int MAX_WIDTH = 800;
+            int MAX_HEIGHT = 800;
 
             ViewGroup.LayoutParams params = exhaleCircle.getLayoutParams();
-            params.width = INITIAL_WIDTH;
-            params.height = INITIAL_HEIGHT;
+            params.width = MAX_WIDTH;
+            params.height = MAX_HEIGHT;
             exhaleCircle.setLayoutParams(params);
+
+            ViewGroup.LayoutParams breathBtnParams = breathButton.getLayoutParams();
+            breathBtnParams.width = MAX_WIDTH;
+            breathBtnParams.height = MAX_HEIGHT;
+            breathButton.setLayoutParams(breathBtnParams);
         }
 
         private void resetMusic() {
