@@ -24,8 +24,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -184,9 +182,7 @@ public class AddCoinFlipActivity extends AppCompatActivity implements AdapterVie
             stringifiedOutput += "tails!";
         }
         builder.setTitle(stringifiedOutput);
-        builder.setPositiveButton("OK", ((dialogInterface, i) -> {
-            finish();
-        }));
+        builder.setPositiveButton("OK", ((dialogInterface, i) -> finish()));
         dialog = builder.create();
         dialog.show();
 

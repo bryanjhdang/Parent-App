@@ -61,9 +61,6 @@ public class TimeoutActivity extends AppCompatActivity {
     private long leftTimeInMilli;
     private double timeModifier = 1;
 
-    private boolean hasBeenPaused = false;
-    private boolean isPaused = false;
-
     AlarmManager alarmManager;
     MenuItem menuItem;
 
@@ -159,7 +156,6 @@ public class TimeoutActivity extends AppCompatActivity {
         }
         endOfTime = (long) (System.currentTimeMillis() + leftTimeInMilli/timeModifier);
         materialProgressBar.setVisibility(MaterialProgressBar.VISIBLE);
-        isPaused = false;
         activateNotification();
 
         backgroundTimerCountDown = new CountDownTimer((long) (leftTimeInMilli/timeModifier), (long) (COUNTDOWN_INTERVAL/timeModifier)) {
@@ -184,7 +180,6 @@ public class TimeoutActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 timerWorkingState = false;
-                hasBeenPaused = false;
                 timeModifier = 1;
                 setRateDisplay();
                 if (menuItem != null) {
@@ -200,7 +195,6 @@ public class TimeoutActivity extends AppCompatActivity {
 
     private void resetTimer() {
         Intent intent = new Intent(TimeoutActivity.this, NotificationBroadcast.class);
-        hasBeenPaused = false;
         timeModifier = 1;
         setRateDisplay();
         @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(TimeoutActivity.this, 0, intent, 0);
@@ -219,8 +213,6 @@ public class TimeoutActivity extends AppCompatActivity {
 
     private void pauseTimer() {
         menuItem.setVisible(false);
-        hasBeenPaused = true;
-        isPaused = true;
         leftTimeInMilli*=timeModifier;
         if (backgroundTimerCountDown != null) {
             backgroundTimerCountDown.cancel();

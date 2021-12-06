@@ -1,13 +1,8 @@
 package cmpt276.as3.cmpt276hydrogenproject.model;
 
-import android.graphics.Bitmap;
-
 import androidx.annotation.NonNull;
 
-import java.lang.reflect.Array;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * stores a single task object, storing important features like
@@ -63,10 +58,6 @@ public class Task {
         return tasksFinished;
     }
 
-    public void setTasksFinished(ArrayList<TaskFinished> tasksFinished) {
-        this.tasksFinished = tasksFinished;
-    }
-
     public void updateChildInfo(int id, String newName, String newPicture) {
         for (TaskFinished taskFinished : tasksFinished) {
             if (id == taskFinished.getId()) {
@@ -79,6 +70,7 @@ public class Task {
     public TaskFinished getFinishedTaskAt(int index) {
         return tasksFinished.get(index);
     }
+
     @NonNull
     @Override
     public String toString() {

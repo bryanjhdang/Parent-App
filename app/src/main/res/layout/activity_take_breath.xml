@@ -11,7 +11,7 @@
         android:id="@+id/breathTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Let's take n breaths!"
+        android:text="@string/breathPlaceholder"
         android:textColor="@color/white"
         android:textSize="19sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -22,8 +22,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/breathCountLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="93dp"
+        android:layout_height="31dp"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,27 +33,30 @@
             android:id="@+id/leftArrow"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:tint="@color/white"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/ic_baseline_arrow_left_24" />
+            app:layout_constraintEnd_toStartOf="@id/breathCount"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_arrow_left_24"
+            app:tint="@color/white" />
 
         <ImageView
             android:id="@+id/rightArrow"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:tint="@color/white"
             app:layout_constraintStart_toEndOf="@+id/breathCount"
-            app:srcCompat="@drawable/ic_baseline_arrow_right_24" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_arrow_right_24"
+            app:tint="@color/white" />
 
         <TextView
             android:id="@+id/breathCount"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:text="1"
+            android:text="@string/defaultBreathCount"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="16sp"
-            app:layout_constraintStart_toEndOf="@+id/leftArrow" />
+            app:layout_constraintStart_toEndOf="@+id/leftArrow"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
@@ -61,21 +64,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="helpMsg"
+        android:text="@string/helpMsgPlaceholder"
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="409dp"
-        android:layout_height="141dp"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="407dp">
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/exhaleCircleBG"
@@ -104,7 +98,7 @@
         android:layout_width="117dp"
         android:layout_height="108dp"
         android:gravity="center"
-        android:text="Button"
+        android:text="@string/buttonTextPlaceholder"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
