@@ -12,7 +12,6 @@ import android.os.CountDownTimer;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.content.SharedPreferences;
@@ -66,12 +65,12 @@ public class TimeoutActivity extends AppCompatActivity {
     private boolean isPaused = false;
 
     AlarmManager alarmManager;
+    MenuItem menuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timeout_activity);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         setActionBar();
         materialProgressBar = findViewById(R.id.timerCountdownBar);
@@ -88,9 +87,7 @@ public class TimeoutActivity extends AppCompatActivity {
                 pauseTimer();
                 stopNotification();
             } else {
-                if (!hasBeenPaused) {
-                    timeModifier = 1;
-                }
+                timeModifier = 1;
                 startTimer();
             }
         });
@@ -105,8 +102,10 @@ public class TimeoutActivity extends AppCompatActivity {
             // Parse string input into long
             long inputInMilli = Long.parseLong(input) * CONVERT_MILLIS_TO_SECONDS;
             if (inputInMilli == 0) {
+                //TODO: debug timer
+                inputInMilli = 5000;
                 Toast.makeText(TimeoutActivity.this, "Invalid: Enter 1 minute or greater", Toast.LENGTH_SHORT).show();
-                return;
+                //return;
             }
             editTextInput.setText("");
             setTime(inputInMilli);
@@ -180,6 +179,9 @@ public class TimeoutActivity extends AppCompatActivity {
     }
 
     private void startTimer() {
+        if (menuItem != null) {
+            menuItem.setVisible(true);
+        }
         endOfTime = System.currentTimeMillis() + leftTimeInMilli;
         materialProgressBar.setVisibility(MaterialProgressBar.VISIBLE);
         isPaused = false;
@@ -236,6 +238,7 @@ public class TimeoutActivity extends AppCompatActivity {
     }
 
     private void pauseTimer() {
+        menuItem.setVisible(false);
         hasBeenPaused = true;
         isPaused = true;
         leftTimeInMilli*=timeModifier;
@@ -393,6 +396,8 @@ public class TimeoutActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.timeout_rate,menu);
+        menuItem = menu.findItem(R.id.speedChanger);
+        menuItem.setVisible(false);
         return true;
     }
 
@@ -445,9 +450,6 @@ public class TimeoutActivity extends AppCompatActivity {
     private void changeRateTimer() {
         if (backgroundTimerCountDown != null) {
             backgroundTimerCountDown.cancel();
-        }
-        if (isPaused) {
-            leftTimeInMilli /= timeModifier;
         }
         startTimer();
     }
