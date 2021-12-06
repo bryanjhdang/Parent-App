@@ -157,7 +157,7 @@ public class TimeoutActivity extends AppCompatActivity {
         if (menuItem != null) {
             menuItem.setVisible(true);
         }
-        endOfTime = System.currentTimeMillis() + leftTimeInMilli;
+        endOfTime = (long) (System.currentTimeMillis() + leftTimeInMilli/timeModifier);
         materialProgressBar.setVisibility(MaterialProgressBar.VISIBLE);
         isPaused = false;
         activateNotification();
@@ -222,7 +222,9 @@ public class TimeoutActivity extends AppCompatActivity {
         hasBeenPaused = true;
         isPaused = true;
         leftTimeInMilli*=timeModifier;
-        backgroundTimerCountDown.cancel();
+        if (backgroundTimerCountDown != null) {
+            backgroundTimerCountDown.cancel();
+        }
         timerWorkingState = false;
         updateLayoutVisibility();
     }
@@ -340,6 +342,7 @@ public class TimeoutActivity extends AppCompatActivity {
         editor.putLong("millisLeft", leftTimeInMilli);
         editor.putBoolean("timerRunning", timerWorkingState);
         editor.putLong("endTime", endOfTime);
+        saveRate();
         editor.apply();
         if (backgroundTimerCountDown != null) {
             backgroundTimerCountDown.cancel();
@@ -355,12 +358,16 @@ public class TimeoutActivity extends AppCompatActivity {
         startTimeInMilli = prefs.getLong("startTimeInMillis", INITIAL_DEFAULT);
         timerWorkingState = prefs.getBoolean("timerRunning", false);
         leftTimeInMilli = prefs.getLong("millisLeft", startTimeInMilli);
+        loadRate();
+        setRateDisplay();
         updateLayoutVisibility();
         updateDisplayTimer();
 
         if (timerWorkingState) {
             endOfTime = prefs.getLong("endTime", 0);
             leftTimeInMilli = endOfTime - System.currentTimeMillis();
+
+            leftTimeInMilli*=timeModifier;
 
             if (leftTimeInMilli <= 0) {
                 timerWorkingState = false;
@@ -370,6 +377,7 @@ public class TimeoutActivity extends AppCompatActivity {
                 leftTimeInMilli = 0;
                 updateDisplayTimer();
                 updateLayoutVisibility();
+                materialProgressBar.setVisibility(MaterialProgressBar.INVISIBLE);
             } else {
                 startTimer();
             }
