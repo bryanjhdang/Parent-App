@@ -43,6 +43,10 @@ import cmpt276.as3.cmpt276hydrogenproject.model.Task;
 import cmpt276.as3.cmpt276hydrogenproject.model.TaskFinished;
 import cmpt276.as3.cmpt276hydrogenproject.model.TaskManager;
 
+/**
+ * activity that displays the info of a task, including its history,
+ * the assigned child, and buttons to complete/delete selected task.
+ */
 public class TaskInfoActivity extends AppCompatActivity {
 
     private String actionBarTitle;
