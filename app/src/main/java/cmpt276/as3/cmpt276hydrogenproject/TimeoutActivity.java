@@ -70,6 +70,7 @@ public class TimeoutActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.timeout_activity);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         setActionBar();
@@ -80,6 +81,11 @@ public class TimeoutActivity extends AppCompatActivity {
         setTimeBtn = findViewById(R.id.btnSetTimer);
         startTimerBtn = findViewById(R.id.btnStartTimer);
         resetTimerBtn = findViewById(R.id.btnResetTimer);
+
+        if (timerWorkingState) {
+            loadRate();
+            setRateDisplay();
+        }
 
         startTimerBtn.setOnClickListener(v -> {
 
@@ -102,10 +108,8 @@ public class TimeoutActivity extends AppCompatActivity {
             // Parse string input into long
             long inputInMilli = Long.parseLong(input) * CONVERT_MILLIS_TO_SECONDS;
             if (inputInMilli == 0) {
-                //TODO: debug timer
-                inputInMilli = 5000;
                 Toast.makeText(TimeoutActivity.this, "Invalid: Enter 1 minute or greater", Toast.LENGTH_SHORT).show();
-                //return;
+                return;
             }
             editTextInput.setText("");
             setTime(inputInMilli);
@@ -358,8 +362,11 @@ public class TimeoutActivity extends AppCompatActivity {
             endOfTime = prefs.getLong("endTime", 0);
             leftTimeInMilli = endOfTime - System.currentTimeMillis();
 
-            if (leftTimeInMilli < 0) {
+            if (leftTimeInMilli <= 0) {
                 timerWorkingState = false;
+                if (backgroundTimerCountDown != null) {
+                    backgroundTimerCountDown.cancel();
+                }
                 leftTimeInMilli = 0;
                 updateDisplayTimer();
                 updateLayoutVisibility();
@@ -373,7 +380,9 @@ public class TimeoutActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.timeout_rate,menu);
         menuItem = menu.findItem(R.id.speedChanger);
-        menuItem.setVisible(false);
+        if (!timerWorkingState) {
+            menuItem.setVisible(false);
+        }
         return true;
     }
 
@@ -418,6 +427,7 @@ public class TimeoutActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+        saveRate();
         setRateDisplay();
         changeRateTimer();
         return true;
@@ -435,5 +445,20 @@ public class TimeoutActivity extends AppCompatActivity {
         double rateDouble = timeModifier*100;
         int percentRate = (int) rateDouble;
         rateDisplay.setText("Timer rate " + percentRate + "% ");
+    }
+
+    private void saveRate() {
+        SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        int tempInt = (int) (timeModifier*100);
+        editor.putInt("TimerRate", tempInt);
+        editor.apply();
+    }
+
+    private void loadRate() {
+        SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
+        int tempInt = prefs.getInt("TimerRate", 100);
+        timeModifier = (double) tempInt/100;
     }
 }
