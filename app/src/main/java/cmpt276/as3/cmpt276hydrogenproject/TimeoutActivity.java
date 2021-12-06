@@ -9,8 +9,9 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.content.SharedPreferences;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import java.util.Locale;
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
@@ -57,14 +59,19 @@ public class TimeoutActivity extends AppCompatActivity {
     private boolean timerWorkingState;
     private boolean isFirstTime;
     private long leftTimeInMilli;
+    private double timeModifier = 1;
+
+    private boolean hasBeenPaused = false;
+    private boolean isPaused = false;
 
     AlarmManager alarmManager;
+    MenuItem menuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.timeout_activity);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         setActionBar();
         materialProgressBar = findViewById(R.id.timerCountdownBar);
@@ -75,19 +82,19 @@ public class TimeoutActivity extends AppCompatActivity {
         startTimerBtn = findViewById(R.id.btnStartTimer);
         resetTimerBtn = findViewById(R.id.btnResetTimer);
 
+        if (timerWorkingState) {
+            loadRate();
+            setRateDisplay();
+        }
+
         startTimerBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(TimeoutActivity.this, NotificationBroadcast.class);
-            @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(TimeoutActivity.this, 0, intent, 0);
+
             if (timerWorkingState) {
                 pauseTimer();
-                alarmManager.cancel(pendingIntent);
+                stopNotification();
             } else {
+                setRateDisplay();
                 startTimer();
-                //code was followed from demo from https://www.youtube.com/watch?v=nl-dheVpt8o
-                long timeWhenButtonClicked = System.currentTimeMillis();
-                alarmManager.set(AlarmManager.RTC_WAKEUP,
-                        timeWhenButtonClicked + leftTimeInMilli,
-                        pendingIntent);
             }
         });
 
@@ -113,6 +120,22 @@ public class TimeoutActivity extends AppCompatActivity {
         setAllPresetTimers();
     }
 
+    private void activateNotification() {
+        Intent intent = new Intent(TimeoutActivity.this, NotificationBroadcast.class);
+        @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(TimeoutActivity.this, 0, intent, 0);
+        //code was followed from demo from https://www.youtube.com/watch?v=nl-dheVpt8o
+        long timeWhenButtonClicked = System.currentTimeMillis();
+        alarmManager.set(AlarmManager.RTC_WAKEUP,
+                (long) (timeWhenButtonClicked + leftTimeInMilli/timeModifier),
+                pendingIntent);
+    }
+
+    private void stopNotification() {
+        Intent intent = new Intent(TimeoutActivity.this, NotificationBroadcast.class);
+        @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(TimeoutActivity.this, 0, intent, 0);
+        alarmManager.cancel(pendingIntent);
+    }
+
     public static Intent makeIntent(Context context) {
         return new Intent(context, TimeoutActivity.class);
     }
@@ -131,10 +154,15 @@ public class TimeoutActivity extends AppCompatActivity {
     }
 
     private void startTimer() {
-        endOfTime = System.currentTimeMillis() + leftTimeInMilli;
+        if (menuItem != null) {
+            menuItem.setVisible(true);
+        }
+        endOfTime = (long) (System.currentTimeMillis() + leftTimeInMilli/timeModifier);
         materialProgressBar.setVisibility(MaterialProgressBar.VISIBLE);
+        isPaused = false;
+        activateNotification();
 
-        backgroundTimerCountDown = new CountDownTimer(leftTimeInMilli, COUNTDOWN_INTERVAL) {
+        backgroundTimerCountDown = new CountDownTimer((long) (leftTimeInMilli/timeModifier), (long) (COUNTDOWN_INTERVAL/timeModifier)) {
             @Override
             public void onTick(long millisUntilFinished) {
                 leftTimeInMilli = millisUntilFinished;
@@ -143,18 +171,25 @@ public class TimeoutActivity extends AppCompatActivity {
             }
 
             private void tickVisualTimer() {
-                double timeRemainingPortion = (double)leftTimeInMilli/(double)startTimeInMilli;
-                timeRemainingPortion *= 1000000;
+                double timeRemainingPercent = (double)leftTimeInMilli/(double)startTimeInMilli;
+                timeRemainingPercent *= timeModifier;
+                timeRemainingPercent *= 1000000;
                 if (leftTimeInMilli == 0) {
                     materialProgressBar.setVisibility(MaterialProgressBar.INVISIBLE);
                 } else {
-                    materialProgressBar.setProgress((int) timeRemainingPortion, true);
+                    materialProgressBar.setProgress((int) timeRemainingPercent, true);
                 }
             }
 
             @Override
             public void onFinish() {
                 timerWorkingState = false;
+                hasBeenPaused = false;
+                timeModifier = 1;
+                setRateDisplay();
+                if (menuItem != null) {
+                    menuItem.setVisible(false);
+                }
                 updateLayoutVisibility();
             }
         }.start();
@@ -165,6 +200,9 @@ public class TimeoutActivity extends AppCompatActivity {
 
     private void resetTimer() {
         Intent intent = new Intent(TimeoutActivity.this, NotificationBroadcast.class);
+        hasBeenPaused = false;
+        timeModifier = 1;
+        setRateDisplay();
         @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(TimeoutActivity.this, 0, intent, 0);
         if (backgroundTimerCountDown != null) {
             pauseTimer();
@@ -172,6 +210,7 @@ public class TimeoutActivity extends AppCompatActivity {
         materialProgressBar.setVisibility(MaterialProgressBar.INVISIBLE);
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(0);
+        alarmManager.cancel(pendingIntent);
         leftTimeInMilli = startTimeInMilli;
         updateDisplayTimer();
         updateLayoutVisibility();
@@ -179,7 +218,13 @@ public class TimeoutActivity extends AppCompatActivity {
     }
 
     private void pauseTimer() {
-        backgroundTimerCountDown.cancel();
+        menuItem.setVisible(false);
+        hasBeenPaused = true;
+        isPaused = true;
+        leftTimeInMilli*=timeModifier;
+        if (backgroundTimerCountDown != null) {
+            backgroundTimerCountDown.cancel();
+        }
         timerWorkingState = false;
         updateLayoutVisibility();
     }
@@ -188,6 +233,13 @@ public class TimeoutActivity extends AppCompatActivity {
         int hours = (int) (leftTimeInMilli / COUNTDOWN_INTERVAL) / SECONDS_PER_HOUR;
         int minutes = (int) ((leftTimeInMilli / COUNTDOWN_INTERVAL) % SECONDS_PER_HOUR) / SECONDS_PER_MINUTE;
         int seconds = (int) (leftTimeInMilli / COUNTDOWN_INTERVAL) % SECONDS_PER_MINUTE;
+
+
+        if (timerWorkingState) {
+            hours = (int) (leftTimeInMilli*timeModifier / COUNTDOWN_INTERVAL) / SECONDS_PER_HOUR;
+            minutes = (int) ((leftTimeInMilli*timeModifier / COUNTDOWN_INTERVAL) % SECONDS_PER_HOUR) / SECONDS_PER_MINUTE;
+            seconds = (int) (leftTimeInMilli*timeModifier / COUNTDOWN_INTERVAL) % SECONDS_PER_MINUTE;
+        }
 
         String timeLeftFormat;
         if (!(hours < 1)) {
@@ -290,6 +342,7 @@ public class TimeoutActivity extends AppCompatActivity {
         editor.putLong("millisLeft", leftTimeInMilli);
         editor.putBoolean("timerRunning", timerWorkingState);
         editor.putLong("endTime", endOfTime);
+        saveRate();
         editor.apply();
         if (backgroundTimerCountDown != null) {
             backgroundTimerCountDown.cancel();
@@ -305,6 +358,8 @@ public class TimeoutActivity extends AppCompatActivity {
         startTimeInMilli = prefs.getLong("startTimeInMillis", INITIAL_DEFAULT);
         timerWorkingState = prefs.getBoolean("timerRunning", false);
         leftTimeInMilli = prefs.getLong("millisLeft", startTimeInMilli);
+        loadRate();
+        setRateDisplay();
         updateLayoutVisibility();
         updateDisplayTimer();
 
@@ -312,14 +367,106 @@ public class TimeoutActivity extends AppCompatActivity {
             endOfTime = prefs.getLong("endTime", 0);
             leftTimeInMilli = endOfTime - System.currentTimeMillis();
 
-            if (leftTimeInMilli < 0) {
+            leftTimeInMilli*=timeModifier;
+
+            if (leftTimeInMilli <= 0) {
                 timerWorkingState = false;
+                if (backgroundTimerCountDown != null) {
+                    backgroundTimerCountDown.cancel();
+                }
                 leftTimeInMilli = 0;
                 updateDisplayTimer();
                 updateLayoutVisibility();
+                materialProgressBar.setVisibility(MaterialProgressBar.INVISIBLE);
             } else {
                 startTimer();
             }
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.timeout_rate,menu);
+        menuItem = menu.findItem(R.id.speedChanger);
+        if (!timerWorkingState) {
+            menuItem.setVisible(false);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                if(timerWorkingState) {
+                    moveTaskToBack(true);
+                }else {
+                    finish();
+                }
+                return true;
+            case R.id.percent25:
+                leftTimeInMilli*=timeModifier;
+                timeModifier = 0.25;
+                break;
+            case R.id.percent50:
+                leftTimeInMilli*=timeModifier;
+                timeModifier = 0.50;
+                break;
+            case R.id.percent75:
+                leftTimeInMilli*=timeModifier;
+                timeModifier = 0.75;
+                break;
+            case R.id.percent100:
+                leftTimeInMilli*=timeModifier;
+                timeModifier = 1;
+                break;
+            case R.id.percent200:
+                leftTimeInMilli*=timeModifier;
+                timeModifier = 2;
+                break;
+            case R.id.percent300:
+                leftTimeInMilli*=timeModifier;
+                timeModifier = 3;
+                break;
+            case R.id.percent400:
+                leftTimeInMilli*=timeModifier;
+                timeModifier = 4;
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        saveRate();
+        setRateDisplay();
+        changeRateTimer();
+        return true;
+    }
+
+    private void changeRateTimer() {
+        if (backgroundTimerCountDown != null) {
+            backgroundTimerCountDown.cancel();
+        }
+        startTimer();
+    }
+
+    private void setRateDisplay() {
+        TextView rateDisplay = findViewById(R.id.timeModifierDisplay);
+        double rateDouble = timeModifier*100;
+        int percentRate = (int) rateDouble;
+        rateDisplay.setText("Timer rate " + percentRate + "% ");
+    }
+
+    private void saveRate() {
+        SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        int tempInt = (int) (timeModifier*100);
+        editor.putInt("TimerRate", tempInt);
+        editor.apply();
+    }
+
+    private void loadRate() {
+        SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
+        int tempInt = prefs.getInt("TimerRate", 100);
+        timeModifier = (double) tempInt/100;
     }
 }
