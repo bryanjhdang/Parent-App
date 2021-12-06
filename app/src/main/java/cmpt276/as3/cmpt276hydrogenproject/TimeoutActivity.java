@@ -150,35 +150,6 @@ public class TimeoutActivity extends AppCompatActivity {
         startTimerBtn.setText(R.string.btnTextStart);
     }
 
-    private class customTimer extends CountDownTimer {
-        public customTimer(long millisInFuture, long countDownInterval) {
-            super(millisInFuture, countDownInterval);
-        }
-
-        @Override
-        public void onTick(long millisUntilFinished) {
-            leftTimeInMilli = millisUntilFinished;
-            tickVisualTimer();
-            updateDisplayTimer();
-        }
-
-        private void tickVisualTimer() {
-            double timeRemainingPercent = (double)leftTimeInMilli/(double)startTimeInMilli;
-            timeRemainingPercent *= 100;
-            if (leftTimeInMilli == 0) {
-                materialProgressBar.setVisibility(MaterialProgressBar.INVISIBLE);
-            } else {
-                materialProgressBar.setProgress((int) timeRemainingPercent, true);
-            }
-        }
-
-        @Override
-        public void onFinish() {
-            timerWorkingState = false;
-            updateLayoutVisibility();
-        }
-    }
-
     private void startTimer() {
         if (menuItem != null) {
             menuItem.setVisible(true);
@@ -211,11 +182,14 @@ public class TimeoutActivity extends AppCompatActivity {
             public void onFinish() {
                 timerWorkingState = false;
                 hasBeenPaused = false;
+                timeModifier = 1;
+                setRateDisplay();
+                if (menuItem != null) {
+                    menuItem.setVisible(false);
+                }
                 updateLayoutVisibility();
             }
         }.start();
-
-        //backgroundTimerCountDown = new customTimer(leftTimeInMilli, COUNTDOWN_INTERVAL);
 
         timerWorkingState = true;
         updateLayoutVisibility();

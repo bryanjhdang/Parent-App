@@ -143,13 +143,13 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <me.zhanghai.android.materialprogressbar.MaterialProgressBar
-        android:minWidth="300dp"
-        android:minHeight="300dp"
-        android:max="1000000"
         android:id="@+id/timerCountdownBar"
         style="@style/Widget.MaterialProgressBar.ProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:max="1000000"
+        android:minWidth="300dp"
+        android:minHeight="300dp"
         app:layout_constraintBottom_toTopOf="@+id/twoMinBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -160,7 +160,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Timer rate 100%"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
